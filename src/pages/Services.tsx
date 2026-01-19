@@ -6,9 +6,9 @@ const ServicesPage = () => {
 
     // Video mapping 
     const videoMap: Record<string, string> = {
-        "Wedding Coverage": "/videos/wedding reseption.mp4",
-        "Fashion Photography & Reels": "/videos/white wedding.mp4",
-        "Promotional Videos": "/video 4.mp4",
+        "Wedding Coverage": "/videos/wedding-reception.mp4",
+        "Fashion Photography & Reels": "/videos/fashion-reels.mp4",
+        "Promotional Videos": "/promotional-video.mp4",
     };
 
     const containerVariants = {

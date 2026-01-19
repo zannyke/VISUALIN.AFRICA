@@ -10,7 +10,7 @@ const services = [
         title: "Wedding Coverage",
         desc: "Your love story deserves to be told beautifully. We capture every precious moment—laughter, tears, and joy.",
         colSpan: "md:col-span-2",
-        videoSrc: "/videos/wedding reseption.mp4"
+        videoSrc: "/videos/wedding-reception.mp4"
     },
     {
         id: 2,
@@ -18,7 +18,7 @@ const services = [
         title: "Fashion & Reels",
         desc: "Style meets storytelling. From quick-turnaround reels to high-end photoshoots.",
         colSpan: "md:col-span-1",
-        videoSrc: "/videos/white wedding.mp4"
+        videoSrc: "/videos/fashion-reels.mp4"
     },
     {
         id: 3,
@@ -26,7 +26,7 @@ const services = [
         title: "Promotional Videos",
         desc: "Transform your ideas into compelling visual stories that grab attention.",
         colSpan: "md:col-span-1",
-        videoSrc: "/video 4.mp4"
+        videoSrc: "/promotional-video.mp4"
     },
     {
         id: 4,
