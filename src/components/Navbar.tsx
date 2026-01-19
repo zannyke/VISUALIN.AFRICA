@@ -62,7 +62,7 @@ const Navbar = () => {
                     <img
                         src="/logo-light.png"
                         alt="Visualink Africa"
-                        className="h-10 w-auto object-contain dark:invert transition-all duration-300"
+                        className="h-16 w-auto object-contain dark:invert transition-all duration-300"
                     />
                 </Link>
 
