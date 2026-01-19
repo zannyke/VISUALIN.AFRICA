@@ -1,0 +1,25 @@
+export default {
+    darkMode: 'selector',
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                obsidian: '#233237', // VILA Primary Blue
+                cobalt: '#F57703',   // VILA Contact Orange
+                slate: '#525967',    // VILA Serviars
+                platinum: '#F8FAFC', // Keep for light bg
+                charcoal: '#293033', // VILA Dark Contact
+                'accent-slate': '#207955',
+                'deep-blue': '#201293',
+            },
+            fontFamily: {
+                serif: ['"Playfair Display"', 'serif'],
+                sans: ['"Inter"', 'sans-serif'],
+            },
+        },
+    },
+    plugins: [],
+}

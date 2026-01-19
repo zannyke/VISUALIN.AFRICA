@@ -1,0 +1,55 @@
+{
+    "about": {
+        "title": "About Us",
+        "content": "We are Visualink Africa, a creative visual agency dedicated to connecting people through powerful storytelling. Our work goes beyond cameras and edits – we craft visuals that inspire emotion, identity, and growth. From cinematic films to social media content, we help clients stand out and build lasting connections. Our culture is built on collaboration, authenticity, and passion."
+    },
+    "services": [
+        {
+            "title": "Wedding Coverage",
+            "description": "Capturing every precious moment—the laughter, the tears, and the joy—ensuring timeless memories."
+        },
+        {
+            "title": "Fashion Photography & Reels",
+            "description": "Style meets storytelling. Bringing vision to life with flair and precision for high-end shoots and reels."
+        },
+        {
+            "title": "Promotional Videos",
+            "description": "Compelling visual stories that grab attention, build trust, and inspire action for brands."
+        },
+        {
+            "title": "Social Media Management",
+            "description": "Full-service content creation and audience growth to build authentic connections online."
+        },
+        {
+            "title": "Livestreaming",
+            "description": "Smooth, high-quality streaming for events, concerts, or brand launches in real time."
+        },
+        {
+            "title": "Drone Coverage & Documentaries",
+            "description": "Deep-dive storytelling that uncovers genuine emotion and meaning to move audiences."
+        },
+        {
+            "title": "Corporate Event Highlights",
+            "description": "Professional multi-camera setup and cinematic editing for conferences and launches."
+        }
+    ],
+    "process": [
+        {
+            "step": "1. Discover & Connect",
+            "details": "Understanding your story, values, and the impact you want to create through deep listening and collaboration."
+        },
+        {
+            "step": "2. Create & Craft",
+            "details": "Transforming ideas into powerful visuals using technical mastery and innovative storytelling."
+        },
+        {
+            "step": "3. Deliver & Inspire",
+            "details": "Refining every frame for quality to deliver timeless visuals that leave a lasting impact."
+        }
+    ],
+    "contact": {
+        "phone": "+254 114876997",
+        "email": "visualinkafrica@gmail.com",
+        "location": "Nairobi, Kenya"
+    }
+}
