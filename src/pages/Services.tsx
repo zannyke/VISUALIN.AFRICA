@@ -4,11 +4,11 @@ import content from '../constants/content.json';
 
 const ServicesPage = () => {
 
-    // Video mapping (re-using purely for demo, ideally these would be unique per service)
+    // Video mapping 
     const videoMap: Record<string, string> = {
-        "Wedding Coverage": "https://www.youtube.com/embed/mwsrUwWnyn4?autoplay=1&mute=1&controls=0&loop=1&playlist=mwsrUwWnyn4",
-        "Fashion Photography & Reels": "https://www.youtube.com/embed/rdZPW_Xezm4?autoplay=1&mute=1&controls=0&loop=1&playlist=rdZPW_Xezm4",
-        "Promotional Videos": "https://www.youtube.com/embed/drS0x5zFyjk?autoplay=1&mute=1&controls=0&loop=1&playlist=drS0x5zFyjk",
+        "Wedding Coverage": "/videos/wedding reseption.mp4",
+        "Fashion Photography & Reels": "/videos/white wedding.mp4",
+        "Promotional Videos": "/video 4.mp4",
     };
 
     const containerVariants = {
@@ -87,12 +87,24 @@ const ServicesPage = () => {
                                                     <source src="/drone shots on potrait.mp4" type="video/mp4" />
                                                 </video>
                                             </div>
-                                        ) : (
+                                        ) : videoUrl.startsWith('http') ? (
                                             <iframe
                                                 src={videoUrl}
                                                 className="w-[120%] h-[120%] -ml-[10%] -mt-[10%] object-cover opacity-90 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 pointer-events-none"
                                                 title={service.title}
                                             />
+                                        ) : (
+                                            <div className="w-full h-full relative overflow-hidden bg-black">
+                                                <video
+                                                    autoPlay
+                                                    loop
+                                                    muted
+                                                    playsInline
+                                                    className="w-full h-full object-cover opacity-90 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                                                >
+                                                    <source src={videoUrl} type="video/mp4" />
+                                                </video>
+                                            </div>
                                         )}
 
                                         {/* Floating Badge */}
