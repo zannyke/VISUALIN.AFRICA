@@ -125,13 +125,16 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`backdrop-blur-xl bg-white/60 dark:bg-white/5 border border-white/20 dark:border-white/10 p-8 rounded-2xl hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl ${service.colSpan} group`}
+                            className={`relative overflow-hidden backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-8 rounded-3xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] ${service.colSpan} group ring-1 ring-white/20 hover:ring-cobalt/30`}
                         >
+                            {/* Cinematic Background Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-cobalt/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                             {service.videoSrc && (
-                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl overflow-hidden">
+                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-3xl overflow-hidden">
                                     <video
                                         src={service.videoSrc}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transform scale-110 group-hover:scale-100 transition-transform duration-[2s]"
                                         muted
                                         loop
                                         playsInline
@@ -142,18 +145,25 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30 pointer-events-none" />
                                 </div>
                             )}
 
-                            <div className="relative z-10">
-                                <div className="mb-6 inline-flex p-3 rounded-xl bg-cobalt/10 dark:bg-cobalt/20 text-cobalt group-hover:bg-cobalt group-hover:text-white transition-colors duration-300">
-                                    <service.icon size={32} />
+                            <div className="relative z-10 flex flex-col h-full justify-between">
+                                <div>
+                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-cobalt group-hover:bg-cobalt group-hover:text-white group-hover:border-cobalt transition-all duration-300 shadow-sm backdrop-blur-md">
+                                        <service.icon size={28} strokeWidth={1.5} />
+                                    </div>
+                                    <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-slate-200 transition-colors leading-relaxed text-base">
+                                        {service.desc}
+                                    </p>
                                 </div>
-                                <h3 className="text-2xl font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors">{service.title}</h3>
-                                <p className="text-slate-600 dark:text-slate-300 group-hover:text-slate-200 transition-colors leading-relaxed">
-                                    {service.desc}
-                                </p>
+
+                                <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 group-hover:border-white/20 transition-colors flex items-center gap-2 text-cobalt group-hover:text-white font-medium opacity-60 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                    <span className="text-sm uppercase tracking-widest">Explore Service</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                </div>
                             </div>
                         </motion.div>
                     ))}
