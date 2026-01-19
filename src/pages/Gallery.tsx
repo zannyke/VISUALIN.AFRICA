@@ -156,10 +156,12 @@ const Gallery = () => {
                                         <video
                                             src={item.src}
                                             className="w-full h-full object-cover opacity-90"
-                                            autoPlay
                                             muted
                                             loop
                                             playsInline
+                                            preload="metadata"
+                                            onMouseEnter={(e) => e.currentTarget.play()}
+                                            onMouseLeave={(e) => e.currentTarget.pause()}
                                         />
 
                                     </div>

@@ -132,12 +132,17 @@ const Services = () => {
                                     <video
                                         src={service.videoSrc}
                                         className="w-full h-full object-cover"
-                                        autoPlay
                                         muted
                                         loop
                                         playsInline
+                                        preload="none"
+                                        onMouseEnter={(e) => e.currentTarget.play()}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.pause();
+                                            e.currentTarget.currentTime = 0;
+                                        }}
                                     />
-                                    <div className="absolute inset-0 bg-black/60" />
+                                    <div className="absolute inset-0 bg-black/60 pointer-events-none" />
                                 </div>
                             )}
 
