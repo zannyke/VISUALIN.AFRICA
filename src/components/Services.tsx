@@ -9,21 +9,24 @@ const services = [
         icon: Camera,
         title: "Wedding Coverage",
         desc: "Your love story deserves to be told beautifully. We capture every precious moment—laughter, tears, and joy.",
-        colSpan: "md:col-span-2"
+        colSpan: "md:col-span-2",
+        videoSrc: "/videos/wedding reseption.mp4"
     },
     {
         id: 2,
         icon: Sparkles,
         title: "Fashion & Reels",
         desc: "Style meets storytelling. From quick-turnaround reels to high-end photoshoots.",
-        colSpan: "md:col-span-1"
+        colSpan: "md:col-span-1",
+        videoSrc: "/videos/white wedding.mp4"
     },
     {
         id: 3,
         icon: Video,
         title: "Promotional Videos",
         desc: "Transform your ideas into compelling visual stories that grab attention.",
-        colSpan: "md:col-span-1"
+        colSpan: "md:col-span-1",
+        videoSrc: "/video 4.mp4"
     },
     {
         id: 4,
@@ -124,13 +127,29 @@ const Services = () => {
                             whileHover={{ y: -5 }}
                             className={`backdrop-blur-xl bg-white/60 dark:bg-white/5 border border-white/20 dark:border-white/10 p-8 rounded-2xl hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl ${service.colSpan} group`}
                         >
-                            <div className="mb-6 inline-flex p-3 rounded-xl bg-cobalt/10 dark:bg-cobalt/20 text-cobalt group-hover:bg-cobalt group-hover:text-white transition-colors duration-300">
-                                <service.icon size={32} />
+                            {service.videoSrc && (
+                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl overflow-hidden">
+                                    <video
+                                        src={service.videoSrc}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                    />
+                                    <div className="absolute inset-0 bg-black/60" />
+                                </div>
+                            )}
+
+                            <div className="relative z-10">
+                                <div className="mb-6 inline-flex p-3 rounded-xl bg-cobalt/10 dark:bg-cobalt/20 text-cobalt group-hover:bg-cobalt group-hover:text-white transition-colors duration-300">
+                                    <service.icon size={32} />
+                                </div>
+                                <h3 className="text-2xl font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors">{service.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-300 group-hover:text-slate-200 transition-colors leading-relaxed">
+                                    {service.desc}
+                                </p>
                             </div>
-                            <h3 className="text-2xl font-bold mb-3 text-charcoal dark:text-white">{service.title}</h3>
-                            <p className="text-slate-600 dark:text-slate-300 group-hover:text-charcoal dark:group-hover:text-white transition-colors leading-relaxed">
-                                {service.desc}
-                            </p>
                         </motion.div>
                     ))}
                 </div>
