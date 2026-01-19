@@ -18,7 +18,7 @@ const services = [
         title: "Fashion & Reels",
         desc: "Style meets storytelling. From quick-turnaround reels to high-end photoshoots.",
         colSpan: "md:col-span-1",
-        videoSrc: "/videos/more wedding reseption.mp4"
+        videoSrc: "/videos/white wedding.mp4"
     },
     {
         id: 3,
@@ -26,7 +26,7 @@ const services = [
         title: "Promotional Videos",
         desc: "Transform your ideas into compelling visual stories that grab attention.",
         colSpan: "md:col-span-1",
-        videoSrc: "/video 1.mp4"
+        videoSrc: "/video 4.mp4"
     },
     {
         id: 4,
