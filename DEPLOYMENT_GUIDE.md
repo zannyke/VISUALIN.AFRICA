@@ -1,60 +1,36 @@
-# Deployment Guide: GitHub & Firebase
+# Deployment Guide: Automated CI/CD
 
-## 1. Push Code to GitHub
-I have already committed your changes locally. However, since I cannot authenticate with your GitHub account, you need to push the code manually.
+Great news! Your project is now configured for **automatic deployment**. 
+Whenever you push changes to the `main` branch on GitHub, your website will automatically update.
 
-Run this command in your terminal:
+## One-Time Setup Required
+
+To enable this automation, you need to save a Firebase Key in your GitHub settings **once**.
+
+### 1. Get the Key from Firebase
+1.  Go to the [Firebase Console Service Accounts](https://console.firebase.google.com/project/visualinkafrica-76c43/settings/serviceaccounts/adminsdk).
+2.  Click the **"Generate new private key"** button.
+3.  Confirm by clicking **"Generate key"**.
+4.  This will download a `.json` file to your computer.
+5.  Open this file with any text editor (Notepad, VS Code) and **copy the entire contents**.
+
+### 2. Save the Key in GitHub
+1.  Go to your GitHub Repository: [https://github.com/zannyke/VISUALIN.AFRICA](https://github.com/zannyke/VISUALIN.AFRICA)
+2.  Click on **Settings** (top right tab).
+3.  In the left sidebar, click **Secrets and variables** > **Actions**.
+4.  Click the green **"New repository secret"** button.
+5.  **Name**: `FIREBASE_SERVICE_ACCOUNT_VISUALINKAFRICA_76C43`
+    *(Copy this exact name)*
+6.  **Secret**: Paste the content of the JSON file you copied.
+7.  Click **Add secret**.
+
+## How to Deploy Updates
+From now on, you don't need to run `firebase deploy` manually. Just save your work to GitHub:
+
 ```bash
-git push -u origin main
+git add .
+git commit -m "Describe your changes"
+git push origin main
 ```
-*If prompted, log in with your GitHub credentials.*
 
-## 2. Deploy to Firebase Console (via GitHub Actions)
-
-To automatically deploy to Firebase whenever you push to Git, follow these steps:
-
-### Prerequisites
-1.  You need a Firebase project created in the [Firebase Console](https://console.firebase.google.com/).
-2.  You need the Firebase CLI installed.
-
-### Step-by-Step Setup
-
-1.  **Install Firebase CLI** (if not already installed):
-    ```bash
-    npm install -g firebase-tools
-    ```
-
-2.  **Login to Firebase**:
-    ```bash
-    firebase login
-    ```
-
-3.  **Initialize Firebase in your project**:
-    ```bash
-    firebase init hosting
-    ```
-    *   **Select your project**: Choose "Use an existing project" and select your Firebase project.
-    *   **Public directory**: Type `dist` (since this is a Vite app).
-    *   **Configure as a single-page app**: Type `Yes` (Important for React Router).
-    *   **Set up automatic builds and deploys with GitHub**: Type `Yes`.
-    *   **Overwrite index.html?**: Type `No` (Do NOT overwrite).
-
-    When asked about GitHub:
-    *   It will ask you to log in to GitHub.
-    *   It will ask for your repository format (e.g., `zannyke/VISUALIN.AFRICA`).
-    *   It will create the necessary GitHub Action workflow files (`.github/workflows/firebase-hosting-merge.yml`, etc.).
-
-4.  **Final Push**:
-    Once the initialization is done, Firebase creates new files. Push them to GitHub:
-    ```bash
-    git add .
-    git commit -m "Set up Firebase hosting with GitHub Actions"
-    git push
-    ```
-
-### Manual Deployment (Alternative)
-If you just want to deploy right now without GitHub Actions:
-```bash
-npm run build
-firebase deploy
-```
+GitHub will detect the push, build your site, and deploy it to Firebase automatically!
