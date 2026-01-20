@@ -55,7 +55,7 @@ const Hero = () => {
                     playsInline
                     className="w-full h-full object-cover filter blur-[3px]"
                 >
-                    <source src="/video 1.mp4" type="video/mp4" />
+                    <source src="/videos/working .mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-gradient-to-t from-platinum via-transparent to-transparent dark:from-obsidian dark:via-transparent dark:to-transparent z-20" />
             </motion.div>
