@@ -9,7 +9,6 @@ const services = [
         icon: Camera,
         title: "Wedding Coverage",
         desc: "Your love story deserves to be told beautifully. We capture every precious moment—laughter, tears, and joy.",
-        colSpan: "md:col-span-2",
         videoSrc: "/videos/wedding-reception.mp4"
     },
     {
@@ -17,7 +16,6 @@ const services = [
         icon: Sparkles,
         title: "Fashion & Reels",
         desc: "Style meets storytelling. From quick-turnaround reels to high-end photoshoots.",
-        colSpan: "md:col-span-1",
         videoSrc: "/videos/fashion-reels.mp4"
     },
     {
@@ -25,36 +23,31 @@ const services = [
         icon: Video,
         title: "Promotional Videos",
         desc: "Transform your ideas into compelling visual stories that grab attention.",
-        colSpan: "md:col-span-1",
         videoSrc: "/promotional-video.mp4"
     },
     {
         id: 4,
         icon: Share2,
         title: "Social Media Management",
-        desc: "We handle everything from engaging content creation to audience growth.",
-        colSpan: "md:col-span-2"
+        desc: "We handle everything from engaging content creation to audience growth."
     },
     {
         id: 5,
         icon: Tv,
         title: "Livestreaming",
-        desc: "Go live effortlessly for events, concerts, or brand launches.",
-        colSpan: "md:col-span-1"
+        desc: "Go live effortlessly for events, concerts, or brand launches."
     },
     {
         id: 6,
         icon: Plane,
         title: "Drone & Documentaries",
-        desc: "Real stories, powerfully told. Deep dives into genuine emotion and meaning.",
-        colSpan: "md:col-span-2"
+        desc: "Real stories, powerfully told. Deep dives into genuine emotion and meaning."
     },
     {
         id: 7,
         icon: Video,
         title: "Corporate Event Highlights",
-        desc: "Professional multi-camera setup and cinematic editing for conferences and launches.",
-        colSpan: "md:col-span-3"
+        desc: "Professional multi-camera setup and cinematic editing for conferences and launches."
     }
 ];
 
@@ -116,7 +109,7 @@ const Services = () => {
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service, index) => (
                         <motion.div
                             key={service.id}
@@ -125,7 +118,7 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`relative overflow-hidden backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-8 rounded-3xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] ${service.colSpan} group ring-1 ring-white/20 hover:ring-cobalt/30`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-8 rounded-3xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] group ring-1 ring-white/20 hover:ring-cobalt/30`}
                         >
                             {/* Cinematic Background Gradient */}
                             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-cobalt/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
