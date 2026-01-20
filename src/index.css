@@ -66,18 +66,18 @@
     @apply bg-white/70 dark:bg-obsidian/60 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl transition-all duration-500 shadow-xl shadow-slate-200/50 dark:shadow-none;
   }
 
-  /* Premium Apple-style button */
+  /* Premium Vimeo-style button */
   .btn-primary {
-    @apply px-8 py-4 bg-cobalt text-white rounded-full font-medium tracking-wide hover:bg-blue-600 transition-all shadow-lg shadow-cobalt/25 hover:shadow-cobalt/40 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 duration-300;
+    @apply relative overflow-hidden px-8 py-4 bg-cobalt text-white rounded-full font-bold tracking-wide transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl shadow-cobalt/20 hover:shadow-cobalt/40 hover:bg-[#ff851b];
   }
 
-  .btn-secondary {
-    @apply px-8 py-4 text-charcoal dark:text-white bg-white/50 dark:bg-white/10 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-full font-medium tracking-wide transition-all hover:bg-white/80 dark:hover:bg-white/20 hover:shadow-lg dark:hover:shadow-white/5 transform hover:-translate-y-0.5;
+  .btn-primary::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 opacity-0 transition-opacity duration-300;
   }
 
-
-  .btn-primary:active {
-    transform: scale(0.95);
+  .btn-primary:hover::after {
+    @apply opacity-100;
   }
 
   .btn-secondary {
