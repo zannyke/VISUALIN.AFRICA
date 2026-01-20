@@ -59,11 +59,9 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
-                    <img
-                        src="/logo-light.png"
-                        alt="Visualink Africa"
-                        className="h-24 w-auto object-contain dark:invert transition-all duration-300"
-                    />
+                    <span className="text-3xl font-serif font-black tracking-tighter text-charcoal dark:text-white">
+                        VILA
+                    </span>
                 </Link>
 
                 {/* Desktop Menu */}
