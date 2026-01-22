@@ -83,7 +83,7 @@ const Services = () => {
                         playsInline
                         className="w-full h-full object-cover filter blur-[2px]"
                     >
-                        <source src="/drone shots on potrait.mp4" type="video/mp4" />
+                        <source src="/drone-shots-portrait.mp4" type="video/mp4" />
                     </video>
                 </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-b from-platinum via-transparent to-platinum dark:from-obsidian dark:via-transparent dark:to-obsidian z-20" />

@@ -8,30 +8,30 @@ export const images = {
         "/art/ART_0602.jpg"
     ],
     videos: [
-        "/video 1.mp4",
-        "/video 1.mp4",
+        "/video-1.mp4",
+        "/video-1.mp4",
         "https://www.youtube.com/embed/mwsrUwWnyn4"
     ],
     wedding: [
         "/videos/wedding-reception.mp4",
-        "/videos/more wedding reseption.mp4"
+        "/videos/wedding-reception-2.mp4"
     ],
     godfrey: [
-        "/videos/Dr.Godfrey & Maggie  TEST.mp4",
-        "/videos/Dr.Godfrey & Maggie  TEST 2.mp4"
+        "/videos/dr-godfrey-maggie-1.mp4",
+        "/videos/dr-godfrey-maggie-2.mp4"
     ],
     makutano: [
-        "/videos/Makutano video.mp4"
+        "/videos/makutano.mp4"
     ],
     kcb: [
-        "/videos/Kcb lawyers cocktail.mp4"
+        "/videos/kcb-lawyers.mp4"
     ],
     bts: [
         "/videos/working.mp4",
-        "/videos/behind the sences.mp4"
+        "/videos/behind-the-scenes.mp4"
     ],
     garden: [
-        "/videos/sensory garden.mov"
+        "/videos/sensory-garden.mov"
     ],
     art: [
         "/art/ART_0416.jpg",
