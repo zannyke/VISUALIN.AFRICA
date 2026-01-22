@@ -96,16 +96,22 @@ const Gallery = () => {
                                 <video
                                     src={item.src}
                                     className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
-                                    autoPlay
                                     muted
                                     loop
                                     playsInline
+                                    preload="none"
+                                    onMouseEnter={(e) => e.currentTarget.play()}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.pause();
+                                        e.currentTarget.currentTime = 0;
+                                    }}
                                 />
                             ) : (
                                 <iframe
                                     src={`${item.src}?autoplay=0&controls=0&showinfo=0&rel=0`}
                                     className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
                                     title={item.title}
+                                    loading="lazy"
                                 />
                             )}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
@@ -172,6 +178,7 @@ const Gallery = () => {
                                             src={`https://img.youtube.com/vi/${item.src.split('/').pop()}/maxresdefault.jpg`}
                                             className="w-full h-full object-cover opacity-80"
                                             alt={item.title}
+                                            loading="lazy"
                                         />
                                     </div>
                                 )}

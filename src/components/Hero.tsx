@@ -53,6 +53,7 @@ const Hero = () => {
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className="w-full h-full object-cover filter blur-[3px]"
                 >
                     <source src="/videos/working.mp4" type="video/mp4" />
