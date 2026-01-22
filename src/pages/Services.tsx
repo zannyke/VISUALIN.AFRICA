@@ -9,6 +9,7 @@ const ServicesPage = () => {
         "Wedding Coverage": "/videos/wedding-reception.mp4",
         "Fashion Photography & Reels": "/videos/fashion-reels.mp4",
         "Promotional Videos": "/promotional-video.mp4",
+        "Corporate Event Highlights": "/videos/kcb-lawyers.mp4" // Assuming we have this or similar, otherwise fallback
     };
 
     const containerVariants = {
@@ -62,7 +63,7 @@ const ServicesPage = () => {
                     {content.services.map((service, index) => {
                         const videoUrl = videoMap[service.title] || videoMap["Promotional Videos"];
                         const isEven = index % 2 === 0;
-                        const isDrone = service.title.toLowerCase().includes("drone");
+                        const isDrone = service.title.toLowerCase().includes("documentary") || service.title.toLowerCase().includes("drone");
 
                         return (
                             <motion.div
@@ -84,7 +85,7 @@ const ServicesPage = () => {
                                                     playsInline
                                                     className="w-full h-full object-cover pointer-events-none transform -rotate-90 scale-[1.7]"
                                                 >
-                                                    <source src="/drone shots on potrait.mp4" type="video/mp4" />
+                                                    <source src="/drone-shots-portrait.mp4" type="video/mp4" />
                                                 </video>
                                             </div>
                                         ) : videoUrl.startsWith('http') ? (
@@ -125,8 +126,8 @@ const ServicesPage = () => {
                                     </p>
 
                                     <ul className="mb-8 space-y-3">
-                                        {/* Fake feature list for now as example */}
-                                        {['Professional Editing', '4K Resolution', 'Fast Turnaround'].map((feat, i) => (
+                                        {/* Dynamic feature list from content.json */}
+                                        {(service as any).features && (service as any).features.map((feat: string, i: number) => (
                                             <li key={i} className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                                                 <div className="p-1 rounded-full bg-cobalt/10 text-cobalt">
                                                     <Check size={12} strokeWidth={3} />

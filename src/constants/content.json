@@ -6,31 +6,57 @@
     "services": [
         {
             "title": "Wedding Coverage",
-            "description": "Capturing every precious moment—the laughter, the tears, and the joy—ensuring timeless memories."
+            "description": "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day—exactly as it felt.",
+            "features": [
+                "Cinematic Photo & Film",
+                "Artful Editing & Color",
+                "Seamless, Discreet Coverage"
+            ]
         },
         {
             "title": "Fashion Photography & Reels",
-            "description": "Style meets storytelling. Bringing vision to life with flair and precision for high-end shoots and reels."
+            "description": "Striking imagery crafted to define style, elevate identity, and command attention across platforms.",
+            "features": [
+                "Editorial-Grade Visuals",
+                "Social-First Reels",
+                "Creative Direction"
+            ]
         },
         {
             "title": "Promotional Videos",
-            "description": "Compelling visual stories that grab attention, build trust, and inspire action for brands."
-        },
-        {
-            "title": "Social Media Management",
-            "description": "Full-service content creation and audience growth to build authentic connections online."
+            "description": "Purpose-driven visuals designed to communicate value, spark interest, and move audiences to action.",
+            "features": [
+                "Brand-Led Storytelling",
+                "Clean, Modern Aesthetic",
+                "Multi-Platform Delivery"
+            ]
         },
         {
             "title": "Livestreaming",
-            "description": "Smooth, high-quality streaming for events, concerts, or brand launches in real time."
+            "description": "Polished, real-time broadcasts that connect audiences to moments as they unfold.",
+            "features": [
+                "Multi-Camera Production",
+                "Broadcast-Quality Audio",
+                "Reliable Live Delivery"
+            ]
         },
         {
-            "title": "Drone Coverage & Documentaries",
-            "description": "Deep-dive storytelling that uncovers genuine emotion and meaning to move audiences."
+            "title": "Documentary & Drive Coverage",
+            "description": "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth.",
+            "features": [
+                "Narrative-Focused Filmmaking",
+                "On-Location Production",
+                "Thoughtful Post-Production"
+            ]
         },
         {
             "title": "Corporate Event Highlights",
-            "description": "Professional multi-camera setup and cinematic editing for conferences and launches."
+            "description": "Refined event recaps that showcase moments, people, and brand presence with clarity.",
+            "features": [
+                "Professional Visual Standards",
+                "Concise Highlight Films",
+                "Fast, Reliable Turnaround"
+            ]
         }
     ],
     "process": [

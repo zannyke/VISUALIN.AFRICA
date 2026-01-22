@@ -1,7 +1,7 @@
 
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Camera, Video, Share2, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
+import { Camera, Video, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const services = [
@@ -9,46 +9,40 @@ const services = [
         id: 1,
         icon: Camera,
         title: "Wedding Coverage",
-        desc: "Your love story deserves to be told beautifully. We capture every precious moment—laughter, tears, and joy.",
+        desc: "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day—exactly as it felt.",
         videoSrc: "/videos/wedding-reception.mp4"
     },
     {
         id: 2,
         icon: Sparkles,
-        title: "Fashion & Reels",
-        desc: "Style meets storytelling. From quick-turnaround reels to high-end photoshoots.",
+        title: "Fashion Photography & Reels",
+        desc: "Striking imagery crafted to define style, elevate identity, and command attention across platforms.",
         videoSrc: "/videos/fashion-reels.mp4"
     },
     {
         id: 3,
         icon: Video,
         title: "Promotional Videos",
-        desc: "Transform your ideas into compelling visual stories that grab attention.",
+        desc: "Purpose-driven visuals designed to communicate value, spark interest, and move audiences to action.",
         videoSrc: "/promotional-video.mp4"
     },
     {
         id: 4,
-        icon: Share2,
-        title: "Social Media Management",
-        desc: "We handle everything from engaging content creation to audience growth."
+        icon: Tv,
+        title: "Livestreaming",
+        desc: "Polished, real-time broadcasts that connect audiences to moments as they unfold."
     },
     {
         id: 5,
-        icon: Tv,
-        title: "Livestreaming",
-        desc: "Go live effortlessly for events, concerts, or brand launches."
+        icon: Plane,
+        title: "Documentary & Drive Coverage",
+        desc: "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth."
     },
     {
         id: 6,
-        icon: Plane,
-        title: "Drone & Documentaries",
-        desc: "Real stories, powerfully told. Deep dives into genuine emotion and meaning."
-    },
-    {
-        id: 7,
         icon: Video,
         title: "Corporate Event Highlights",
-        desc: "Professional multi-camera setup and cinematic editing for conferences and launches."
+        desc: "Refined event recaps that showcase moments, people, and brand presence with clarity."
     }
 ];
 
