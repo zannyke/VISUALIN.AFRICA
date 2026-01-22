@@ -10,6 +10,7 @@ const services = [
         icon: Camera,
         title: "Wedding Coverage",
         desc: "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day—exactly as it felt.",
+        features: ["Cinematic Photo & Film", "Artful Editing & Color", "Seamless, Discreet Coverage"],
         videoSrc: "/videos/wedding-reception.mp4"
     },
     {
@@ -17,6 +18,7 @@ const services = [
         icon: Sparkles,
         title: "Fashion Photography & Reels",
         desc: "Striking imagery crafted to define style, elevate identity, and command attention across platforms.",
+        features: ["Editorial-Grade Visuals", "Social-First Reels", "Creative Direction"],
         videoSrc: "/videos/fashion-reels.mp4"
     },
     {
@@ -24,25 +26,29 @@ const services = [
         icon: Video,
         title: "Promotional Videos",
         desc: "Purpose-driven visuals designed to communicate value, spark interest, and move audiences to action.",
+        features: ["Brand-Led Storytelling", "Clean, Modern Aesthetic", "Multi-Platform Delivery"],
         videoSrc: "/promotional-video.mp4"
     },
     {
         id: 4,
         icon: Tv,
         title: "Livestreaming",
-        desc: "Polished, real-time broadcasts that connect audiences to moments as they unfold."
+        desc: "Polished, real-time broadcasts that connect audiences to moments as they unfold.",
+        features: ["Multi-Camera Production", "Broadcast-Quality Audio", "Reliable Live Delivery"]
     },
     {
         id: 5,
         icon: Plane,
         title: "Documentary & Drive Coverage",
-        desc: "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth."
+        desc: "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth.",
+        features: ["Narrative-Focused Filmmaking", "On-Location Production", "Thoughtful Post-Production"]
     },
     {
         id: 6,
         icon: Video,
         title: "Corporate Event Highlights",
-        desc: "Refined event recaps that showcase moments, people, and brand presence with clarity."
+        desc: "Refined event recaps that showcase moments, people, and brand presence with clarity.",
+        features: ["Professional Visual Standards", "Concise Highlight Films", "Fast, Reliable Turnaround"]
     }
 ];
 
@@ -143,9 +149,18 @@ const Services = () => {
                                         <service.icon size={28} strokeWidth={1.5} />
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-slate-200 transition-colors leading-relaxed text-base">
+                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-slate-200 transition-colors leading-relaxed text-base mb-4">
                                         {service.desc}
                                     </p>
+
+                                    <ul className="space-y-1 mb-2">
+                                        {service.features.map((feature, i) => (
+                                            <li key={i} className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-300 flex items-center gap-2">
+                                                <span className="w-1 h-1 bg-cobalt group-hover:bg-white rounded-full" />
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
 
                                 <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 group-hover:border-white/20 transition-colors flex items-center gap-2 text-cobalt group-hover:text-white font-medium opacity-60 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">

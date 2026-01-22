@@ -127,7 +127,7 @@ const ServicesPage = () => {
 
                                     <ul className="mb-8 space-y-3">
                                         {/* Dynamic feature list from content.json */}
-                                        {(service as any).features && (service as any).features.map((feat: string, i: number) => (
+                                        {service.features && service.features.map((feat: string, i: number) => (
                                             <li key={i} className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                                                 <div className="p-1 rounded-full bg-cobalt/10 text-cobalt">
                                                     <Check size={12} strokeWidth={3} />
@@ -138,7 +138,7 @@ const ServicesPage = () => {
                                     </ul>
 
                                     <button className="flex items-center gap-2 text-cobalt font-bold tracking-wide group hover:gap-4 transition-all duration-300">
-                                        Learn Details <ArrowRight size={18} />
+                                        View Service <ArrowRight size={18} />
                                     </button>
                                 </div>
                             </motion.div>
