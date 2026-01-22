@@ -13,7 +13,7 @@ export const images = {
         "https://www.youtube.com/embed/mwsrUwWnyn4"
     ],
     wedding: [
-        "/videos/wedding reseption.mp4",
+        "/videos/wedding-reception.mp4",
         "/videos/more wedding reseption.mp4"
     ],
     godfrey: [
@@ -27,7 +27,7 @@ export const images = {
         "/videos/Kcb lawyers cocktail.mp4"
     ],
     bts: [
-        "/videos/working .mp4",
+        "/videos/working.mp4",
         "/videos/behind the sences.mp4"
     ],
     garden: [
