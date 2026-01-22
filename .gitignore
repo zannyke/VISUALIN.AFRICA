@@ -26,10 +26,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Large Video Files (Ignored for GitHub > 100MB)
-public/videos/Dr.Godfrey & Maggie  TEST.mp4
-public/videos/sensory garden.mov
-videos/
+
 
 # Allowed videos (Under 100MB) are now tracked!
 
