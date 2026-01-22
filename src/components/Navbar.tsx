@@ -60,9 +60,9 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
                     <img
-                        src="/logo-light.png"
-                        alt="VILA"
-                        className="h-10 w-auto object-contain transition-all duration-300 invert dark:invert-0"
+                        src="/logo.jpeg"
+                        alt="Visualink Africa"
+                        className="h-12 w-auto object-contain rounded-full"
                     />
                 </Link>
 
