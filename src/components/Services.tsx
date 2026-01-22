@@ -9,7 +9,7 @@ const services = [
         id: 1,
         icon: Camera,
         title: "Wedding Coverage",
-        desc: "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day—exactly as it felt.",
+        desc: "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day, exactly as it felt.",
         features: ["Cinematic Photo & Film", "Artful Editing & Color", "Seamless, Discreet Coverage"],
         videoSrc: "/videos/wedding-reception.mp4"
     },
@@ -39,9 +39,9 @@ const services = [
     {
         id: 5,
         icon: Plane,
-        title: "Documentary & Drive Coverage",
-        desc: "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth.",
-        features: ["Narrative-Focused Filmmaking", "On-Location Production", "Thoughtful Post-Production"]
+        title: "Documentary & Drone Coverage",
+        desc: "Cinematic storytelling from the ground and the sky, capturing depth, scale, and perspective with intention.",
+        features: ["Narrative-Driven Filmmaking", "Professional Aerial Cinematography", "Refined Post-Production"]
     },
     {
         id: 6,

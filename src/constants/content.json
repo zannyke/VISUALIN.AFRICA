@@ -6,7 +6,7 @@
     "services": [
         {
             "title": "Wedding Coverage",
-            "description": "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day—exactly as it felt.",
+            "description": "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day, exactly as it felt.",
             "features": [
                 "Cinematic Photo & Film",
                 "Artful Editing & Color",
@@ -41,12 +41,12 @@
             ]
         },
         {
-            "title": "Documentary & Drive Coverage",
-            "description": "Authentic, long-form storytelling that captures journeys, impact, and meaning with depth.",
+            "title": "Documentary & Drone Coverage",
+            "description": "Cinematic storytelling from the ground and the sky, capturing depth, scale, and perspective with intention.",
             "features": [
-                "Narrative-Focused Filmmaking",
-                "On-Location Production",
-                "Thoughtful Post-Production"
+                "Narrative-Driven Filmmaking",
+                "Professional Aerial Cinematography",
+                "Refined Post-Production"
             ]
         },
         {
