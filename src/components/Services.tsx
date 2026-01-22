@@ -1,7 +1,8 @@
 
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Camera, Video, Share2, Sparkles, Tv, Plane } from 'lucide-react';
+import { Camera, Video, Share2, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const services = [
     {
@@ -118,7 +119,7 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-8 rounded-3xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] group ring-1 ring-white/20 hover:ring-cobalt/30`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] group ring-1 ring-white/20 hover:ring-cobalt/30`}
                         >
                             {/* Cinematic Background Gradient */}
                             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-cobalt/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -160,6 +161,12 @@ const Services = () => {
                             </div>
                         </motion.div>
                     ))}
+                </div>
+
+                <div className="mt-16 text-center">
+                    <Link to="/gallery" className="btn-primary inline-flex items-center gap-2">
+                        Explore More <ArrowRight size={20} />
+                    </Link>
                 </div>
             </div>
         </section>

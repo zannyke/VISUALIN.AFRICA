@@ -51,17 +51,19 @@ const Navbar = () => {
             animate={hidden && !isOpen ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled
-                ? 'py-4 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl shadow-md'
-                : 'py-5 bg-transparent'
+                ? 'py-3 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl shadow-md'
+                : 'py-4 bg-transparent'
                 }`}
         >
             <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
-                    <span className="text-3xl font-serif font-black tracking-tighter text-charcoal dark:text-white">
-                        VILA
-                    </span>
+                    <img
+                        src="/logo-light.png"
+                        alt="VILA"
+                        className="h-10 w-auto object-contain transition-all duration-300 invert dark:invert-0"
+                    />
                 </Link>
 
                 {/* Desktop Menu */}
