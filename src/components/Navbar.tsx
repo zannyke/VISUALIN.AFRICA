@@ -62,7 +62,7 @@ const Navbar = () => {
                     <img
                         src="/logo.jpeg"
                         alt="Visualink Africa"
-                        className="h-12 w-auto object-contain rounded-full scale-150"
+                        className="h-12 w-auto object-contain rounded-full scale-[1.8]"
                     />
                 </Link>
 
