@@ -62,7 +62,7 @@ const Navbar = () => {
                     <img
                         src="/logo.jpeg"
                         alt="Visualink Africa"
-                        className="h-16 w-auto object-contain rounded-full"
+                        className="h-12 w-auto object-contain rounded-full scale-150"
                     />
                 </Link>
 
@@ -184,7 +184,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, height: '100vh' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="fixed inset-0 top-[90px] z-40 bg-white/95 dark:bg-obsidian/95 backdrop-blur-2xl md:hidden overflow-y-auto"
+                        className="fixed inset-0 top-[72px] z-40 bg-white/95 dark:bg-obsidian/95 backdrop-blur-2xl md:hidden overflow-y-auto"
                     >
                         <div className="p-6 flex flex-col gap-4 pt-8">
                             {links.map((link, i) => (
