@@ -37,6 +37,34 @@ export default async function handler(request: any, response: any) {
             return response.status(200).json({ item: result.rows[0] });
         }
 
+        if (request.method === 'PUT') {
+            const { id, url, title, category, oldUrl } = request.body;
+            if (!id) return response.status(400).json({ error: 'ID required' });
+
+            // If a new URL is provided (replacement), delete the old file
+            if (url && oldUrl && url !== oldUrl && oldUrl.includes('public.blob.vercel-storage.com')) {
+                try {
+                    await del(oldUrl);
+                } catch (e) {
+                    console.error('Failed to delete old blob', e);
+                }
+            }
+
+            // Update record
+            // If url is provided, update it, otherwise keep existing
+            const result = await sql`
+                UPDATE gallery 
+                SET 
+                    title = ${title || ''}, 
+                    category = ${category || 'general'},
+                    url = COALESCE(${url || null}, url)
+                WHERE id = ${id}
+                RETURNING *;
+            `;
+
+            return response.status(200).json({ item: result.rows[0] });
+        }
+
         if (request.method === 'DELETE') {
             const { id, url } = request.body;
             if (!id) return response.status(400).json({ error: 'ID required' });
