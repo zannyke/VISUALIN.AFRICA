@@ -60,7 +60,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
                     <img
-                        src="/Visualink logo black.jpg"
+                        src="/visualink_logo_snap-removebg-preview.png"
                         alt="Visualink Africa"
                         className="h-12 w-auto object-contain rounded-full scale-110"
                     />
