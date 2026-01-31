@@ -97,7 +97,7 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-slate-950 dark:hover:bg-slate-950 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/10 group ring-1 ring-white/20 hover:ring-cobalt/50`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-orange-950 dark:hover:bg-orange-950 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/10 group ring-1 ring-white/20 hover:ring-cobalt/50`}
                         >
                             {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
                             <div className="absolute inset-0 bg-gradient-to-br from-cobalt/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -117,7 +117,7 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-slate-950/80 group-hover:bg-slate-950/40 transition-colors duration-500" />
+                                    <div className="absolute inset-0 bg-orange-950/80 group-hover:bg-orange-950/40 transition-colors duration-500" />
                                 </div>
                             )}
 
