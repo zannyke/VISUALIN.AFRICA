@@ -1,34 +1,47 @@
-import { put } from '@vercel/blob';
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 
 export const config = {
     api: {
-        bodyParser: false,
+        bodyParser: true,
     },
 };
 
 export default async function handler(request: any, response: any) {
-    const adminPassword = process.env.ADMIN_PASSWORD;
-    // Basic query param auth for upload to keep it simple or header check?
-    // Since this is being called likely from client directly or via fetch, let's check auth.
-    // Wait, interacting with request stream directly for `put`.
-
-    if (request.method !== 'POST') {
-        return response.status(405).json({ error: 'Method Not Allowed' });
-    }
+    const body = request.body as HandleUploadBody;
 
     try {
-        const { searchParams } = new URL(request.url, `http://${request.headers.host}`);
-        const filename = searchParams.get('filename') || 'file';
+        const jsonResponse = await handleUpload({
+            body,
+            request,
+            onBeforeGenerateToken: async (pathname) => {
+                const { searchParams } = new URL(request.url, `http://${request.headers.host}`);
+                const auth = searchParams.get('auth');
 
-        // We pass the request body (stream) directly to Vercel Blob
-        const blob = await put(filename, request, {
-            access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN // Needs to be added to env
+                if (!process.env.ADMIN_PASSWORD || auth !== process.env.ADMIN_PASSWORD) {
+                    throw new Error('Unauthorized');
+                }
+
+                return {
+                    allowedContentTypes: [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                        'image/webp',
+                        'video/mp4',
+                        'video/quicktime',
+                        'video/webm',
+                        'video/x-matroska'
+                    ],
+                    tokenPayload: JSON.stringify({}),
+                };
+            },
+            onUploadCompleted: async ({ blob, tokenPayload }) => {
+                // Webhook logic if needed
+            },
         });
 
-        return response.status(200).json(blob);
+        return response.status(200).json(jsonResponse);
     } catch (error) {
-        console.error(error);
-        return response.status(500).json({ error: 'Upload failed' });
+        return response.status(400).json({ error: (error as Error).message });
     }
 }

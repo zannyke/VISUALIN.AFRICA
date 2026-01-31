@@ -120,12 +120,12 @@ const Hero = () => {
                             <i className="transform group-hover:translate-x-1 transition-transform">→</i>
                         </Link>
 
-                        <div className="flex items-center gap-4 cursor-pointer group">
+                        <Link to="/gallery" className="flex items-center gap-4 cursor-pointer group">
                             <div className="w-12 h-12 rounded-full bg-white/60 dark:bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/20">
                                 <Play size={20} className="ml-1 text-charcoal dark:text-white" fill="currentColor" />
                             </div>
                             <span className="font-semibold text-charcoal dark:text-white">Watch Showreel</span>
-                        </div>
+                        </Link>
                     </motion.div>
 
                 </div>
