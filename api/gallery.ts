@@ -3,12 +3,7 @@ import { sql } from '@vercel/postgres';
 
 export const config = {
     api: {
-        bodyParser: false, // Disabling body parser to handle file stream manually if needed, or use blob upload via client? 
-        // Actually, handling file upload securely usually involves generating a signed URL or handling multipart.
-        // For simplicity with Vercel Blob, we can try client-side upload or server-side.
-        // Let's use simpler JSON body with URL if user provides URL, or handle file upload in a separate way.
-        // Wait, simpler approach: User sends a URL (e.g. from an external host) OR we use Vercel Blob SDK.
-        // Let's try to stick to handling "add item" logic here.
+        bodyParser: true,
     },
 };
 

@@ -1,52 +1,75 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { images } from '../constants/images';
 import { Play, X } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
 
 const Gallery = () => {
     type GalleryItem =
-        | { type: 'image', src: string, title?: string, category?: string, orientation?: 'portrait' | 'landscape' }
-        | { type: 'video', src: string, title?: string, category?: string, orientation?: 'portrait' | 'landscape' }
-        | { type: 'slideshow', images: string[], title: string, category: string, orientation: 'portrait' | 'landscape' };
+        | { type: 'image', id?: string | number, src: string, title?: string, category?: string, orientation?: 'portrait' | 'landscape' }
+        | { type: 'video', id?: string | number, src: string, title?: string, category?: string, orientation?: 'portrait' | 'landscape' }
+        | { type: 'slideshow', id?: string | number, images: string[], title: string, category: string, orientation: 'portrait' | 'landscape' };
 
     const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+    const [dbItems, setDbItems] = useState<GalleryItem[]>([]);
+
+    // Helper to check if source is a video file
+    const isVideoFile = (src: string) => /\.(mp4|mov|webm|ogg|quicktime)$/i.test(src);
+
+    useEffect(() => {
+        const fetchGalleryItems = async () => {
+            try {
+                const response = await fetch('/api/gallery');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.items) {
+                        const formattedItems: GalleryItem[] = data.items.map((item: any) => {
+                            const isVideo = isVideoFile(item.url) || item.url.includes('youtube') || item.url.includes('vimeo');
+                            return {
+                                type: isVideo ? 'video' : 'image',
+                                id: item.id,
+                                src: item.url,
+                                title: item.title,
+                                category: item.category,
+                                orientation: 'landscape'
+                            };
+                        });
+                        setDbItems(formattedItems);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch gallery items", error);
+            }
+        };
+
+        fetchGalleryItems();
+    }, []);
 
     // Mixed Gallery Items
-    const mixedGallery: GalleryItem[] = [
+    const staticGallery: GalleryItem[] = [
         { type: 'video', src: images.makutano[0], title: "Promotional video", category: "Cinematography", orientation: 'landscape' },
 
-        // Dr. Godfrey & Maggie (Grouped) - Portrait
         { type: 'video', src: images.godfrey[0], title: "Dr. Godfrey & Maggie 1", category: "Wedding", orientation: 'portrait' },
-        // Replaced Dr. Godfrey 2 with Wedding Reception
         { type: 'video', src: images.wedding[1], title: "Wedding Reception", category: "Wedding", orientation: 'landscape' },
 
-        // KCB Lawyer (Alone) - Landscape
         ...images.kcb.map(src => ({
             type: 'video' as const, src, title: "KCB Lawyers Cocktail", category: "Corporate", orientation: 'landscape' as const
         })),
 
-        // Working & BTS (Grouped) - Portrait
         ...images.bts.map((src, i) => ({
             type: 'video' as const, src, title: `Behind The Scenes ${i + 1}`, category: "Process", orientation: 'portrait' as const
         })),
 
-        // Makutano (Alone) - Landscape
-        ...images.makutano.slice(1).map(src => ({ // Adjusted slice to account for makutano[0] being used at the start
+        ...images.makutano.slice(1).map(src => ({
             type: 'video' as const, src, title: "Makutano Project", category: "Documentary", orientation: 'landscape' as const
         })),
 
-        // Wedding Reception (Grouped) - Landscape
-        ...images.wedding.slice(0, 1).map((src, i) => ({ // Adjusted slice to account for wedding[1] being used earlier
+        ...images.wedding.slice(0, 1).map((src, i) => ({
             type: 'video' as const, src, title: `Wedding Reception ${i + 1}`, category: "Events", orientation: 'landscape' as const
         })),
 
+        { type: 'video', src: images.fashion[0], title: "Fashion Week '25", category: "Fashion", orientation: 'landscape' as const },
 
-
-
-        { type: 'video', src: images.videos[1], title: "Fashion Week '25", category: "Fashion", orientation: 'landscape' as const },
-
-        // Art Series Group - Single Slideshow Item
         {
             type: 'slideshow',
             images: images.art,
@@ -54,11 +77,11 @@ const Gallery = () => {
             category: "Fine Art",
             orientation: 'portrait'
         },
-
-
     ];
 
-    const featuredItems = mixedGallery.filter(x => x.type === 'video').slice(0, 3) as Extract<GalleryItem, { type: 'video' }>[];
+    const allItems = [...dbItems, ...staticGallery];
+
+    const featuredItems = allItems.filter(x => x.type === 'video').slice(0, 5) as Extract<GalleryItem, { type: 'video' }>[];
 
     return (
         <section className="pt-32 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500 overflow-hidden">
@@ -81,7 +104,7 @@ const Gallery = () => {
                 </motion.div>
             </div>
 
-            {/* Carousel Section - Apple Style */}
+            {/* Carousel Section */}
             <div className="mb-32 relative pl-6 md:pl-0">
                 <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-10 scrollbar-hide px-6 md:px-12">
                     {featuredItems.map((item, index) => (
@@ -92,15 +115,15 @@ const Gallery = () => {
                             transition={{ duration: 0.4 }}
                             onClick={() => setSelectedItem(item)}
                         >
-                            {item.src.endsWith('.mp4') ? (
+                            {isVideoFile(item.src) ? (
                                 <video
                                     src={item.src}
                                     className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
                                     muted
                                     loop
                                     playsInline
-                                    preload="none"
-                                    onMouseEnter={(e) => e.currentTarget.play()}
+                                    preload="auto"
+                                    onMouseEnter={(e) => e.currentTarget.play().catch(() => { })}
                                     onMouseLeave={(e) => {
                                         e.currentTarget.pause();
                                         e.currentTarget.currentTime = 0;
@@ -128,10 +151,10 @@ const Gallery = () => {
                 </div>
             </div>
 
-            {/* Masonry Grid - "Endless" feel */}
+            {/* Masonry Grid */}
             <div className="container mx-auto px-6">
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                    {mixedGallery.slice(3).map((item, index) => (
+                    {allItems.map((item, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 50 }}
@@ -157,31 +180,37 @@ const Gallery = () => {
                                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                                         loading="lazy"
                                     />
-                                ) : item.src.endsWith('.mp4') ? (
-                                    <div className="w-full h-full relative bg-black">
-                                        <video
-                                            src={item.src}
-                                            className="w-full h-full object-cover opacity-90"
-                                            muted
-                                            loop
-                                            playsInline
-                                            preload="metadata"
-                                            onMouseEnter={(e) => e.currentTarget.play()}
-                                            onMouseLeave={(e) => e.currentTarget.pause()}
-                                        />
-
-                                    </div>
-                                ) : (
-                                    <div className="aspect-video bg-black relative">
-
-                                        <img
-                                            src={`https://img.youtube.com/vi/${item.src.split('/').pop()}/maxresdefault.jpg`}
-                                            className="w-full h-full object-cover opacity-80"
-                                            alt={item.title}
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                )}
+                                ) : item.type === 'video' ? (
+                                    isVideoFile(item.src) ? (
+                                        <div className="w-full h-full relative bg-gray-900">
+                                            <video
+                                                src={item.src}
+                                                className="w-full h-full object-cover opacity-90"
+                                                muted
+                                                loop
+                                                playsInline
+                                                preload="auto"
+                                                onMouseEnter={(e) => e.currentTarget.play().catch(() => { })}
+                                                onMouseLeave={(e) => e.currentTarget.pause()}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="aspect-video bg-black relative">
+                                            <img
+                                                src={`https://img.youtube.com/vi/${item.src.split('/').pop()}/maxresdefault.jpg`}
+                                                className="w-full h-full object-cover opacity-80"
+                                                alt={item.title}
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                <Play className="text-white opacity-50" size={48} />
+                                            </div>
+                                        </div>
+                                    )
+                                ) : null}
 
                                 {item.type !== 'slideshow' && (
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -206,7 +235,7 @@ const Gallery = () => {
                         onClick={() => setSelectedItem(null)}
                     >
                         <button
-                            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2"
+                            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 z-50"
                             onClick={() => setSelectedItem(null)}
                         >
                             <X size={40} strokeWidth={1} />
@@ -221,16 +250,17 @@ const Gallery = () => {
                                 />
                             ) : selectedItem.type === 'video' ? (
                                 <div className="w-full max-w-6xl aspect-video relative bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
-                                    {selectedItem.src.endsWith('.mp4') ? (
+                                    {isVideoFile(selectedItem.src) ? (
                                         <video
                                             src={selectedItem.src}
                                             className="w-full h-full"
                                             controls
                                             autoPlay
+                                            playsInline
                                         />
                                     ) : (
                                         <iframe
-                                            src={`${selectedItem.src}?autoplay=1&modestbranding=1&rel=0&showinfo=0`}
+                                            src={`${selectedItem.src}${selectedItem.src.includes('?') ? '&' : '?'}autoplay=1&modestbranding=1&rel=0&showinfo=0`}
                                             className="w-full h-full"
                                             allow="autoplay; encrypted-media; fullscreen"
                                             allowFullScreen

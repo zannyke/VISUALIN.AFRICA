@@ -3,14 +3,17 @@ export const images = {
         "/art/ART_0416.jpg",
         "/art/ART_0602.jpg",
         "/art/ART_0621.jpg",
-        "/art/ART_0621 (1).jpg",
+        "/art/ART_0621_1.jpg",
         "/art/ART_0416.jpg",
         "/art/ART_0602.jpg"
     ],
     videos: [
         "/video-1.mp4",
-        "/video-1.mp4",
+        "/videos/fashion-reels.mp4",
         "https://www.youtube.com/embed/mwsrUwWnyn4"
+    ],
+    fashion: [
+        "/videos/fashion-reels.mp4"
     ],
     wedding: [
         "/videos/wedding-reception.mp4",
@@ -36,7 +39,7 @@ export const images = {
     art: [
         "/art/ART_0416.jpg",
         "/art/ART_0602.jpg",
-        "/art/ART_0621 (1).jpg",
+        "/art/ART_0621_1.jpg",
         "/art/ART_0621.jpg"
     ]
 };
