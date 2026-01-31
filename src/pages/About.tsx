@@ -18,7 +18,7 @@ const About = () => {
                     {/* Image Side */}
                     <div className="lg:w-1/2 relative">
                         <div className="absolute inset-0 bg-cobalt/20 blur-2xl rounded-full transform scale-90 -z-10" />
-                        <div className="glass-card p-2 rounded-2xl overflow-hidden shadow-2xl skew-y-1 hover:skew-y-0 transition-transform duration-500 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                        <div className="glass-card p-2 rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
                             <img src={images.gallery[0]} alt="About Us visual" className="w-full h-auto object-cover rounded-xl" loading="lazy" />
                         </div>
                         {/* Floating Element */}
