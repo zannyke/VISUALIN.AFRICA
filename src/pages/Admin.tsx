@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Plus } from 'lucide-react';
+import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload } from 'lucide-react';
 
 interface Message {
     id: number;
