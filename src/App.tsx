@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import SmoothScroll from './components/SmoothScroll';
 import { useEffect, Suspense, lazy } from 'react';
 
 // Lazy load pages for performance
@@ -29,6 +30,7 @@ const LoadingSpinner = () => (
 function App() {
   return (
     <Router>
+      <SmoothScroll />
       <ScrollToTop />
       <div className="min-h-screen bg-platinum dark:bg-obsidian text-charcoal dark:text-white font-sans selection:bg-cobalt selection:text-white flex flex-col transition-colors duration-300">
         <Navbar />
