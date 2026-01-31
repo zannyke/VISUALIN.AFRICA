@@ -15,7 +15,7 @@ const iconMap: Record<string, any> = {
 };
 
 const videoMap: Record<string, string> = {
-    "Wedding Coverage": "/videos/wedding-reception.mp4",
+    "Wedding Coverage": "/videos/dr-godfrey-maggie-test.mp4",
     "Fashion Photography & Reels": "/videos/fashion-reels.mp4",
     "Promotional Videos": "/promotional-video.mp4"
 };
