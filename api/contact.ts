@@ -19,9 +19,20 @@ export default async function handler(request: any, response: any) {
         // 1. Save to Vercel Postgres Database
         try {
             await sql`
-        INSERT INTO messages (name, email, subject, message, created_at)
-        VALUES (${name}, ${email}, ${subject || 'No Subject'}, ${message}, NOW());
-        `;
+            CREATE TABLE IF NOT EXISTS messages (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255),
+                email VARCHAR(255),
+                subject VARCHAR(255),
+                message TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+            `;
+
+            await sql`
+            INSERT INTO messages (name, email, subject, message, created_at)
+            VALUES (${name}, ${email}, ${subject || 'No Subject'}, ${message}, NOW());
+            `;
             console.log('Database insertion successful');
         } catch (dbError) {
             console.error('Database Error:', dbError);
