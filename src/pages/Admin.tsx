@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff } from 'lucide-react';
+import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff, X } from 'lucide-react';
+import content from '../constants/content.json';
 
 interface Message {
     id: number;
@@ -33,6 +34,11 @@ const Admin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
+
+    // Upload & Preview States
+    const [previewFile, setPreviewFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [uploadForm, setUploadForm] = useState({ title: '', category: 'General' });
 
     // Initial Load
     useEffect(() => {
@@ -103,17 +109,35 @@ const Admin = () => {
 
     // --- Gallery Actions ---
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files?.[0]) return;
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.[0]) {
+            const file = e.target.files[0];
+            setPreviewFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
+            // Reset form when new file selected (optional)
+            setUploadForm({ title: file.name.split('.')[0], category: 'General' }); // Auto-fill title from filename
+        }
+    };
+
+    const handleCancelUpload = () => {
+        setPreviewFile(null);
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+        setUploadForm({ title: '', category: 'General' });
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+
+    const handlePublish = async () => {
+        if (!previewFile) return;
         setUploading(true);
-        const file = e.target.files[0];
 
         try {
             // 1. Upload to Blob
-            const resUpload = await fetch(`/api/upload?filename=${file.name}`, {
+            const resUpload = await fetch(`/api/upload?filename=${previewFile.name}`, {
                 method: 'POST',
                 headers: { 'Authorization': password },
-                body: file
+                body: previewFile
             });
 
             if (!resUpload.ok) throw new Error('Upload failed');
@@ -125,20 +149,23 @@ const Admin = () => {
                 headers: { 'Authorization': password, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     url: blobData.url,
-                    title: file.name,
-                    category: 'gallery'
+                    title: uploadForm.title,
+                    category: uploadForm.category
                 })
             });
 
             if (resDb.ok) {
                 const newItem = await resDb.json();
                 setGalleryItems(prev => [newItem.item, ...prev]);
+                handleCancelUpload(); // Clear UI on success
+                alert('Published successfully!');
+            } else {
+                throw new Error('Database save failed');
             }
         } catch (err) {
-            alert('Upload failed: ' + err);
+            alert('Publish failed: ' + err);
         } finally {
             setUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
@@ -288,55 +315,145 @@ const Admin = () => {
                         {/* GALLERY TAB */}
                         {activeTab === 'gallery' && (
                             <div>
-                                <div className="mb-8 p-6 bg-white dark:bg-white/5 rounded-xl border border-dashed border-slate-300 dark:border-white/20 text-center">
-                                    <input
-                                        type="file"
-                                        ref={fileInputRef}
-                                        onChange={handleFileUpload}
-                                        className="hidden"
-                                        id="gallery-upload"
-                                        accept="image/*,video/*"
-                                    />
-                                    <label htmlFor="gallery-upload" className="cursor-pointer flex flex-col items-center gap-2">
-                                        <div className="w-12 h-12 bg-cobalt/10 rounded-full flex items-center justify-center text-cobalt">
-                                            {uploading ? <Loader className="animate-spin" /> : <Upload />}
-                                        </div>
-                                        <span className="text-charcoal dark:text-white font-medium">Click to Upload Image/Video</span>
-                                        <span className="text-xs text-slate-500">Supports JPG, PNG, MP4</span>
-                                    </label>
-                                </div>
+                                {/* GALLERY TAB */}
+                                {activeTab === 'gallery' && (
+                                    <div>
+                                        {/* Upload Section */}
+                                        <div className="mb-12">
+                                            <h3 className="text-xl font-bold text-charcoal dark:text-white mb-6 flex items-center gap-2">
+                                                <Upload className="text-cobalt" />
+                                                Upload New Work
+                                            </h3>
 
-                                {galleryItems.length === 0 ? (
-                                    <div className="text-center py-20 text-slate-500 dark:text-slate-400">
-                                        <ImageIcon size={48} className="mx-auto mb-4 opacity-50" />
-                                        <p className="text-lg">No gallery items found.</p>
-                                    </div>
-                                ) : (
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                        <AnimatePresence>
-                                            {galleryItems.map((item) => (
-                                                <motion.div key={item.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative group rounded-lg overflow-hidden aspect-square bg-slate-100 dark:bg-white/5">
-                                                    {item.url.endsWith('.mp4') ? (
-                                                        <video src={item.url} controls className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
-                                                    )}
-                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                        <button onClick={() => handleDeleteGalleryItem(item.id, item.url)} className="p-2 bg-red-500 text-white rounded-full">
-                                                            <Trash2 size={20} />
+                                            {!previewFile ? (
+                                                <div className="p-10 bg-white dark:bg-white/5 rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/20 text-center hover:border-cobalt/50 transition-colors group">
+                                                    <input
+                                                        type="file"
+                                                        ref={fileInputRef}
+                                                        onChange={handleFileSelect}
+                                                        className="hidden"
+                                                        id="gallery-upload"
+                                                        accept="image/*,video/*"
+                                                    />
+                                                    <label htmlFor="gallery-upload" className="cursor-pointer flex flex-col items-center gap-4">
+                                                        <div className="w-16 h-16 bg-cobalt/10 rounded-full flex items-center justify-center text-cobalt group-hover:scale-110 transition-transform">
+                                                            <Upload size={32} />
+                                                        </div>
+                                                        <div>
+                                                            <span className="text-lg font-bold text-charcoal dark:text-white block mb-1">Click to Upload Image or Video</span>
+                                                            <span className="text-sm text-slate-500">Supports JPG, PNG, MP4, MOV (Max 500MB)</span>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            ) : (
+                                                <div className="bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-lg flex flex-col md:flex-row">
+                                                    {/* Preview Area */}
+                                                    <div className="w-full md:w-1/2 bg-black flex items-center justify-center relative aspect-video md:aspect-auto">
+                                                        {previewFile.type.startsWith('video') ? (
+                                                            <video src={previewUrl!} controls className="max-h-[400px] w-full object-contain" />
+                                                        ) : (
+                                                            <img src={previewUrl!} alt="Preview" className="max-h-[400px] w-full object-contain" />
+                                                        )}
+                                                        <button
+                                                            onClick={handleCancelUpload}
+                                                            className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-red-500 transition-colors"
+                                                        >
+                                                            <X size={20} />
                                                         </button>
                                                     </div>
-                                                </motion.div>
-                                            ))}
-                                        </AnimatePresence>
+
+                                                    {/* Details Form */}
+                                                    <div className="w-full md:w-1/2 p-8 flex flex-col justify-center gap-6">
+                                                        <div>
+                                                            <h4 className="text-lg font-bold text-charcoal dark:text-white mb-1">Publish to Portfolio</h4>
+                                                            <p className="text-slate-500 text-sm">Review content and add details before publishing.</p>
+                                                        </div>
+
+                                                        <div className="space-y-4">
+                                                            <div>
+                                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={uploadForm.title}
+                                                                    onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
+                                                                    placeholder="e.g. Wedding at The Manor, Fashion Week Highlights"
+                                                                    className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-cobalt focus:outline-none transition-colors"
+                                                                />
+                                                            </div>
+
+                                                            <div>
+                                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Category / Service</label>
+                                                                <select
+                                                                    value={uploadForm.category}
+                                                                    onChange={(e) => setUploadForm({ ...uploadForm, category: e.target.value })}
+                                                                    className="w-full px-4 py-2 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-cobalt focus:outline-none transition-colors"
+                                                                >
+                                                                    <option value="General">General</option>
+                                                                    {content.services.map((s, i) => (
+                                                                        <option key={i} value={s.title}>{s.title}</option>
+                                                                    ))}
+                                                                    <option value="Behind The Scenes">Behind The Scenes</option>
+                                                                    <option value="Personal Projects">Personal Projects</option>
+                                                                    <option value="Fine Art">Fine Art</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="pt-4 border-t border-slate-100 dark:border-white/10 flex gap-4">
+                                                            <button
+                                                                onClick={handleCancelUpload}
+                                                                disabled={uploading}
+                                                                className="px-6 py-3 rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button
+                                                                onClick={handlePublish}
+                                                                disabled={uploading || !uploadForm.title}
+                                                                className="flex-grow px-6 py-3 rounded-xl bg-cobalt text-white font-bold shadow-lg shadow-cobalt/20 hover:shadow-cobalt/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            >
+                                                                {uploading ? <Loader className="animate-spin" /> : <Upload size={20} />}
+                                                                {uploading ? 'Uploading & Publishing...' : 'Publish to Gallery'}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <h3 className="text-xl font-bold text-charcoal dark:text-white mb-6">Existing Gallery Items</h3>
+
+                                        {galleryItems.length === 0 ? (
+                                            <div className="text-center py-20 text-slate-500 dark:text-slate-400">
+                                                <ImageIcon size={48} className="mx-auto mb-4 opacity-50" />
+                                                <p className="text-lg">No gallery items found.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                                <AnimatePresence>
+                                                    {galleryItems.map((item) => (
+                                                        <motion.div key={item.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative group rounded-lg overflow-hidden aspect-square bg-slate-100 dark:bg-white/5">
+                                                            {item.url.endsWith('.mp4') ? (
+                                                                <video src={item.url} controls className="w-full h-full object-cover" />
+                                                            ) : (
+                                                                <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                                                            )}
+                                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                                <button onClick={() => handleDeleteGalleryItem(item.id, item.url)} className="p-2 bg-red-500 text-white rounded-full">
+                                                                    <Trash2 size={20} />
+                                                                </button>
+                                                            </div>
+                                                        </motion.div>
+                                                    ))}
+                                                </AnimatePresence>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-                            </div>
+                            </>
                         )}
-                    </>
-                )}
+                    </div>
             </div>
-        </div>
-    );
+            );
 };
-export default Admin;
+            export default Admin;
