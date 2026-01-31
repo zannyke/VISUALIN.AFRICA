@@ -108,7 +108,7 @@ const Services = () => {
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
                             onClick={() => handleCardClick(service.title)}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-cobalt dark:hover:bg-cobalt transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/30 group ring-1 ring-white/20 hover:ring-white/50`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-[#F57703] dark:hover:bg-[#F57703] transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-[#F57703]/30 group ring-1 ring-white/20 hover:ring-white/50`}
                         >
                             {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
                             <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -128,13 +128,13 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-cobalt/90 group-hover:bg-cobalt/60 transition-colors duration-500" />
+                                    <div className="absolute inset-0 bg-[#F57703]/90 group-hover:bg-[#F57703]/60 transition-colors duration-500" />
                                 </div>
                             )}
 
                             <div className="relative z-10 flex flex-col h-full justify-between">
                                 <div>
-                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-cobalt group-hover:bg-white group-hover:text-cobalt group-hover:border-white transition-all duration-300 shadow-sm backdrop-blur-md">
+                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-[#F57703] group-hover:bg-white group-hover:text-[#F57703] group-hover:border-white transition-all duration-300 shadow-sm backdrop-blur-md">
                                         <service.icon size={28} strokeWidth={1.5} />
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
