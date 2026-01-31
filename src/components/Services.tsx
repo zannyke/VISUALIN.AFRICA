@@ -4,53 +4,31 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Camera, Video, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const services = [
-    {
-        id: 1,
-        icon: Camera,
-        title: "Wedding Coverage",
-        desc: "Timeless visual storytelling that preserves the emotion, detail, and beauty of your day, exactly as it felt.",
-        features: ["Cinematic Photo & Film", "Artful Editing & Color", "Seamless, Discreet Coverage"],
-        videoSrc: "/videos/wedding-reception.mp4"
-    },
-    {
-        id: 2,
-        icon: Sparkles,
-        title: "Fashion Photography & Reels",
-        desc: "Striking imagery crafted to define style, elevate identity, and command attention across platforms.",
-        features: ["Editorial-Grade Visuals", "Social-First Reels", "Creative Direction"],
-        videoSrc: "/videos/fashion-reels.mp4"
-    },
-    {
-        id: 3,
-        icon: Video,
-        title: "Promotional Videos",
-        desc: "Purpose-driven visuals designed to communicate value, spark interest, and move audiences to action.",
-        features: ["Brand-Led Storytelling", "Clean, Modern Aesthetic", "Multi-Platform Delivery"],
-        videoSrc: "/promotional-video.mp4"
-    },
-    {
-        id: 4,
-        icon: Tv,
-        title: "Livestreaming",
-        desc: "Polished, real-time broadcasts that connect audiences to moments as they unfold.",
-        features: ["Multi-Camera Production", "Broadcast-Quality Audio", "Reliable Live Delivery"]
-    },
-    {
-        id: 5,
-        icon: Plane,
-        title: "Documentary & Drone Coverage",
-        desc: "Cinematic storytelling from the ground and the sky, capturing depth, scale, and perspective with intention.",
-        features: ["Narrative-Driven Filmmaking", "Professional Aerial Cinematography", "Refined Post-Production"]
-    },
-    {
-        id: 6,
-        icon: Video,
-        title: "Corporate Event Highlights",
-        desc: "Refined event recaps that showcase moments, people, and brand presence with clarity.",
-        features: ["Professional Visual Standards", "Concise Highlight Films", "Fast, Reliable Turnaround"]
-    }
-];
+import content from '../constants/content.json';
+
+const iconMap: Record<string, any> = {
+    "Wedding Coverage": Camera,
+    "Fashion Photography & Reels": Sparkles,
+    "Promotional Videos": Video,
+    "Livestreaming": Tv,
+    "Documentary & Drone Coverage": Plane,
+    "Corporate Event Highlights": Video
+};
+
+const videoMap: Record<string, string> = {
+    "Wedding Coverage": "/videos/wedding-reception.mp4",
+    "Fashion Photography & Reels": "/videos/fashion-reels.mp4",
+    "Promotional Videos": "/promotional-video.mp4"
+};
+
+const services = content.services.map((service, index) => ({
+    id: index + 1,
+    icon: iconMap[service.title] || Video,
+    title: service.title,
+    desc: service.description,
+    features: service.features,
+    videoSrc: videoMap[service.title]
+}));
 
 const Services = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
