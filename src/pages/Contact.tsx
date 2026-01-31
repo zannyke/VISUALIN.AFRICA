@@ -70,13 +70,38 @@ const Contact = () => {
 const ContactForm = () => {
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('sending');
-        // Simulate sending
-        setTimeout(() => {
-            setStatus('success');
-        }, 1500);
+
+        // Collect form data
+        const form = e.target as HTMLFormElement;
+        const formData = {
+            name: (form.elements.namedItem('name') as HTMLInputElement).value,
+            email: (form.elements.namedItem('email') as HTMLInputElement).value,
+            subject: (form.elements.namedItem('subject') as HTMLInputElement).value,
+            message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                form.reset();
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            setStatus('error');
+        }
     };
 
     return (
