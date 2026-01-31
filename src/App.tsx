@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import { useEffect, Suspense, lazy } from 'react';
 
 // Lazy load pages for performance
@@ -46,6 +48,8 @@ function App() {
           </Suspense>
         </main>
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </div>
     </Router>
   )
