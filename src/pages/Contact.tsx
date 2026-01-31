@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle } from 'lucide-react';
 
 const Contact = () => {
     return (
@@ -105,40 +105,72 @@ const ContactForm = () => {
     };
 
     return (
-        <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium text-charcoal dark:text-white">Name</label>
-                    <input required type="text" id="name" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="John Doe" />
+        <>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label htmlFor="name" className="text-sm font-medium text-charcoal dark:text-white">Name</label>
+                        <input required type="text" id="name" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="John Doe" />
+                    </div>
+                    <div className="space-y-2">
+                        <label htmlFor="email" className="text-sm font-medium text-charcoal dark:text-white">Email</label>
+                        <input required type="email" id="email" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="john@example.com" />
+                    </div>
                 </div>
+
                 <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-charcoal dark:text-white">Email</label>
-                    <input required type="email" id="email" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="john@example.com" />
+                    <label htmlFor="subject" className="text-sm font-medium text-charcoal dark:text-white">Subject</label>
+                    <input required type="text" id="subject" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Project Inquiry" />
                 </div>
-            </div>
 
-            <div className="space-y-2">
-                <label htmlFor="subject" className="text-sm font-medium text-charcoal dark:text-white">Subject</label>
-                <input required type="text" id="subject" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Project Inquiry" />
-            </div>
+                <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium text-charcoal dark:text-white">Message</label>
+                    <textarea required id="message" rows={4} className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Tell us about your project..." />
+                </div>
 
-            <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-charcoal dark:text-white">Message</label>
-                <textarea required id="message" rows={4} className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Tell us about your project..." />
-            </div>
+                <button
+                    type="submit"
+                    disabled={status === 'sending' || status === 'success'}
+                    className={`w-full btn-primary disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                >
+                    {status === 'sending' ? 'Sending...' : 'Send Message'}
+                </button>
+            </form>
 
-            <button
-                type="submit"
-                disabled={status === 'sending' || status === 'success'}
-                className={`w-full btn-primary disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
-            >
-                {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent!' : 'Send Message'}
-            </button>
-
-            {status === 'success' && (
-                <p className="text-green-500 text-center text-sm mt-2">Thanks for reaching out! We'll be in touch soon.</p>
-            )}
-        </form>
+            <AnimatePresence>
+                {status === 'success' && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setStatus('idle')}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="bg-white dark:bg-obsidian border border-white/20 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center relative overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+                                <CheckCircle size={32} />
+                            </div>
+                            <h3 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-2">Success!</h3>
+                            <p className="text-slate-600 dark:text-slate-300 mb-8">
+                                Message has been successfully sent. <br /> Thank you!
+                            </p>
+                            <button
+                                onClick={() => setStatus('idle')}
+                                className="w-full btn-primary"
+                            >
+                                Close
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 export default Contact;
