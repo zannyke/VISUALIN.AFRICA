@@ -97,13 +97,13 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-white/90 dark:hover:bg-white/10 transition-all duration-500 shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.2)] group ring-1 ring-white/20 hover:ring-cobalt/30`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-slate-950 dark:hover:bg-slate-950 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/10 group ring-1 ring-white/20 hover:ring-cobalt/50`}
                         >
-                            {/* Cinematic Background Gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-cobalt/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-cobalt/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                             {service.videoSrc && (
-                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-3xl overflow-hidden">
+                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-2xl overflow-hidden">
                                     <video
                                         src={service.videoSrc}
                                         className="w-full h-full object-cover transform scale-110 group-hover:scale-100 transition-transform duration-[2s]"
@@ -117,7 +117,7 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30 pointer-events-none" />
+                                    <div className="absolute inset-0 bg-slate-950/80 group-hover:bg-slate-950/40 transition-colors duration-500" />
                                 </div>
                             )}
 
@@ -156,7 +156,7 @@ const Services = () => {
                     </Link>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 
