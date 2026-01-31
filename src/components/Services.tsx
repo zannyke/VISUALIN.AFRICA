@@ -2,8 +2,7 @@
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Camera, Video, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 import content from '../constants/content.json';
 
 const iconMap: Record<string, any> = {
@@ -33,6 +32,7 @@ const services = content.services.map((service, index) => ({
 const Services = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef(null);
+    const navigate = useNavigate();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"]
@@ -45,6 +45,16 @@ const Services = () => {
             videoRef.current.playbackRate = 0.7;
         }
     }, []);
+
+    const handleCardClick = (title: string) => {
+        const slug = title.replace(/\s+/g, '-').toLowerCase();
+        navigate(`/services#${slug}`);
+        // Optional: Manual scroll if hash navigation doesn't trigger automatically on page load quickly enough
+        setTimeout(() => {
+            const element = document.getElementById(slug);
+            if (element) element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    };
 
     return (
         <section ref={containerRef} id="services" className="py-24 relative min-h-screen overflow-hidden bg-platinum dark:bg-obsidian transition-colors duration-300">
@@ -97,10 +107,11 @@ const Services = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl hover:bg-orange-950 dark:hover:bg-orange-950 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/10 group ring-1 ring-white/20 hover:ring-cobalt/50`}
+                            onClick={() => handleCardClick(service.title)}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-cobalt dark:hover:bg-cobalt transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cobalt/30 group ring-1 ring-white/20 hover:ring-white/50`}
                         >
                             {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-cobalt/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                             {service.videoSrc && (
                                 <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-2xl overflow-hidden">
@@ -117,23 +128,23 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-orange-950/80 group-hover:bg-orange-950/40 transition-colors duration-500" />
+                                    <div className="absolute inset-0 bg-cobalt/90 group-hover:bg-cobalt/60 transition-colors duration-500" />
                                 </div>
                             )}
 
                             <div className="relative z-10 flex flex-col h-full justify-between">
                                 <div>
-                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-cobalt group-hover:bg-cobalt group-hover:text-white group-hover:border-cobalt transition-all duration-300 shadow-sm backdrop-blur-md">
+                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-cobalt group-hover:bg-white group-hover:text-cobalt group-hover:border-white transition-all duration-300 shadow-sm backdrop-blur-md">
                                         <service.icon size={28} strokeWidth={1.5} />
                                     </div>
                                     <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-slate-200 transition-colors leading-relaxed text-base mb-4">
+                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-white/90 transition-colors leading-relaxed text-base mb-4">
                                         {service.desc}
                                     </p>
 
                                     <ul className="space-y-1 mb-2">
                                         {service.features.map((feature, i) => (
-                                            <li key={i} className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-slate-300 flex items-center gap-2">
+                                            <li key={i} className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-white/80 flex items-center gap-2">
                                                 <span className="w-1 h-1 bg-cobalt group-hover:bg-white rounded-full" />
                                                 {feature}
                                             </li>
@@ -141,7 +152,7 @@ const Services = () => {
                                     </ul>
                                 </div>
 
-                                <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 group-hover:border-white/20 transition-colors flex items-center gap-2 text-cobalt group-hover:text-white font-medium opacity-60 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 group-hover:border-white/30 transition-colors flex items-center gap-2 text-cobalt group-hover:text-white font-medium opacity-60 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                                     <span className="text-sm uppercase tracking-widest">Explore Service</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                                 </div>

@@ -68,8 +68,9 @@ const ServicesPage = () => {
                         return (
                             <motion.div
                                 key={index}
+                                id={service.title.replace(/\s+/g, '-').toLowerCase()}
                                 variants={itemVariants}
-                                className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 md:gap-20 items-center`}
+                                className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 md:gap-20 items-center scroll-mt-32`}
                             >
                                 {/* Cinematic Visual Side */}
                                 <div className="w-full md:w-3/5">
