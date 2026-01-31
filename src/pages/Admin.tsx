@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload } from 'lucide-react';
+import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff } from 'lucide-react';
 
 interface Message {
     id: number;
@@ -22,6 +22,7 @@ interface GalleryItem {
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [activeTab, setActiveTab] = useState<'messages' | 'gallery'>('messages');
 
     // Data
@@ -168,20 +169,29 @@ const Admin = () => {
                     </div>
                     <h2 className="text-2xl font-bold text-center text-charcoal dark:text-white mb-6">Admin Access</h2>
                     <form onSubmit={handleLogin} className="space-y-4">
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter Admin Password"
-                            className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors"
-                        />
-                        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter Admin Password"
+                                className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors pr-12"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cobalt transition-colors"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
+                        {error && <p className="text-red-500 text-sm text-center bg-red-50 dark:bg-red-900/10 py-2 rounded-md border border-red-100 dark:border-red-900/30">{error}</p>}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-primary flex justify-center items-center gap-2"
+                            className="w-full btn-primary flex justify-center items-center gap-2 py-3 text-lg font-semibold shadow-lg shadow-cobalt/20 hover:shadow-cobalt/40 transition-shadow"
                         >
-                            {loading ? <Loader className="animate-spin" size={20} /> : 'Login'}
+                            {loading ? <Loader className="animate-spin" size={24} /> : 'Login to Dashboard'}
                         </button>
                     </form>
                 </motion.div>
