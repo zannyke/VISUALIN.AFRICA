@@ -103,24 +103,22 @@ const Gallery = () => {
                     {featuredItems.map((item, index) => (
                         <motion.div
                             key={index}
-                            className="min-w-[85vw] md:min-w-[60vw] lg:min-w-[45vw] aspect-video snap-center relative rounded-3xl overflow-hidden cursor-pointer group shadow-2xl"
+                            className="min-w-[85vw] md:min-w-[60vw] lg:min-w-[45vw] aspect-video snap-center relative rounded-3xl overflow-hidden cursor-pointer group shadow-2xl bg-black"
                             whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.4 }}
                             onClick={() => setSelectedItem(item)}
                         >
                             {isVideoFile(item.src) ? (
                                 <video
+                                    key={item.src}
                                     src={item.src}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-90"
+                                    autoPlay
                                     muted
                                     loop
                                     playsInline
                                     preload="auto"
-                                    onMouseEnter={(e) => e.currentTarget.play().catch(() => { })}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.pause();
-                                        e.currentTarget.currentTime = 0;
-                                    }}
+                                    onError={(e) => console.error("Gallery featured video error:", item.src, e)}
                                 />
                             ) : (
                                 <iframe
