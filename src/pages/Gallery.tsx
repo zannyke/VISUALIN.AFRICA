@@ -131,7 +131,7 @@ const Gallery = () => {
                             className="group relative cursor-pointer break-inside-avoid"
                             onClick={() => item.type !== 'slideshow' && setSelectedItem(item)}
                         >
-                            <div className={`relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 dark:shadow-none bg-gray-200 dark:bg-white/5 ${item.orientation === 'portrait' ? 'aspect-[9/16]' : 'aspect-video'}`}>
+                            <div className={`relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 dark:shadow-none bg-gray-200 dark:bg-white/5 ${item.type === 'video' ? 'aspect-video' : ''}`}>
 
                                 {item.type === 'slideshow' ? (
                                     <FineArtSlideshow
@@ -144,7 +144,7 @@ const Gallery = () => {
                                     <img
                                         src={item.src}
                                         alt={item.title}
-                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                        className="w-full h-auto block transform group-hover:scale-105 transition-transform duration-700"
                                         loading="lazy"
                                     />
                                 ) : item.type === 'video' ? (
