@@ -14,7 +14,7 @@ interface Message {
 }
 
 interface GalleryItem {
-    id: number;
+    id: number | string;
     url: string;
     title: string;
     category: string;
@@ -30,6 +30,21 @@ const Admin = () => {
     // Data
     const [messages, setMessages] = useState<Message[]>([]);
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+
+    // Static Items (Built-in)
+    const staticItems: GalleryItem[] = [
+        {
+            id: 'static-1' as any, // Cast to any to mix with number IDs for display
+            url: "/videos/makutano-promo.mp4",
+            title: "Internal Makutano Project",
+            category: "Promotional Videos", // Matched Content.json exactly
+            created_at: new Date().toISOString()
+        }
+    ];
+
+    // Combine for display: DB items first (overriding), then Static items
+    // If a DB item exists with same category, it technically overrides the static one in the website logic, but here we show ALL.
+    const displayItems = [...galleryItems, ...staticItems];
 
     // States
     const [loading, setLoading] = useState(false);
@@ -66,7 +81,7 @@ const Admin = () => {
             const resGal = await fetch('/api/gallery', { headers: { 'Authorization': pwd } });
             if (resGal.ok) {
                 const dataGal = await resGal.json();
-                setGalleryItems(dataGal.items?.sort((a: GalleryItem, b: GalleryItem) => b.id - a.id) || []);
+                setGalleryItems(dataGal.items?.sort((a: GalleryItem, b: GalleryItem) => Number(b.id) - Number(a.id)) || []);
             }
 
             sessionStorage.setItem('admin_token', pwd);
@@ -125,10 +140,20 @@ const Admin = () => {
     };
 
     const handleEdit = (item: GalleryItem) => {
-        setEditingItem(item);
-        setUploadForm({ title: item.title, category: item.category });
+        // If it's a static item, we treat "Edit" as "Create a new entry to override this one"
+        const isStatic = typeof item.id === 'string' && item.id.toString().startsWith('static');
+
+        setUploadForm({ title: item.title, category: isStatic && item.category === 'Promotional Videos' ? 'Promotional Videos' : item.category });
         setPreviewUrl(item.url);
         setPreviewFile(null);
+
+        if (isStatic) {
+            setEditingItem(null); // Force "Create New" mode
+            alert(`You are editing a built-in file. Saving changes will create a NEW version that overrides the original.`);
+        } else {
+            setEditingItem(item);
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -200,7 +225,11 @@ const Admin = () => {
         }
     };
 
-    const handleDeleteGalleryItem = async (id: number, url: string) => {
+    const handleDeleteGalleryItem = async (id: number | string, url: string) => {
+        if (typeof id === 'string' && id.toString().startsWith('static')) {
+            alert('This is a built-in system file and cannot be deleted physically. To "remove" it, you can upload a new video in the same category which will override it on the website.');
+            return;
+        }
         if (!confirm('Delete this image?')) return;
         try {
             await fetch('/api/gallery', {
@@ -477,7 +506,7 @@ const Admin = () => {
 
                                 <h3 className="text-xl font-bold text-charcoal dark:text-white mb-6">Existing Gallery Items</h3>
 
-                                {galleryItems.length === 0 ? (
+                                {displayItems.length === 0 ? (
                                     <div className="text-center py-20 text-slate-500 dark:text-slate-400">
                                         <ImageIcon size={48} className="mx-auto mb-4 opacity-50" />
                                         <p className="text-lg">No gallery items found.</p>
@@ -485,7 +514,7 @@ const Admin = () => {
                                 ) : (
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                                         <AnimatePresence>
-                                            {galleryItems.map((item) => (
+                                            {displayItems.map((item) => (
                                                 <motion.div key={item.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative group rounded-lg overflow-hidden aspect-square bg-slate-100 dark:bg-white/5">
                                                     {item.url.endsWith('.mp4') ? (
                                                         <video src={item.url} controls className="w-full h-full object-cover" />
