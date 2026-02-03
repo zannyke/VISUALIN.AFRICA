@@ -110,13 +110,12 @@ const ServicesPage = () => {
                                                 <video
                                                     key={videoSrc}
                                                     src={videoSrc}
-                                                    controls
                                                     autoPlay
                                                     loop
                                                     muted
                                                     playsInline
                                                     preload="auto"
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                                                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                                     onError={(e) => console.error("Video failed to load:", videoSrc, e)}
                                                 />
                                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />

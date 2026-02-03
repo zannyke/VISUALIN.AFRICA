@@ -112,8 +112,7 @@ const Gallery = () => {
                                 <video
                                     key={item.src}
                                     src={item.src}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
-                                    controls
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-90"
                                     autoPlay
                                     muted
                                     loop
