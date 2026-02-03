@@ -260,9 +260,9 @@ const Admin = () => {
     return (
         <div className="min-h-screen pt-32 pb-20 bg-platinum dark:bg-obsidian transition-colors px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <h1 className="text-3xl font-serif font-bold text-charcoal dark:text-white">Dashboard</h1>
-                    <div className="flex gap-4">
+                    <div className="flex flex-wrap gap-2 md:gap-4">
                         <div className="flex bg-white dark:bg-white/10 rounded-lg p-1">
                             <button
                                 onClick={() => setActiveTab('messages')}
@@ -283,7 +283,7 @@ const Admin = () => {
                             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-cobalt hover:bg-cobalt/10 rounded-lg transition-colors"
                         >
                             <Eye size={18} />
-                            View Live
+                            <span className="hidden sm:inline">View Live</span>
                         </a>
                         <button
                             onClick={handleLogout}
@@ -316,29 +316,29 @@ const Admin = () => {
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, height: 0 }}
-                                                className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+                                                className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 p-4 md:p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
                                             >
                                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                                     <div className="space-y-2 flex-grow">
-                                                        <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                                                        <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                                                             <span className="flex items-center gap-1"><Calendar size={14} /> {new Date(msg.created_at).toLocaleString()}</span>
                                                             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-xs font-mono">ID: {msg.id}</span>
                                                         </div>
-                                                        <h3 className="text-xl font-bold text-charcoal dark:text-white">{msg.subject}</h3>
-                                                        <div className="flex items-center gap-2 text-cobalt font-medium">
+                                                        <h3 className="text-xl font-bold text-charcoal dark:text-white break-words">{msg.subject}</h3>
+                                                        <div className="flex flex-wrap items-center gap-2 text-cobalt font-medium">
                                                             <User size={16} />
                                                             {msg.name}
                                                             <span className="text-slate-400 mx-1">•</span>
-                                                            <a href={`mailto:${msg.email}`} className="hover:underline">{msg.email}</a>
+                                                            <a href={`mailto:${msg.email}`} className="hover:underline break-all">{msg.email}</a>
                                                         </div>
-                                                        <div className="mt-4 p-4 bg-slate-50 dark:bg-black/20 rounded-lg text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                                                        <div className="mt-4 p-4 bg-slate-50 dark:bg-black/20 rounded-lg text-slate-700 dark:text-slate-300 whitespace-pre-wrap break-words">
                                                             {msg.message}
                                                         </div>
                                                     </div>
 
                                                     <button
                                                         onClick={() => handleDeleteMessage(msg.id)}
-                                                        className="self-start md:self-center p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
+                                                        className="self-end md:self-start p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                                                         title="Delete Message"
                                                     >
                                                         <Trash2 size={20} />
@@ -362,7 +362,7 @@ const Admin = () => {
                                     </h3>
 
                                     {!previewUrl ? (
-                                        <div className="p-10 bg-white dark:bg-white/5 rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/20 text-center hover:border-cobalt/50 transition-colors group">
+                                        <div className="p-6 md:p-10 bg-white dark:bg-white/5 rounded-2xl border-2 border-dashed border-slate-300 dark:border-white/20 text-center hover:border-cobalt/50 transition-colors group">
                                             <input
                                                 type="file"
                                                 ref={fileInputRef}
@@ -382,9 +382,9 @@ const Admin = () => {
                                             </label>
                                         </div>
                                     ) : (
-                                        <div className="bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-lg flex flex-col md:flex-row">
+                                        <div className="bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-lg flex flex-col lg:flex-row">
                                             {/* Preview Area */}
-                                            <div className="w-full md:w-1/2 bg-black flex items-center justify-center relative aspect-video md:aspect-auto group">
+                                            <div className="w-full lg:w-1/2 bg-black flex items-center justify-center relative aspect-video group">
                                                 {(previewFile?.type.startsWith('video') || previewUrl.endsWith('.mp4') || previewUrl.endsWith('.webm') || previewUrl.endsWith('.mov')) ? (
                                                     <video src={previewUrl} controls className="max-h-[400px] w-full object-contain" />
                                                 ) : (
@@ -415,7 +415,7 @@ const Admin = () => {
                                             </div>
 
                                             {/* Details Form */}
-                                            <div className="w-full md:w-1/2 p-8 flex flex-col justify-center gap-6">
+                                            <div className="w-full lg:w-1/2 p-6 md:p-8 flex flex-col justify-center gap-6">
                                                 <div>
                                                     <h4 className="text-lg font-bold text-charcoal dark:text-white mb-1">
                                                         {editingItem ? 'Update Content' : 'Publish to Portfolio'}
@@ -483,7 +483,7 @@ const Admin = () => {
                                         <p className="text-lg">No gallery items found.</p>
                                     </div>
                                 ) : (
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                                         <AnimatePresence>
                                             {galleryItems.map((item) => (
                                                 <motion.div key={item.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative group rounded-lg overflow-hidden aspect-square bg-slate-100 dark:bg-white/5">

@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, CheckCircle } from 'lucide-react';
 
 const Contact = () => {
     return (
-        <section className="pt-32 pb-24 min-h-screen flex items-center bg-platinum dark:bg-obsidian transition-colors duration-300">
+        <section className="pt-28 md:pt-32 pb-24 min-h-screen flex items-center bg-platinum dark:bg-obsidian transition-colors duration-300">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 

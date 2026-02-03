@@ -84,7 +84,7 @@ const Gallery = () => {
     const featuredItems = allItems.filter(x => x.type === 'video').slice(0, 5) as Extract<GalleryItem, { type: 'video' }>[];
 
     return (
-        <section className="pt-32 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500 overflow-hidden">
+        <section className="pt-28 md:pt-32 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500 overflow-hidden">
 
             {/* Header */}
             <div className="container mx-auto px-6 mb-20">

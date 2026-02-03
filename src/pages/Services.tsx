@@ -35,7 +35,7 @@ const ServicesPage = () => {
     };
 
     return (
-        <section className="pt-40 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500">
+        <section className="pt-32 md:pt-40 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500">
             <div className="container mx-auto px-6">
 
                 <motion.div
