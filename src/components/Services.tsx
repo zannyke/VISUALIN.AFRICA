@@ -108,7 +108,7 @@ const Services = () => {
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
                             onClick={() => handleCardClick(service.title)}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-white/80 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-[#F57703] dark:hover:bg-[#F57703] transition-all duration-700 ease-out shadow-xl hover:shadow-2xl hover:shadow-[#F57703]/30 group ring-1 ring-white/20 hover:ring-white/50`}
+                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-slate-100/90 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-[#F57703] dark:hover:bg-[#F57703] transition-all duration-700 ease-out shadow-xl hover:shadow-2xl hover:shadow-[#F57703]/30 group ring-1 ring-white/20 hover:ring-white/50`}
                         >
                             {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
                             <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
