@@ -57,7 +57,7 @@ const Services = () => {
     };
 
     return (
-        <section ref={containerRef} id="services" className="py-24 relative min-h-screen overflow-hidden bg-platinum dark:bg-obsidian transition-colors duration-300">
+        <section ref={containerRef} id="services" className="py-24 md:py-32 relative min-h-screen overflow-hidden bg-platinum dark:bg-obsidian transition-colors duration-300">
 
             {/* Background Video */}
             <div className="absolute inset-0 z-0">

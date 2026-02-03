@@ -21,7 +21,7 @@ const steps = [
 
 const Process = () => {
     return (
-        <section id="process" className="py-24 bg-platinum dark:bg-gradient-to-b dark:from-obsidian dark:to-[#0f1218] transition-colors duration-300">
+        <section id="process" className="py-24 md:py-32 bg-platinum dark:bg-gradient-to-b dark:from-obsidian dark:to-[#0f1218] transition-colors duration-300">
             <div className="container mx-auto px-6">
                 <div className="mb-16">
                     <motion.h2
