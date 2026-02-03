@@ -107,13 +107,15 @@ const ServicesPage = () => {
                                         {hasVideo ? (
                                             <>
                                                 <video
+                                                    key={videoSrc}
                                                     autoPlay
                                                     loop
                                                     muted
                                                     playsInline
-                                                    src={videoSrc}
                                                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                                />
+                                                >
+                                                    <source src={videoSrc} type="video/mp4" />
+                                                </video>
                                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
                                             </>
                                         ) : (
