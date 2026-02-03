@@ -57,6 +57,7 @@ const Admin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     // Upload & Preview States
     const [previewFile, setPreviewFile] = useState<File | null>(null);
@@ -170,12 +171,14 @@ const Admin = () => {
         setPreviewUrl(null);
         setUploadForm({ title: '', category: 'General' });
         setEditingItem(null);
+        setUploadProgress(0);
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     const handlePublish = async () => {
         if (!previewUrl && !previewFile) return; // Must have something
         setUploading(true);
+        setUploadProgress(0);
 
         try {
             let newUrl = null;
@@ -185,6 +188,9 @@ const Admin = () => {
                 const newBlob = await upload(previewFile.name, previewFile, {
                     access: 'public',
                     handleUploadUrl: `/api/upload?auth=${password}`,
+                    onUploadProgress: (progressEvent) => {
+                        setUploadProgress(Math.round((progressEvent.percentage)));
+                    }
                 });
                 newUrl = newBlob.url;
             }
@@ -229,6 +235,7 @@ const Admin = () => {
             alert((editingItem ? 'Update' : 'Publish') + ' failed: ' + (err as Error).message);
         } finally {
             setUploading(false);
+            setUploadProgress(0);
         }
     };
 
@@ -503,7 +510,7 @@ const Admin = () => {
                                                         className="flex-grow px-6 py-3 rounded-xl bg-cobalt text-white font-bold shadow-lg shadow-cobalt/20 hover:shadow-cobalt/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                                     >
                                                         {uploading ? <Loader className="animate-spin" /> : (editingItem ? <Pencil size={20} /> : <Upload size={20} />)}
-                                                        {uploading ? 'Processing...' : (editingItem ? 'Save Changes' : 'Publish to Gallery')}
+                                                        {uploading ? `Uploading... ${uploadProgress}%` : (editingItem ? 'Save Changes' : 'Publish to Gallery')}
                                                     </button>
                                                 </div>
                                             </div>
