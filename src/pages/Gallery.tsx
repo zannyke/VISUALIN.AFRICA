@@ -1,8 +1,49 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { Play, X } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
+
+// Helper component for auto-playing videos on scroll
+const VideoThumbnail = ({ src }: { src: string }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const video = videoRef.current;
+                if (!video) return;
+
+                if (entry.isIntersecting) {
+                    // "play slow ly" - Cinematic slow motion
+                    video.playbackRate = 0.7;
+                    video.play().catch(() => { });
+                } else {
+                    video.pause();
+                }
+            },
+            { threshold: 0.3 } // Start playing when 30% visible
+        );
+
+        if (videoRef.current) observer.observe(videoRef.current);
+
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div className="w-full h-full relative bg-gray-900">
+            <video
+                ref={videoRef}
+                src={src}
+                className="w-full h-full object-cover opacity-90"
+                muted
+                loop
+                playsInline
+                preload="metadata"
+            />
+        </div>
+    );
+};
 
 const Gallery = () => {
     type GalleryItem =
@@ -149,18 +190,7 @@ const Gallery = () => {
                                     />
                                 ) : item.type === 'video' ? (
                                     isVideoFile(item.src) ? (
-                                        <div className="w-full h-full relative bg-gray-900">
-                                            <video
-                                                src={item.src}
-                                                className="w-full h-full object-cover opacity-90"
-                                                muted
-                                                loop
-                                                playsInline
-                                                preload="auto"
-                                                onMouseEnter={(e) => e.currentTarget.play().catch(() => { })}
-                                                onMouseLeave={(e) => e.currentTarget.pause()}
-                                            />
-                                        </div>
+                                        <VideoThumbnail src={item.src} />
                                     ) : (
                                         <div className="aspect-video bg-black relative">
                                             <img
