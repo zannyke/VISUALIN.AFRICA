@@ -51,14 +51,14 @@ const Gallery = () => {
     const staticGallery: GalleryItem[] = [
         {
             type: 'video',
-            src: "/videos/makutano-promo.mp4",
+            src: "/videos/makutano-promo.mp4?v=2",
             title: "Internal Makutano Project",
             category: "Promotional",
             orientation: 'landscape'
         },
         {
             type: 'video',
-            src: "/videos/wedding-reception.mp4",
+            src: "/videos/wedding-reception.mp4?v=2",
             title: "Wedding Reception Highlights",
             category: "Wedding Coverage",
             orientation: 'landscape'

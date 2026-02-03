@@ -88,8 +88,8 @@ const ServicesPage = () => {
 
                         // Priority: Dynamic Video > Local Fallback > Placeholder
                         let localFallback = null;
-                        if (service.title === "Promotional Videos") localFallback = "/videos/makutano-promo.mp4";
-                        if (service.title === "Wedding Coverage") localFallback = "/videos/wedding-reception.mp4";
+                        if (service.title === "Promotional Videos") localFallback = "/videos/makutano-promo.mp4?v=2";
+                        if (service.title === "Wedding Coverage") localFallback = "/videos/wedding-reception.mp4?v=2";
 
                         const videoSrc = dynamicVideo || localFallback;
                         const hasVideo = !!videoSrc;

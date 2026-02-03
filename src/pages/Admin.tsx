@@ -35,14 +35,14 @@ const Admin = () => {
     const staticItems: GalleryItem[] = [
         {
             id: 'static-1' as any,
-            url: "/videos/makutano-promo.mp4",
+            url: "/videos/makutano-promo.mp4?v=2",
             title: "Internal Makutano Project",
             category: "Promotional Videos",
             created_at: new Date().toISOString()
         },
         {
             id: 'static-2' as any,
-            url: "/videos/wedding-reception.mp4",
+            url: "/videos/wedding-reception.mp4?v=2",
             title: "Wedding Reception Highlights",
             category: "Wedding Coverage",
             created_at: new Date().toISOString()
