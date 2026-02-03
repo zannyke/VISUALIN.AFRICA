@@ -34,10 +34,17 @@ const Admin = () => {
     // Static Items (Built-in)
     const staticItems: GalleryItem[] = [
         {
-            id: 'static-1' as any, // Cast to any to mix with number IDs for display
+            id: 'static-1' as any,
             url: "/videos/makutano-promo.mp4",
             title: "Internal Makutano Project",
-            category: "Promotional Videos", // Matched Content.json exactly
+            category: "Promotional Videos",
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 'static-2' as any,
+            url: "/videos/wedding-reception.mp4",
+            title: "Wedding Reception Highlights",
+            category: "Wedding Coverage",
             created_at: new Date().toISOString()
         }
     ];

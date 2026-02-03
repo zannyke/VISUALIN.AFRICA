@@ -57,6 +57,13 @@ const Gallery = () => {
             orientation: 'landscape'
         },
         {
+            type: 'video',
+            src: "/videos/wedding-reception.mp4",
+            title: "Wedding Reception Highlights",
+            category: "Wedding Coverage",
+            orientation: 'landscape'
+        },
+        {
             type: 'slideshow',
             images: images.art,
             title: "Art Portrait Series",

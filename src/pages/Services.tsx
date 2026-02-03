@@ -86,9 +86,10 @@ const ServicesPage = () => {
                         const isEven = index % 2 === 0;
                         const dynamicVideo = getVideoForService(service.title);
 
-                        // Priority: Dynamic Video > Local Fallback (only for Promo) > Placeholder
-                        const isPromo = service.title === "Promotional Videos";
-                        const localFallback = isPromo ? "/videos/makutano-promo.mp4" : null;
+                        // Priority: Dynamic Video > Local Fallback > Placeholder
+                        let localFallback = null;
+                        if (service.title === "Promotional Videos") localFallback = "/videos/makutano-promo.mp4";
+                        if (service.title === "Wedding Coverage") localFallback = "/videos/wedding-reception.mp4";
 
                         const videoSrc = dynamicVideo || localFallback;
                         const hasVideo = !!videoSrc;
