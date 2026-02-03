@@ -21,15 +21,14 @@ const steps = [
 
 const Process = () => {
     return (
-        <section id="process" className="py-24 md:py-32 bg-platinum dark:bg-gradient-to-b dark:from-obsidian dark:to-[#0f1218] transition-colors duration-300">
+        <section id="process" className="py-24 bg-platinum dark:bg-gradient-to-b dark:from-obsidian dark:to-[#0f1218] transition-colors duration-300">
             <div className="container mx-auto px-6">
                 <div className="mb-16">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="font-serif font-bold mb-4 text-charcoal dark:text-white"
-                        style={{ fontSize: "var(--text-fluid-h2)" }}
+                        className="text-4xl md:text-5xl font-serif font-bold mb-4 text-charcoal dark:text-white"
                     >
                         How We Work
                     </motion.h2>
@@ -48,22 +47,11 @@ const Process = () => {
                             transition={{ delay: index * 0.2 }}
                             className="relative z-10"
                         >
-                            <div
-                                className="font-serif font-bold text-slate-200 dark:text-white/5 mb-4 select-none"
-                                style={{ fontSize: "clamp(3rem, 8vw, 5rem)" }}
-                            >
+                            <div className="text-7xl font-serif font-bold text-slate-200 dark:text-white/5 mb-4 select-none">
                                 {step.num}
                             </div>
-                            <h3
-                                className="font-bold mb-4 text-cobalt"
-                                style={{ fontSize: "var(--text-fluid-h3)" }}
-                            >
-                                {step.title}
-                            </h3>
-                            <p
-                                className="text-slate-600 dark:text-slate-400 leading-relaxed"
-                                style={{ fontSize: "var(--text-fluid-body)" }}
-                            >
+                            <h3 className="text-2xl font-bold mb-4 text-cobalt">{step.title}</h3>
+                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                                 {step.desc}
                             </p>
                         </motion.div>

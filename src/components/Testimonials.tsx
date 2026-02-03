@@ -28,7 +28,7 @@ const testimonials = [
 
 const Testimonials = () => {
     return (
-        <section className="py-24 md:py-32 bg-white dark:bg-obsidian overflow-hidden">
+        <section className="py-24 bg-white dark:bg-obsidian overflow-hidden">
             <div className="container mx-auto px-6">
 
                 <div className="mb-16 text-center max-w-3xl mx-auto">
@@ -38,10 +38,7 @@ const Testimonials = () => {
                         viewport={{ once: true }}
                     >
                         <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Client Stories</span>
-                        <h2
-                            className="font-serif font-bold text-charcoal dark:text-white mb-6"
-                            style={{ fontSize: "var(--text-fluid-h2)" }}
-                        >
+                        <h2 className="text-4xl md:text-6xl font-serif font-bold text-charcoal dark:text-white mb-6">
                             Trusted by Clients.
                         </h2>
                     </motion.div>
@@ -60,10 +57,7 @@ const Testimonials = () => {
                         >
                             <Quote className="text-cobalt/20 mb-6" size={48} />
 
-                            <p
-                                className="text-slate-600 dark:text-slate-300 mb-8 italic leading-relaxed flex-grow"
-                                style={{ fontSize: "var(--text-fluid-body)" }}
-                            >
+                            <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 italic leading-relaxed flex-grow">
                                 "{item.content}"
                             </p>
 
@@ -74,12 +68,7 @@ const Testimonials = () => {
                             </div>
 
                             <div>
-                                <h4
-                                    className="font-bold text-charcoal dark:text-white"
-                                    style={{ fontSize: "var(--text-fluid-h4)" }}
-                                >
-                                    {item.name}
-                                </h4>
+                                <h4 className="font-bold text-charcoal dark:text-white text-xl">{item.name}</h4>
                                 <span className="text-sm text-cobalt font-medium uppercase tracking-wide">{item.role}</span>
                             </div>
                         </motion.div>
