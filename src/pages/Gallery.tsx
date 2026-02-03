@@ -47,29 +47,13 @@ const Gallery = () => {
 
     // Mixed Gallery Items
     const staticGallery: GalleryItem[] = [
-        { type: 'video', src: images.makutano[0], title: "Promotional video", category: "Cinematography", orientation: 'landscape' },
-
-        { type: 'video', src: images.godfrey[0], title: "Dr. Godfrey & Maggie 1", category: "Wedding", orientation: 'portrait' },
-        { type: 'video', src: images.wedding[1], title: "Wedding Reception", category: "Wedding", orientation: 'landscape' },
-
-        ...images.kcb.map(src => ({
-            type: 'video' as const, src, title: "KCB Lawyers Cocktail", category: "Corporate", orientation: 'landscape' as const
-        })),
-
-        ...images.bts.map((src, i) => ({
-            type: 'video' as const, src, title: `Behind The Scenes ${i + 1}`, category: "Process", orientation: 'portrait' as const
-        })),
-
-        ...images.makutano.slice(1).map(src => ({
-            type: 'video' as const, src, title: "Makutano Project", category: "Documentary", orientation: 'landscape' as const
-        })),
-
-        ...images.wedding.slice(0, 1).map((src, i) => ({
-            type: 'video' as const, src, title: `Wedding Reception ${i + 1}`, category: "Events", orientation: 'landscape' as const
-        })),
-
-        { type: 'video', src: images.fashion[0], title: "Fashion Week '25", category: "Fashion", orientation: 'landscape' as const },
-
+        {
+            type: 'video',
+            src: "/videos/makutano-promo.mp4",
+            title: "Internal Makutano Project",
+            category: "Promotional",
+            orientation: 'landscape'
+        },
         {
             type: 'slideshow',
             images: images.art,

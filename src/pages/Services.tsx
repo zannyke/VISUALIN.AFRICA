@@ -4,14 +4,6 @@ import content from '../constants/content.json';
 
 const ServicesPage = () => {
 
-    // Video mapping 
-    const videoMap: Record<string, string> = {
-        "Wedding Coverage": "/videos/wedding-reception.mp4",
-        "Fashion Photography & Reels": "/videos/fashion-reels.mp4",
-        "Promotional Videos": "/promotional-video.mp4",
-        "Corporate Event Highlights": "/videos/kcb-lawyers.mp4" // Assuming we have this or similar, otherwise fallback
-    };
-
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -61,9 +53,9 @@ const ServicesPage = () => {
                     className="flex flex-col gap-20 md:gap-32"
                 >
                     {content.services.map((service, index) => {
-                        const videoUrl = videoMap[service.title] || videoMap["Promotional Videos"];
                         const isEven = index % 2 === 0;
-                        const isDrone = service.title.toLowerCase().includes("documentary") || service.title.toLowerCase().includes("drone");
+                        const isPromo = service.title === "Promotional Videos";
+                        const videoSrc = "/videos/makutano-promo.mp4";
 
                         return (
                             <motion.div
@@ -74,39 +66,23 @@ const ServicesPage = () => {
                             >
                                 {/* Cinematic Visual Side */}
                                 <div className="w-full md:w-3/5">
-                                    <div className="relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group">
-                                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                    <div className={`relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group ${isPromo ? 'bg-black' : 'bg-slate-200 dark:bg-white/5'} flex items-center justify-center`}>
 
-                                        {isDrone ? (
-                                            <div className="w-full h-full relative overflow-hidden bg-black">
+                                        {isPromo ? (
+                                            <>
                                                 <video
                                                     autoPlay
                                                     loop
                                                     muted
                                                     playsInline
-                                                    className="w-full h-full object-cover pointer-events-none transform -rotate-90 scale-[1.7]"
+                                                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                                 >
-                                                    <source src="/drone-shots-portrait.mp4" type="video/mp4" />
+                                                    <source src={videoSrc} type="video/mp4" />
                                                 </video>
-                                            </div>
-                                        ) : videoUrl.startsWith('http') ? (
-                                            <iframe
-                                                src={videoUrl}
-                                                className="w-[120%] h-[120%] -ml-[10%] -mt-[10%] object-cover opacity-90 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 pointer-events-none"
-                                                title={service.title}
-                                            />
+                                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                                            </>
                                         ) : (
-                                            <div className="w-full h-full relative overflow-hidden bg-black">
-                                                <video
-                                                    autoPlay
-                                                    loop
-                                                    muted
-                                                    playsInline
-                                                    className="w-full h-full object-cover opacity-90 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                                                >
-                                                    <source src={videoUrl} type="video/mp4" />
-                                                </video>
-                                            </div>
+                                            <p className="text-slate-400 dark:text-slate-600 font-medium">Video Coming Soon</p>
                                         )}
 
                                         {/* Floating Badge */}
