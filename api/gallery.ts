@@ -15,7 +15,7 @@ export default async function handler(request: any, response: any) {
     const adminPassword = process.env.ADMIN_PASSWORD;
     const authHeader = request.headers['authorization'];
 
-    if (!adminPassword || authHeader !== adminPassword) {
+    if (request.method !== 'GET' && (!adminPassword || authHeader !== adminPassword)) {
         return response.status(401).json({ error: 'Unauthorized' });
     }
 
