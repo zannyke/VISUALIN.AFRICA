@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff, X, Pencil } from 'lucide-react';
+import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff, X, Pencil, CheckCircle } from 'lucide-react';
 import content from '../constants/content.json';
 import { upload } from '@vercel/blob/client';
 
@@ -27,6 +27,18 @@ const Admin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [activeTab, setActiveTab] = useState<'messages' | 'gallery'>('messages');
 
+    // UI States
+    const [notification, setNotification] = useState<{ type: 'success' | 'error' | 'info'; message: string } | null>(null);
+    const [confirmModal, setConfirmModal] = useState<{ isOpen: boolean; title: string; message: string; action: () => void; isDestructive: boolean; confirmText?: string } | null>(null);
+
+    // Auto-dismiss notification
+    useEffect(() => {
+        if (notification) {
+            const timer = setTimeout(() => setNotification(null), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [notification]);
+
     // Data
     const [messages, setMessages] = useState<Message[]>([]);
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -50,7 +62,6 @@ const Admin = () => {
     ];
 
     // Combine for display: DB items first (overriding), then Static items
-    // If a DB item exists with same category, it technically overrides the static one in the website logic, but here we show ALL.
     const displayItems = [...galleryItems, ...staticItems];
 
     // States
@@ -85,7 +96,7 @@ const Admin = () => {
             const dataMsg = await resMsg.json();
             setMessages(dataMsg.messages || []);
 
-            // Fetch Gallery (If we add this endpoint)
+            // Fetch Gallery
             const resGal = await fetch('/api/gallery', { headers: { 'Authorization': pwd } });
             if (resGal.ok) {
                 const dataGal = await resGal.json();
@@ -107,7 +118,7 @@ const Admin = () => {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        setIsAuthenticated(true); // Optimistic, verification happens in fetchData
+        setIsAuthenticated(true);
         fetchData(password);
     };
 
@@ -120,16 +131,27 @@ const Admin = () => {
     };
 
     // --- Message Actions ---
-    const handleDeleteMessage = async (id: number) => {
-        if (!confirm('Delete this message?')) return;
-        try {
-            await fetch('/api/messages', {
-                method: 'DELETE',
-                headers: { 'Authorization': password, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            });
-            setMessages(prev => prev.filter(m => m.id !== id));
-        } catch (e) { alert('Failed to delete'); }
+    const handleDeleteMessage = (id: number) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete Message?',
+            message: 'Are you sure you want to delete this message? This cannot be undone.',
+            isDestructive: true,
+            confirmText: 'Delete Message',
+            action: async () => {
+                try {
+                    await fetch('/api/messages', {
+                        method: 'DELETE',
+                        headers: { 'Authorization': password, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    setMessages(prev => prev.filter(m => m.id !== id));
+                    setNotification({ type: 'success', message: 'Message deleted.' });
+                } catch (e) {
+                    setNotification({ type: 'error', message: 'Failed to delete message.' });
+                }
+            }
+        });
     };
 
     // --- Gallery Actions ---
@@ -140,7 +162,6 @@ const Admin = () => {
             const file = e.target.files[0];
             setPreviewFile(file);
             setPreviewUrl(URL.createObjectURL(file));
-            // Only auto-fill title if NOT editing (to preserve existing title if just replacing file)
             if (!editingItem) {
                 setUploadForm({ ...uploadForm, title: file.name.split('.')[0] });
             }
@@ -148,7 +169,6 @@ const Admin = () => {
     };
 
     const handleEdit = (item: GalleryItem) => {
-        // If it's a static item, we treat "Edit" as "Create a new entry to override this one"
         const isStatic = typeof item.id === 'string' && item.id.toString().startsWith('static');
 
         setUploadForm({ title: item.title, category: isStatic && item.category === 'Promotional Videos' ? 'Promotional Videos' : item.category });
@@ -156,8 +176,8 @@ const Admin = () => {
         setPreviewFile(null);
 
         if (isStatic) {
-            setEditingItem(null); // Force "Create New" mode
-            alert(`You are editing a built-in file. Saving changes will create a NEW version that overrides the original.`);
+            setEditingItem(null);
+            setNotification({ type: 'info', message: 'Editing a built-in item. Saving will create a new copy.' });
         } else {
             setEditingItem(item);
         }
@@ -167,7 +187,7 @@ const Admin = () => {
 
     const handleCancelUpload = () => {
         setPreviewFile(null);
-        if (previewUrl && previewFile) URL.revokeObjectURL(previewUrl); // Only revoke if we created it from a file
+        if (previewUrl && previewFile) URL.revokeObjectURL(previewUrl);
         setPreviewUrl(null);
         setUploadForm({ title: '', category: 'General' });
         setEditingItem(null);
@@ -176,14 +196,13 @@ const Admin = () => {
     };
 
     const handlePublish = async () => {
-        if (!previewUrl && !previewFile) return; // Must have something
+        if (!previewUrl && !previewFile) return;
         setUploading(true);
         setUploadProgress(0);
 
         try {
             let newUrl = null;
 
-            // 1. Upload new file if selected
             if (previewFile) {
                 const newBlob = await upload(previewFile.name, previewFile, {
                     access: 'public',
@@ -195,11 +214,10 @@ const Admin = () => {
                 newUrl = newBlob.url;
             }
 
-            // 2. Save Metadata to DB (Create or Update)
             const method = editingItem ? 'PUT' : 'POST';
             const body = editingItem ? {
                 id: editingItem.id,
-                url: newUrl, // Only send if we have a new one, backend handles keeping old if null
+                url: newUrl,
                 oldUrl: editingItem.url,
                 title: uploadForm.title,
                 category: uploadForm.category
@@ -219,32 +237,41 @@ const Admin = () => {
                 const data = await resDb.json();
                 if (method === 'PUT') {
                     setGalleryItems(prev => prev.map(item => item.id === data.item.id ? data.item : item));
-                    alert('Updated successfully!');
+                    setNotification({ type: 'success', message: 'Content updated successfully' });
                 } else {
                     setGalleryItems(prev => [data.item, ...prev]);
-                    if (confirm('Published successfully! View it in the Gallery now?')) {
-                        window.open('/gallery', '_blank');
-                    }
+                    setNotification({ type: 'success', message: 'Published successfully!' });
                 }
-                handleCancelUpload(); // Clear UI
+                handleCancelUpload();
             } else {
                 throw new Error('Database save failed');
             }
         } catch (err) {
             console.error(err);
-            alert((editingItem ? 'Update' : 'Publish') + ' failed: ' + (err as Error).message);
+            setNotification({ type: 'error', message: (editingItem ? 'Update' : 'Publish') + ' failed: ' + (err as Error).message });
         } finally {
             setUploading(false);
             setUploadProgress(0);
         }
     };
 
+    const confirmDelete = (item: GalleryItem) => {
+        setConfirmModal({
+            isOpen: true,
+            title: 'Delete Item?',
+            message: `Are you sure you want to delete "${item.title}"? This will remove it from the website and permanently delete the file from storage.`,
+            isDestructive: true,
+            confirmText: 'Yes, Delete Permanently',
+            action: () => handleDeleteGalleryItem(item.id, item.url)
+        });
+    };
+
     const handleDeleteGalleryItem = async (id: number | string, url: string) => {
         if (typeof id === 'string' && id.toString().startsWith('static')) {
-            alert('This is a built-in system file and cannot be deleted physically. To "remove" it, you can upload a new video in the same category which will override it on the website.');
+            setNotification({ type: 'info', message: 'Built-in system files cannot be deleted permanently as they are part of the codebase. You can replace them by uploading a new video in the same category.' });
             return;
         }
-        if (!confirm('Delete this image?')) return;
+
         try {
             await fetch('/api/gallery', {
                 method: 'DELETE',
@@ -252,7 +279,10 @@ const Admin = () => {
                 body: JSON.stringify({ id, url })
             });
             setGalleryItems(prev => prev.filter(i => i.id !== id));
-        } catch (e) { alert('Failed to delete'); }
+            setNotification({ type: 'success', message: 'Item deleted permanently from storage.' });
+        } catch (e) {
+            setNotification({ type: 'error', message: 'Failed to delete item.' });
+        }
     };
 
     if (!isAuthenticated) {
@@ -538,14 +568,14 @@ const Admin = () => {
                                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                                         <button
                                                             onClick={() => handleEdit(item)}
-                                                            className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                                                            className="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-cobalt transition-all transform hover:scale-110 shadow-lg"
                                                             title="Edit"
                                                         >
                                                             <Pencil size={20} />
                                                         </button>
                                                         <button
-                                                            onClick={() => handleDeleteGalleryItem(item.id, item.url)}
-                                                            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                                            onClick={() => confirmDelete(item)}
+                                                            className="p-3 bg-red-500/80 backdrop-blur-md border border-red-400/20 text-white rounded-full hover:bg-red-600 transition-all transform hover:scale-110 shadow-lg"
                                                             title="Delete"
                                                         >
                                                             <Trash2 size={20} />
@@ -560,6 +590,72 @@ const Admin = () => {
                         )}
                     </>
                 )}
+
+                {/* MODAL & NOTIFICATION PORTALS */}
+                <AnimatePresence>
+                    {confirmModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setConfirmModal(null)}
+                                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                            />
+                            <motion.div
+                                initial={{ scale: 0.95, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.95, opacity: 0 }}
+                                className="relative bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+                            >
+                                <div className="p-6 md:p-8 text-center">
+                                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${confirmModal.isDestructive ? 'bg-red-100 text-red-500' : 'bg-blue-100 text-cobalt'}`}>
+                                        {confirmModal.isDestructive ? <Trash2 size={32} /> : <p className="text-2xl font-bold">?</p>}
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-charcoal dark:text-white mb-2">{confirmModal.title}</h3>
+                                    <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+                                        {confirmModal.message}
+                                    </p>
+                                    <div className="flex gap-3 justify-center">
+                                        <button
+                                            onClick={() => setConfirmModal(null)}
+                                            className="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                confirmModal.action();
+                                                setConfirmModal(null);
+                                            }}
+                                            className={`px-6 py-2.5 rounded-xl text-white font-bold shadow-lg transition-transform transform active:scale-95 ${confirmModal.isDestructive ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-cobalt hover:bg-blue-600 shadow-cobalt/20'}`}
+                                        >
+                                            {confirmModal.confirmText || 'Confirm'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {notification && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50, x: '-50%' }}
+                            animate={{ opacity: 1, y: 0, x: '-50%' }}
+                            exit={{ opacity: 0, y: 20, x: '-50%' }}
+                            className={`fixed bottom-8 left-1/2 z-50 flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl border ${notification.type === 'success' ? 'bg-emerald-500 border-emerald-400 text-white' :
+                                notification.type === 'error' ? 'bg-red-500 border-red-400 text-white' :
+                                    'bg-slate-800 border-slate-700 text-white'
+                                }`}
+                        >
+                            {notification.type === 'success' && <div className="p-1 bg-white/20 rounded-full"><CheckCircle size={16} /></div>}
+                            {notification.type === 'error' && <div className="p-1 bg-white/20 rounded-full"><X size={16} /></div>}
+                            <span className="font-medium">{notification.message}</span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
