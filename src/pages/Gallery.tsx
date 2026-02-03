@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { images } from '../constants/images';
+
 import { Play, X } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
 
