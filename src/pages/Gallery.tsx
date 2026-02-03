@@ -48,31 +48,7 @@ const Gallery = () => {
     }, []);
 
     // Mixed Gallery Items
-    const staticGallery: GalleryItem[] = [
-        {
-            type: 'video',
-            src: "/videos/makutano-promo.mp4?v=2",
-            title: "Internal Makutano Project",
-            category: "Promotional",
-            orientation: 'landscape'
-        },
-        {
-            type: 'video',
-            src: "/videos/wedding-reception.mp4?v=2",
-            title: "Wedding Reception Highlights",
-            category: "Wedding Coverage",
-            orientation: 'landscape'
-        },
-        {
-            type: 'slideshow',
-            images: images.art,
-            title: "Art Portrait Series",
-            category: "Fine Art",
-            orientation: 'portrait'
-        },
-    ];
-
-    const allItems = [...dbItems, ...staticGallery];
+    const allItems = dbItems;
 
     const featuredItems = allItems.filter(x => x.type === 'video').slice(0, 5) as Extract<GalleryItem, { type: 'video' }>[];
 

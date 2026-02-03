@@ -44,25 +44,8 @@ const Admin = () => {
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
 
     // Static Items (Built-in)
-    const staticItems: GalleryItem[] = [
-        {
-            id: 'static-1' as any,
-            url: "/videos/makutano-promo.mp4?v=2",
-            title: "Internal Makutano Project",
-            category: "Promotional Videos",
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 'static-2' as any,
-            url: "/videos/wedding-reception.mp4?v=2",
-            title: "Wedding Reception Highlights",
-            category: "Wedding Coverage",
-            created_at: new Date().toISOString()
-        }
-    ];
-
-    // Combine for display: DB items first (overriding), then Static items
-    const displayItems = [...galleryItems, ...staticItems];
+    // Combine for display: DB items only
+    const displayItems = galleryItems;
 
     // States
     const [loading, setLoading] = useState(false);
@@ -169,19 +152,10 @@ const Admin = () => {
     };
 
     const handleEdit = (item: GalleryItem) => {
-        const isStatic = typeof item.id === 'string' && item.id.toString().startsWith('static');
-
-        setUploadForm({ title: item.title, category: isStatic && item.category === 'Promotional Videos' ? 'Promotional Videos' : item.category });
+        setUploadForm({ title: item.title, category: item.category });
         setPreviewUrl(item.url);
         setPreviewFile(null);
-
-        if (isStatic) {
-            setEditingItem(null);
-            setNotification({ type: 'info', message: 'Editing a built-in item. Saving will create a new copy.' });
-        } else {
-            setEditingItem(item);
-        }
-
+        setEditingItem(item);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -267,11 +241,6 @@ const Admin = () => {
     };
 
     const handleDeleteGalleryItem = async (id: number | string, url: string) => {
-        if (typeof id === 'string' && id.toString().startsWith('static')) {
-            setNotification({ type: 'info', message: 'Built-in system files cannot be deleted permanently as they are part of the codebase. You can replace them by uploading a new video in the same category.' });
-            return;
-        }
-
         try {
             await fetch('/api/gallery', {
                 method: 'DELETE',
