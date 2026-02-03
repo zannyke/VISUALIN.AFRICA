@@ -110,11 +110,11 @@ const ContactForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label htmlFor="name" className="text-sm font-medium text-charcoal dark:text-white">Name</label>
-                        <input required type="text" id="name" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="John Doe" />
+                        <input required type="text" id="name" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Art Dennoh" />
                     </div>
                     <div className="space-y-2">
                         <label htmlFor="email" className="text-sm font-medium text-charcoal dark:text-white">Email</label>
-                        <input required type="email" id="email" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="john@example.com" />
+                        <input required type="email" id="email" className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-charcoal dark:text-white focus:outline-none focus:border-cobalt transition-colors" placeholder="Artdennoh123@gmail.com" />
                     </div>
                 </div>
 
