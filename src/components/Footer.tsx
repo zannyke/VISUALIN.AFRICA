@@ -108,7 +108,7 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row justify-between items-center pt-8 text-slate-500 dark:text-slate-500 text-sm">
                     <p>© {new Date().getFullYear()} Visualink Africa. All rights reserved.</p>
                     <div className="flex gap-6 mt-4 md:mt-0">
-                        <a href="#" className="hover:text-cobalt">Privacy Policy</a>
+                        <Link to="/privacy-policy" className="hover:text-cobalt">Privacy Policy</Link>
                         <a href="#" className="hover:text-cobalt">Terms of Service</a>
 
                     </div>
