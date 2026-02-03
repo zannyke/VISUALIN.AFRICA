@@ -11,15 +11,20 @@ const Footer = () => {
             <div className="container mx-auto px-6 relative z-10">
 
                 {/* Visual Header in Footer */}
+                {/* Visual Header in Footer */}
                 <div className="mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-10 border-b border-slate-200 dark:border-white/10 pb-16">
                     <div>
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-charcoal dark:text-white mb-6">
+                        <h2
+                            className="font-serif font-bold text-charcoal dark:text-white mb-6"
+                            style={{ fontSize: "var(--text-fluid-h2)" }}
+                        >
                             Have an idea? <br />
                             <span className="text-cobalt">Let's build it.</span>
                         </h2>
                         <Link
                             to="/contact"
-                            className="inline-flex items-center gap-2 text-xl font-bold text-charcoal dark:text-white group"
+                            className="inline-flex items-center gap-2 font-bold text-charcoal dark:text-white group"
+                            style={{ fontSize: "var(--text-fluid-h4)" }}
                         >
                             <span className="border-b-2 border-cobalt pb-1">Start a Project</span>
                             <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 text-cobalt" />
@@ -30,10 +35,17 @@ const Footer = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     <div className="md:col-span-2">
-                        <a href="#" className="font-serif text-2xl font-bold tracking-tighter text-charcoal dark:text-white mb-6 block">
+                        <a
+                            href="#"
+                            className="font-serif font-bold tracking-tighter text-charcoal dark:text-white mb-6 block"
+                            style={{ fontSize: "var(--text-fluid-h3)" }}
+                        >
                             Visualink<span className="text-cobalt">.</span>
                         </a>
-                        <p className="text-slate-600 dark:text-slate-400 max-w-sm text-lg leading-relaxed">
+                        <p
+                            className="text-slate-600 dark:text-slate-400 max-w-sm leading-relaxed"
+                            style={{ fontSize: "var(--text-fluid-body)" }}
+                        >
                             Crafting visuals that inspire emotion, identity, and growth for brands across Africa.
                         </p>
 

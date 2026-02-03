@@ -196,10 +196,11 @@ const Navbar = () => {
                                 >
                                     <Link
                                         to={link.href}
-                                        className={`flex items-center gap-4 text-xl font-medium p-4 rounded-2xl transition-all ${location.pathname === link.href
+                                        className={`flex items-center gap-4 font-medium p-4 rounded-2xl transition-all ${location.pathname === link.href
                                             ? 'bg-cobalt/10 text-cobalt'
                                             : 'text-charcoal dark:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                                             }`}
+                                        style={{ fontSize: "var(--text-fluid-h4)" }}
                                         onClick={() => setIsOpen(false)}
                                     >
                                         <link.icon size={24} className={location.pathname === link.href ? 'text-cobalt' : ''} />
@@ -215,7 +216,8 @@ const Navbar = () => {
                             >
                                 <Link
                                     to="/contact"
-                                    className="w-full py-4 bg-cobalt rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-2 shadow-xl shadow-cobalt/20"
+                                    className="w-full py-4 bg-cobalt rounded-2xl font-bold text-white flex items-center justify-center gap-2 shadow-xl shadow-cobalt/20"
+                                    style={{ fontSize: "var(--text-fluid-body)" }}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     Start Project

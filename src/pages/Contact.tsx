@@ -14,8 +14,16 @@ const Contact = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <span className="text-cobalt font-semibold tracking-wider uppercase text-sm">Get in Touch</span>
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold mt-2 mb-6 text-charcoal dark:text-white transition-colors">Let's Create Something Amazing</h2>
-                        <p className="text-slate-600 dark:text-slate-400 text-lg mb-12 transition-colors">
+                        <h2
+                            className="font-serif font-bold mt-2 mb-6 text-charcoal dark:text-white transition-colors"
+                            style={{ fontSize: "var(--text-fluid-h2)" }}
+                        >
+                            Let's Create Something Amazing
+                        </h2>
+                        <p
+                            className="text-slate-600 dark:text-slate-400 mb-12 transition-colors"
+                            style={{ fontSize: "var(--text-fluid-body)" }}
+                        >
                             Have a project in mind? We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.
                         </p>
 
@@ -25,7 +33,12 @@ const Contact = () => {
                                     <Phone size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-charcoal dark:text-white font-semibold text-lg mb-1">Phone</h3>
+                                    <h3
+                                        className="text-charcoal dark:text-white font-semibold mb-1"
+                                        style={{ fontSize: "var(--text-fluid-h4)" }}
+                                    >
+                                        Phone
+                                    </h3>
                                     <a href="tel:+254114876997" className="text-slate-600 dark:text-slate-400 hover:text-cobalt transition-colors">+254 114 876 997</a>
                                 </div>
                             </div>
@@ -35,7 +48,12 @@ const Contact = () => {
                                     <Mail size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-charcoal dark:text-white font-semibold text-lg mb-1">Email</h3>
+                                    <h3
+                                        className="text-charcoal dark:text-white font-semibold mb-1"
+                                        style={{ fontSize: "var(--text-fluid-h4)" }}
+                                    >
+                                        Email
+                                    </h3>
                                     <a href="mailto:visualinkafrica@gmail.com" className="text-slate-600 dark:text-slate-400 hover:text-cobalt transition-colors">visualinkafrica@gmail.com</a>
                                 </div>
                             </div>
@@ -45,7 +63,12 @@ const Contact = () => {
                                     <MapPin size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-charcoal dark:text-white font-semibold text-lg mb-1">Location</h3>
+                                    <h3
+                                        className="text-charcoal dark:text-white font-semibold mb-1"
+                                        style={{ fontSize: "var(--text-fluid-h4)" }}
+                                    >
+                                        Location
+                                    </h3>
                                     <p className="text-slate-600 dark:text-slate-400">Nairobi, Kenya</p>
                                 </div>
                             </div>

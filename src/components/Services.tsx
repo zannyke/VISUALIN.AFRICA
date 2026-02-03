@@ -83,7 +83,8 @@ const Services = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-serif font-bold mb-4 text-charcoal dark:text-white"
+                        className="font-serif font-bold mb-4 text-charcoal dark:text-white"
+                        style={{ fontSize: "var(--text-fluid-h2)" }}
                     >
                         Our Services
                     </motion.h2>
@@ -92,13 +93,14 @@ const Services = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-slate-600 dark:text-slate-300 text-lg max-w-2xl mx-auto font-medium"
+                        className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-medium"
+                        style={{ fontSize: "var(--text-fluid-body)" }}
                     >
                         We offer a comprehensive suite of visual solutions designed to elevate your brand and capture your most important moments.
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {services.map((service, index) => (
                         <motion.div
                             key={service.id}
@@ -137,8 +139,13 @@ const Services = () => {
                                     <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-[#F57703] group-hover:bg-white group-hover:text-[#F57703] group-hover:border-white transition-all duration-300 shadow-sm backdrop-blur-md">
                                         <service.icon size={28} strokeWidth={1.5} />
                                     </div>
-                                    <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-white/90 transition-colors leading-relaxed text-base mb-4">
+                                    <h3
+                                        className="font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight"
+                                        style={{ fontSize: "var(--text-fluid-h3)" }}
+                                    >
+                                        {service.title}
+                                    </h3>
+                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-white/90 transition-colors leading-relaxed mb-4">
                                         {service.desc}
                                     </p>
 

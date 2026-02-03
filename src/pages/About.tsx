@@ -31,10 +31,16 @@ const About = () => {
                     {/* Text Content Side */}
                     <div className="lg:w-1/2">
                         <span className="text-cobalt font-semibold tracking-wider uppercase text-sm mb-2 block">Who We Are</span>
-                        <h1 className="text-5xl md:text-6xl font-serif font-bold mb-8 leading-tight text-charcoal dark:text-white transition-colors">
+                        <h1
+                            className="font-serif font-bold mb-8 leading-tight text-charcoal dark:text-white transition-colors"
+                            style={{ fontSize: "var(--text-fluid-h2)" }}
+                        >
                             {content.about.title}
                         </h1>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8 transition-colors">
+                        <p
+                            className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8 transition-colors"
+                            style={{ fontSize: "var(--text-fluid-body)" }}
+                        >
                             {content.about.content}
                         </p>
 

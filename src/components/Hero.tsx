@@ -84,8 +84,8 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight text-charcoal dark:text-white mb-6 leading-[0.9] drop-shadow-md mix-blend-overlay dark:mix-blend-normal"
-                        style={{ textShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
+                        className="font-serif font-bold tracking-tight text-charcoal dark:text-white mb-6 leading-[0.9] drop-shadow-md mix-blend-overlay dark:mix-blend-normal"
+                        style={{ fontSize: "var(--text-fluid-h1)", textShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
                     >
                         VISUALINK AFRICA
                     </motion.h1>
@@ -94,7 +94,8 @@ const Hero = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="h-10 md:h-12 text-lg md:text-2xl font-serif font-medium text-cobalt dark:text-white/90 italic mb-10 tracking-wide"
+                        className="h-10 md:h-12 font-serif font-medium text-cobalt dark:text-white/90 italic mb-10 tracking-wide"
+                        style={{ fontSize: "var(--text-fluid-h3)" }}
                     >
                         <Typewriter text="Visuals That Connect." delay={80} />
                     </motion.div>
@@ -103,7 +104,8 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="max-w-2xl text-lg md:text-xl text-slate-700 dark:text-slate-300 mb-12 leading-relaxed font-medium"
+                        className="max-w-2xl text-slate-700 dark:text-slate-300 mb-12 leading-relaxed font-medium"
+                        style={{ fontSize: "var(--text-fluid-body)" }}
                     >
                         Connecting people through powerful storytelling. <br className="hidden md:block" />
                         We craft cinematic films and bold imagery that inspire emotion.

@@ -28,7 +28,8 @@ const Process = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-serif font-bold mb-4 text-charcoal dark:text-white"
+                        className="font-serif font-bold mb-4 text-charcoal dark:text-white"
+                        style={{ fontSize: "var(--text-fluid-h2)" }}
                     >
                         How We Work
                     </motion.h2>
@@ -47,11 +48,22 @@ const Process = () => {
                             transition={{ delay: index * 0.2 }}
                             className="relative z-10"
                         >
-                            <div className="text-7xl font-serif font-bold text-slate-200 dark:text-white/5 mb-4 select-none">
+                            <div
+                                className="font-serif font-bold text-slate-200 dark:text-white/5 mb-4 select-none"
+                                style={{ fontSize: "clamp(3rem, 8vw, 5rem)" }}
+                            >
                                 {step.num}
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 text-cobalt">{step.title}</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            <h3
+                                className="font-bold mb-4 text-cobalt"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                {step.title}
+                            </h3>
+                            <p
+                                className="text-slate-600 dark:text-slate-400 leading-relaxed"
+                                style={{ fontSize: "var(--text-fluid-body)" }}
+                            >
                                 {step.desc}
                             </p>
                         </motion.div>

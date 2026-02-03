@@ -9,14 +9,27 @@ const PrivacyPolicy = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-charcoal dark:text-white mb-2">Privacy Policy</h1>
+                    <h1
+                        className="font-serif font-bold text-charcoal dark:text-white mb-2"
+                        style={{ fontSize: "var(--text-fluid-h2)" }}
+                    >
+                        Privacy Policy
+                    </h1>
                     <p className="text-slate-600 dark:text-slate-400 mb-12">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
 
-                    <div className="space-y-12 text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <div
+                        className="space-y-12 text-slate-700 dark:text-slate-300 leading-relaxed"
+                        style={{ fontSize: "var(--text-fluid-body)" }}
+                    >
 
                         {/* 1. Introduction */}
                         <div>
-                            <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-4">1. Introduction</h2>
+                            <h2
+                                className="font-serif font-bold text-charcoal dark:text-white mb-4"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                1. Introduction
+                            </h2>
                             <p>
                                 Welcome to Visualink Africa. We respect your privacy and are committed to protecting your personal data.
                                 This privacy policy will inform you as to how we look after your personal data when you visit our website
@@ -26,7 +39,12 @@ const PrivacyPolicy = () => {
 
                         {/* 2. Data We Collect */}
                         <div>
-                            <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-4">2. The Data We Collect</h2>
+                            <h2
+                                className="font-serif font-bold text-charcoal dark:text-white mb-4"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                2. The Data We Collect
+                            </h2>
                             <p className="mb-4">
                                 We may collect, use, store and transfer different kinds of personal data about you which we have grouped together follows:
                             </p>
@@ -40,7 +58,12 @@ const PrivacyPolicy = () => {
 
                         {/* 3. How We Use Your Data */}
                         <div>
-                            <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-4">3. How We Use Your Data</h2>
+                            <h2
+                                className="font-serif font-bold text-charcoal dark:text-white mb-4"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                3. How We Use Your Data
+                            </h2>
                             <p className="mb-4">
                                 We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
                             </p>
@@ -53,7 +76,12 @@ const PrivacyPolicy = () => {
 
                         {/* 4. Data Security */}
                         <div>
-                            <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-4">4. Data Security</h2>
+                            <h2
+                                className="font-serif font-bold text-charcoal dark:text-white mb-4"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                4. Data Security
+                            </h2>
                             <p>
                                 We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way, altered or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know.
                             </p>
@@ -61,7 +89,12 @@ const PrivacyPolicy = () => {
 
                         {/* 5. Marketing */}
                         <div>
-                            <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white mb-4">5. Marketing</h2>
+                            <h2
+                                className="font-serif font-bold text-charcoal dark:text-white mb-4"
+                                style={{ fontSize: "var(--text-fluid-h3)" }}
+                            >
+                                5. Marketing
+                            </h2>
                             <p>
                                 We strive to provide you with choices regarding certain personal data uses, particularly around marketing and advertising.
                                 We will get your express opt-in consent before we share your personal data with any company outside the Visualink Africa group of companies for marketing purposes.

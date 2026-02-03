@@ -67,10 +67,16 @@ const ServicesPage = () => {
                     className="mb-24 text-center max-w-3xl mx-auto"
                 >
                     <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Expertise</span>
-                    <h2 className="text-5xl md:text-7xl font-serif font-bold text-charcoal dark:text-white mb-6">
+                    <h2
+                        className="font-serif font-bold text-charcoal dark:text-white mb-6"
+                        style={{ fontSize: "var(--text-fluid-h2)" }}
+                    >
                         Our Services.
                     </h2>
-                    <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p
+                        className="text-slate-600 dark:text-slate-300 leading-relaxed"
+                        style={{ fontSize: "var(--text-fluid-body)" }}
+                    >
                         Comprehensive visual solutions tailored for impact.
                     </p>
                 </motion.div>
@@ -134,10 +140,16 @@ const ServicesPage = () => {
                                 {/* Content Side */}
                                 <div className="w-full md:w-2/5 p-4">
                                     <div className="mb-4 w-12 h-1 bg-cobalt rounded-full" />
-                                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-charcoal dark:text-white mb-6">
+                                    <h3
+                                        className="font-serif font-bold text-charcoal dark:text-white mb-6"
+                                        style={{ fontSize: "var(--text-fluid-h3)" }}
+                                    >
                                         {service.title}
                                     </h3>
-                                    <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+                                    <p
+                                        className="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed"
+                                        style={{ fontSize: "var(--text-fluid-body)" }}
+                                    >
                                         {service.description}
                                     </p>
 

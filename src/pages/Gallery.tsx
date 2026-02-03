@@ -105,10 +105,16 @@ const Gallery = () => {
                     className="max-w-4xl"
                 >
                     <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Portfolio</span>
-                    <h2 className="text-5xl md:text-7xl font-serif font-bold text-charcoal dark:text-white mb-8">
+                    <h2
+                        className="font-serif font-bold text-charcoal dark:text-white mb-8"
+                        style={{ fontSize: "var(--text-fluid-h2)" }}
+                    >
                         Selected Works.
                     </h2>
-                    <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                    <p
+                        className="text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed"
+                        style={{ fontSize: "var(--text-fluid-body)" }}
+                    >
                         A curation of our finest moments. From intimate weddings to high-energy commercial productions.
                     </p>
                 </motion.div>
@@ -148,7 +154,12 @@ const Gallery = () => {
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
                             <div className="absolute bottom-0 left-0 p-8 w-full">
                                 <span className="text-cobalt font-bold uppercase tracking-wider text-xs mb-2 block">{item.category}</span>
-                                <h3 className="text-3xl font-serif text-white font-bold mb-2">{item.title}</h3>
+                                <h3
+                                    className="font-serif text-white font-bold mb-2"
+                                    style={{ fontSize: "var(--text-fluid-h3)" }}
+                                >
+                                    {item.title}
+                                </h3>
                                 <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
                                     <Play size={16} fill="currentColor" />
                                     <span className="font-medium text-sm">Watch Film</span>
@@ -212,7 +223,12 @@ const Gallery = () => {
                                 {item.type !== 'slideshow' && (
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                                         <span className="text-cobalt text-xs font-bold uppercase tracking-wider">{item.category}</span>
-                                        <h4 className="text-white font-serif text-xl">{item.title}</h4>
+                                        <h4
+                                            className="text-white font-serif"
+                                            style={{ fontSize: "var(--text-fluid-h4)" }}
+                                        >
+                                            {item.title}
+                                        </h4>
                                     </div>
                                 )}
                             </div>

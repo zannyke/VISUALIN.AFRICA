@@ -45,7 +45,12 @@ const FineArtSlideshow = ({ images, title, category, onImageClick }: FineArtSlid
                 {/* Text Info */}
                 <div className="pointer-events-none">
                     <span className="text-cobalt text-xs font-bold uppercase tracking-wider">{category}</span>
-                    <h4 className="text-white font-serif text-xl">{title}</h4>
+                    <h4
+                        className="text-white font-serif"
+                        style={{ fontSize: "var(--text-fluid-h4)" }}
+                    >
+                        {title}
+                    </h4>
                 </div>
 
                 {/* Thumbnails Strip */}
