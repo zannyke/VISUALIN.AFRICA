@@ -1,4 +1,4 @@
-import { Mail, Phone, Instagram, Linkedin, Facebook, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, Instagram, Linkedin, Facebook, ArrowUpRight, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -59,15 +59,25 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-charcoal dark:text-white font-bold mb-6">Connect</h4>
+                        <h4 className="text-charcoal dark:text-white font-bold mb-6">Connect with us</h4>
                         <ul className="space-y-4 text-slate-600 dark:text-slate-400">
                             <li className="flex items-center gap-3 group cursor-pointer">
-                                <Phone size={18} className="text-cobalt group-hover:scale-110 transition-transform" />
-                                <span>+254 114 876 997</span>
+                                <Link to="/contact" className="flex items-center gap-3 w-full hover:text-cobalt transition-colors">
+                                    <MessageCircle size={18} className="text-cobalt group-hover:scale-110 transition-transform" />
+                                    <span>Contact us</span>
+                                </Link>
                             </li>
                             <li className="flex items-center gap-3 group cursor-pointer">
-                                <Mail size={18} className="text-cobalt group-hover:scale-110 transition-transform" />
-                                <span>hello@visualinkafrica.com</span>
+                                <a href="mailto:visualinkafrica@gmail.com" className="flex items-center gap-3 w-full hover:text-cobalt transition-colors">
+                                    <Mail size={18} className="text-cobalt group-hover:scale-110 transition-transform" />
+                                    <span>visualinkafrica@gmail.com</span>
+                                </a>
+                            </li>
+                            <li className="flex items-center gap-3 group cursor-pointer">
+                                <a href="tel:+254114876997" className="flex items-center gap-3 w-full hover:text-cobalt transition-colors">
+                                    <Phone size={18} className="text-cobalt group-hover:scale-110 transition-transform" />
+                                    <span>+254 114 876 997</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
