@@ -66,7 +66,7 @@ const Admin = () => {
             const resGal = await fetch('/api/gallery', { headers: { 'Authorization': pwd } });
             if (resGal.ok) {
                 const dataGal = await resGal.json();
-                setGalleryItems(dataGal.items || []);
+                setGalleryItems(dataGal.items?.sort((a: GalleryItem, b: GalleryItem) => b.id - a.id) || []);
             }
 
             sessionStorage.setItem('admin_token', pwd);

@@ -1,8 +1,38 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import content from '../constants/content.json';
 
 const ServicesPage = () => {
+    const [galleryVideos, setGalleryVideos] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const res = await fetch('/api/gallery');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.items) {
+                        // Sort by ID descending (Newest first) so the latest video is always the featured one
+                        const sortedItems = data.items.sort((a: any, b: any) => b.id - a.id);
+                        setGalleryVideos(sortedItems.filter((item: any) =>
+                            item.url.endsWith('.mp4') || item.url.endsWith('.mov') || item.url.endsWith('.webm')
+                        ));
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to fetch dynamic videos", e);
+            }
+        };
+        fetchVideos();
+    }, []);
+
+    const getVideoForService = (serviceTitle: string) => {
+        // Find latest video matching the category/service title
+        // Since list is sorted Newest First, the first match is the latest upload
+        const match = galleryVideos.find(v => v.category === serviceTitle);
+        return match ? match.url : null;
+    };
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -54,8 +84,14 @@ const ServicesPage = () => {
                 >
                     {content.services.map((service, index) => {
                         const isEven = index % 2 === 0;
+                        const dynamicVideo = getVideoForService(service.title);
+
+                        // Priority: Dynamic Video > Local Fallback (only for Promo) > Placeholder
                         const isPromo = service.title === "Promotional Videos";
-                        const videoSrc = "/videos/makutano-promo.mp4";
+                        const localFallback = isPromo ? "/videos/makutano-promo.mp4" : null;
+
+                        const videoSrc = dynamicVideo || localFallback;
+                        const hasVideo = !!videoSrc;
 
                         return (
                             <motion.div
@@ -66,19 +102,18 @@ const ServicesPage = () => {
                             >
                                 {/* Cinematic Visual Side */}
                                 <div className="w-full md:w-3/5">
-                                    <div className={`relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group ${isPromo ? 'bg-black' : 'bg-slate-200 dark:bg-white/5'} flex items-center justify-center`}>
+                                    <div className={`relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group ${hasVideo ? 'bg-black' : 'bg-slate-200 dark:bg-white/5'} flex items-center justify-center`}>
 
-                                        {isPromo ? (
+                                        {hasVideo ? (
                                             <>
                                                 <video
                                                     autoPlay
                                                     loop
                                                     muted
                                                     playsInline
+                                                    src={videoSrc}
                                                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                                >
-                                                    <source src={videoSrc} type="video/mp4" />
-                                                </video>
+                                                />
                                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
                                             </>
                                         ) : (

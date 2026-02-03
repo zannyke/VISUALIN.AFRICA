@@ -23,17 +23,19 @@ const Gallery = () => {
                 if (response.ok) {
                     const data = await response.json();
                     if (data.items) {
-                        const formattedItems: GalleryItem[] = data.items.map((item: any) => {
-                            const isVideo = isVideoFile(item.url) || item.url.includes('youtube') || item.url.includes('vimeo');
-                            return {
-                                type: isVideo ? 'video' : 'image',
-                                id: item.id,
-                                src: item.url,
-                                title: item.title,
-                                category: item.category,
-                                orientation: 'landscape'
-                            };
-                        });
+                        const formattedItems: GalleryItem[] = data.items
+                            .sort((a: any, b: any) => b.id - a.id) // Recent first
+                            .map((item: any) => {
+                                const isVideo = isVideoFile(item.url) || item.url.includes('youtube') || item.url.includes('vimeo');
+                                return {
+                                    type: isVideo ? 'video' : 'image',
+                                    id: item.id,
+                                    src: item.url,
+                                    title: item.title,
+                                    category: item.category,
+                                    orientation: 'landscape'
+                                };
+                            });
                         setDbItems(formattedItems);
                     }
                 }
