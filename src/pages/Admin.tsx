@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff, X, Pencil, CheckCircle } from 'lucide-react';
 import content from '../constants/content.json';
-import { upload } from '@vercel/blob/client';
+
 
 interface Message {
     id: number;
@@ -178,14 +178,33 @@ const Admin = () => {
             let newUrl = null;
 
             if (previewFile) {
-                const newBlob = await upload(previewFile.name, previewFile, {
-                    access: 'public',
-                    handleUploadUrl: `/api/upload?auth=${password}`,
-                    onUploadProgress: (progressEvent) => {
-                        setUploadProgress(Math.round((progressEvent.percentage)));
+                // 1. Get Presigned URL
+                const initRes = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: previewFile.name,
+                        contentType: previewFile.type,
+                        auth: password
+                    })
+                });
+
+                if (!initRes.ok) throw new Error('Failed to get upload URL');
+                const { uploadUrl, publicUrl } = await initRes.json();
+
+                // 2. Upload File to R2
+                const uploadRes = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    body: previewFile,
+                    headers: {
+                        'Content-Type': previewFile.type
                     }
                 });
-                newUrl = newBlob.url;
+
+                if (!uploadRes.ok) throw new Error('Failed to upload file to storage');
+
+                newUrl = publicUrl;
+                setUploadProgress(100);
             }
 
             const method = editingItem ? 'PUT' : 'POST';

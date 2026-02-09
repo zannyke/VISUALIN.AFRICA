@@ -1,5 +1,15 @@
-import { put, del } from '@vercel/blob';
+import { del } from '@vercel/blob';
 import { sql } from '@vercel/postgres';
+import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
+
+const R2 = new S3Client({
+    region: 'auto',
+    endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+    },
+});
 
 export const config = {
     api: {
@@ -7,11 +17,28 @@ export const config = {
     },
 };
 
+async function deleteFile(url: string) {
+    if (!url) return;
+
+    try {
+        if (url.includes('public.blob.vercel-storage.com')) {
+            await del(url);
+        } else if (process.env.R2_PUBLIC_DOMAIN && url.includes(process.env.R2_PUBLIC_DOMAIN)) {
+            const key = url.split(process.env.R2_PUBLIC_DOMAIN + '/')[1];
+            if (key) {
+                await R2.send(new DeleteObjectCommand({
+                    Bucket: process.env.R2_BUCKET_NAME,
+                    Key: key
+                }));
+            }
+        }
+    } catch (e) {
+        console.error('Failed to delete file:', url, e);
+    }
+}
+
 // Re-enable body parser for JSON
 export default async function handler(request: any, response: any) {
-    // Parsing JSON manually if bodyParser: false, but let's keep it true for now unless we do multipart.
-    // Actually, for Vercel functions, better to let Next/Vercel handle it.
-
     const adminPassword = process.env.ADMIN_PASSWORD;
     const authHeader = request.headers['authorization'];
 
@@ -42,12 +69,8 @@ export default async function handler(request: any, response: any) {
             if (!id) return response.status(400).json({ error: 'ID required' });
 
             // If a new URL is provided (replacement), delete the old file
-            if (url && oldUrl && url !== oldUrl && oldUrl.includes('public.blob.vercel-storage.com')) {
-                try {
-                    await del(oldUrl);
-                } catch (e) {
-                    console.error('Failed to delete old blob', e);
-                }
+            if (url && oldUrl && url !== oldUrl) {
+                await deleteFile(oldUrl);
             }
 
             // Update record
@@ -69,15 +92,7 @@ export default async function handler(request: any, response: any) {
             const { id, url } = request.body;
             if (!id) return response.status(400).json({ error: 'ID required' });
 
-            // If it is a vercel blob, delete it
-            if (url && url.includes('public.blob.vercel-storage.com')) {
-                try {
-                    await del(url);
-                } catch (e) {
-                    console.error('Failed to delete blob', e);
-                }
-            }
-
+            await deleteFile(url);
             await sql`DELETE FROM gallery WHERE id = ${id}`;
             return response.status(200).json({ success: true });
         }
