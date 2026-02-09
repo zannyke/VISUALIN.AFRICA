@@ -40,15 +40,16 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
     }, []);
 
     const load = async () => {
-        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+        // Use the single-threaded core (no-mt) to avoid SharedArrayBuffer issues (COOP/COEP)
+        // This is slightly slower but works in all environments without special headers.
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
         const ffmpeg = ffmpegRef.current;
 
-        ffmpeg.on('log', () => {
+        ffmpeg.on('log', ({ message }: { message: string }) => {
             // console.log(message);
         });
 
-        ffmpeg.on('progress', ({ progress }) => {
-            // progress is 0-1, convert to 0-100
+        ffmpeg.on('progress', ({ progress }: { progress: number }) => {
             setProgress(Math.round(progress * 100));
         });
 
@@ -61,7 +62,8 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
             setMessage('');
         } catch (error) {
             console.error(error);
-            setMessage(`Failed to load video engine: ${(error as Error).message}`);
+            const err = error as Error;
+            setMessage(`Failed to load video engine: ${err.message || 'Unknown error (check console)'}`);
         }
     };
 
