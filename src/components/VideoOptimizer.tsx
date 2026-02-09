@@ -150,7 +150,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl max-w-2xl w-full overflow-hidden shadow-2xl"
+                className="bg-zinc-900 border border-zinc-800 rounded-xl w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent"
             >
                 {/* Header */}
                 <div className="p-4 border-b border-zinc-800 flex justify-between items-center">
@@ -224,7 +224,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                 {/* For simplicity, we just use two separate range inputs below */}
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-xs text-zinc-500">Start Time</label>
                                     <input
@@ -271,7 +271,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                         {/* Compression Level */}
                         <div className="space-y-2">
                             <label className="text-sm text-zinc-400">Compression Level</label>
-                            <div className="grid grid-cols-3 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 {(['low', 'medium', 'high'] as const).map((level) => (
                                     <button
                                         key={level}
@@ -292,10 +292,10 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                     </div>
 
                     {/* Footer / Status */}
-                    <div className="border-t border-zinc-800 pt-4 flex justify-between items-center">
-                        <div className="text-sm">
+                    <div className="border-t border-zinc-800 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div className="text-sm w-full sm:w-auto text-center sm:text-left">
                             {isOptimizing ? (
-                                <span className="text-orange-400 flex items-center gap-2">
+                                <span className="text-orange-400 flex items-center justify-center sm:justify-start gap-2">
                                     <Loader className="w-4 h-4 animate-spin" />
                                     {progress > 0 ? `Compressing: ${progress}%` : message}
                                 </span>
