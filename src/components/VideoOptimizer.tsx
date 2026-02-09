@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { toBlobURL, fetchFile } from '@ffmpeg/util';
-import { Loader, Scissors, Check, X, Film, Play, Pause, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Loader, Scissors, Check, X, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface VideoOptimizerProps {
@@ -43,11 +43,11 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
         const ffmpeg = ffmpegRef.current;
 
-        ffmpeg.on('log', ({ message }) => {
+        ffmpeg.on('log', () => {
             // console.log(message);
         });
 
-        ffmpeg.on('progress', ({ progress, time }) => {
+        ffmpeg.on('progress', ({ progress }) => {
             // progress is 0-1, convert to 0-100
             setProgress(Math.round(progress * 100));
         });
@@ -104,7 +104,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
             await ffmpeg.exec(args);
 
             const data = await ffmpeg.readFile(outputName);
-            const optimizedBlob = new Blob([data], { type: 'video/mp4' });
+            const optimizedBlob = new Blob([data as any], { type: 'video/mp4' });
             const optimizedFile = new File([optimizedBlob], `optimized-${file.name}`, { type: 'video/mp4' });
 
             onOptimize(optimizedFile);
@@ -275,8 +275,8 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                         key={level}
                                         onClick={() => setCompressionLevel(level)}
                                         className={`px-3 py-2 rounded-lg text-sm transition-colors border ${compressionLevel === level
-                                                ? 'bg-orange-500 text-white border-orange-500'
-                                                : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
+                                            ? 'bg-orange-500 text-white border-orange-500'
+                                            : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
                                             }`}
                                     >
                                         {level.charAt(0).toUpperCase() + level.slice(1)}
