@@ -157,26 +157,31 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
     };
 
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent"
+                className="bg-white dark:bg-obsidian border border-slate-200 dark:border-white/10 rounded-2xl w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 scrollbar-track-transparent"
             >
                 {/* Header */}
-                <div className="p-4 border-b border-zinc-800 flex justify-between items-center">
-                    <h2 className="text-white font-serif flex items-center gap-2">
-                        <Scissors className="w-5 h-5 text-orange-500" />
+                <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center bg-platinum/50 dark:bg-obsidian/50 backdrop-blur-md sticky top-0 z-20">
+                    <h2 className="text-2xl font-serif font-bold text-charcoal dark:text-white flex items-center gap-3">
+                        <div className="p-2 bg-cobalt/10 rounded-full">
+                            <Scissors className="w-5 h-5 text-cobalt" />
+                        </div>
                         Optimize Video
                     </h2>
-                    <button onClick={onCancel} className="text-zinc-400 hover:text-white">
+                    <button
+                        onClick={onCancel}
+                        className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 text-slate-400 hover:text-charcoal dark:hover:text-white transition-colors"
+                    >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                <div className="p-6 space-y-6">
+                <div className="p-6 space-y-8">
                     {/* Video Preview */}
-                    <div className="relative aspect-video bg-black rounded-lg overflow-hidden group border border-zinc-800">
+                    <div className="relative aspect-video bg-black rounded-xl overflow-hidden group shadow-lg ring-1 ring-black/5 dark:ring-white/10">
                         {videoUrl ? (
                             <video
                                 ref={videoRef}
@@ -186,7 +191,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                 onTimeUpdate={handleTimeUpdate}
                             />
                         ) : (
-                            <div className="flex items-center justify-center h-full text-zinc-500">
+                            <div className="flex items-center justify-center h-full text-slate-400">
                                 <Loader className="w-8 h-8 animate-spin" />
                             </div>
                         )}
@@ -194,29 +199,40 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                         {/* Play Overlay */}
                         <button
                             onClick={togglePlay}
-                            className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors"
+                            className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/10 transition-colors group/play"
                         >
-                            {!isPlaying && <Play className="w-12 h-12 text-white opacity-80" />}
+                            {!isPlaying && (
+                                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 transition-transform group-hover/play:scale-110">
+                                    <Play className="w-8 h-8 text-white fill-white ml-1" />
+                                </div>
+                            )}
                         </button>
                     </div>
 
                     {/* Controls */}
-                    <div className={`space-y-6 transition-opacity ${isOptimizing ? 'opacity-50 pointer-events-none' : ''}`}>
+                    <div className={`space-y-8 transition-opacity ${isOptimizing ? 'opacity-50 pointer-events-none' : ''}`}>
                         {/* Trimming */}
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-sm text-zinc-400">
-                                <span>Trim Duration</span>
-                                <span className="text-white font-mono">{formatTime(startTime)} - {formatTime(endTime)} ({formatTime(endTime - startTime)})</span>
+                        <div className="space-y-4">
+                            <div className="flex justify-between text-sm items-end border-b border-slate-100 dark:border-white/5 pb-2">
+                                <span className="font-serif text-lg text-charcoal dark:text-platinum">Trim Duration</span>
+                                <span className="font-mono text-cobalt font-medium bg-cobalt/10 px-2 py-0.5 rounded text-xs">
+                                    {formatTime(startTime)} - {formatTime(endTime)} ({formatTime(endTime - startTime)})
+                                </span>
                             </div>
-                            <div className="relative h-2 bg-zinc-800 rounded-full">
-                                {/* Track */}
-                                <div
-                                    className="absolute h-full bg-orange-500/30 rounded-full"
-                                    style={{
-                                        left: `${(startTime / duration) * 100}%`,
-                                        right: `${100 - (endTime / duration) * 100}%`
-                                    }}
-                                />
+
+                            <div className="relative h-12 flex items-center">
+                                {/* Track Background */}
+                                <div className="absolute w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    {/* Active Range */}
+                                    <div
+                                        className="absolute h-full bg-cobalt"
+                                        style={{
+                                            left: `${(startTime / duration) * 100}%`,
+                                            right: `${100 - (endTime / duration) * 100}%`
+                                        }}
+                                    />
+                                </div>
+
                                 {/* Start Thumb */}
                                 <input
                                     type="range"
@@ -231,13 +247,12 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                     }}
                                     className="absolute inset-0 w-full opacity-0 cursor-pointer z-10"
                                 />
-                                {/* End Thumb (Visual Fake or Requires Dual Slider lib) */}
-                                {/* For simplicity, we just use two separate range inputs below */}
+                                {/* Visual Thumbs (Optional Enhancement, currently relying on range inputs below for precise control) */}
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-xs text-zinc-500">Start Time</label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                                <div className="bg-platinum dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/5">
+                                    <label className="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2 block">Start</label>
                                     <input
                                         type="range"
                                         min={0}
@@ -249,15 +264,14 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                             if (val < endTime) setStartTime(val);
                                             if (videoRef.current) {
                                                 videoRef.current.currentTime = val;
-                                                // videoRef.current.pause();
-                                                // setIsPlaying(false);
                                             }
                                         }}
-                                        className="w-full accent-orange-500"
+                                        className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cobalt"
                                     />
+                                    <div className="mt-2 text-right font-mono text-sm text-charcoal dark:text-platinum">{formatTime(startTime)}</div>
                                 </div>
-                                <div>
-                                    <label className="text-xs text-zinc-500">End Time</label>
+                                <div className="bg-platinum dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/5">
+                                    <label className="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2 block">End</label>
                                     <input
                                         type="range"
                                         min={0}
@@ -269,74 +283,82 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                             if (val > startTime) setEndTime(val);
                                             if (videoRef.current) {
                                                 videoRef.current.currentTime = val;
-                                                // videoRef.current.pause();
-                                                // setIsPlaying(false);
                                             }
                                         }}
-                                        className="w-full accent-orange-500"
+                                        className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cobalt"
                                     />
+                                    <div className="mt-2 text-right font-mono text-sm text-charcoal dark:text-platinum">{formatTime(endTime)}</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Export Quality */}
-                        <div className="space-y-2">
-                            <label className="text-sm text-zinc-400">Export Quality</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="space-y-4">
+                            <label className="font-serif text-lg text-charcoal dark:text-platinum block border-b border-slate-100 dark:border-white/5 pb-2">Export Quality</label>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 {(['low', 'medium', 'high'] as const).map((level) => (
                                     <button
                                         key={level}
                                         onClick={() => setCompressionLevel(level)}
-                                        className={`px-3 py-2 rounded-lg text-sm transition-colors border ${compressionLevel === level
-                                            ? 'bg-orange-500 text-white border-orange-500'
-                                            : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
+                                        className={`group relative px-4 py-3 rounded-xl text-left transition-all duration-300 border ${compressionLevel === level
+                                            ? 'bg-cobalt text-white border-cobalt shadow-lg shadow-cobalt/20'
+                                            : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-cobalt/50 hover:bg-slate-50 dark:hover:bg-white/10'
                                             }`}
                                     >
-                                        {level === 'low' ? 'Original Quality' : level === 'medium' ? 'Balanced' : 'Max Compression'}
-                                        <span className="block text-xs opacity-70">
-                                            {level === 'low' ? 'Larger File' : level === 'medium' ? 'Standard' : 'Smallest File'}
+                                        <span className="block font-bold text-sm mb-1">
+                                            {level === 'low' ? 'Original' : level === 'medium' ? 'Balanced' : 'Compressed'}
                                         </span>
+                                        <span className={`block text-xs ${compressionLevel === level ? 'text-white/80' : 'text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-300'}`}>
+                                            {level === 'low' ? 'Best Quality' : level === 'medium' ? 'Standard' : 'Smallest Size'}
+                                        </span>
+                                        {compressionLevel === level && (
+                                            <div className="absolute top-3 right-3">
+                                                <Check className="w-4 h-4" />
+                                            </div>
+                                        )}
                                     </button>
                                 ))}
                             </div>
-                            <p className="text-xs text-zinc-500 mt-1">
-                                Trimming the video will naturally reduce file size by discarding unused parts.
+                            <p className="text-xs text-slate-500 dark:text-slate-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg flex items-start gap-2 border border-blue-100 dark:border-blue-900/30">
+                                <span className="text-cobalt">ℹ</span>
+                                Trimming reduces file size by removing unused parts. "Original" keeps quality intact.
                             </p>
                         </div>
                     </div>
 
                     {/* Footer / Status */}
-                    <div className="border-t border-zinc-800 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div className="text-sm w-full sm:w-auto text-center sm:text-left">
+                    <div className="border-t border-slate-100 dark:border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center gap-6 sticky bottom-0 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl -mx-6 -mb-6 p-6 z-20">
+                        <div className="text-sm w-full sm:w-auto text-center sm:text-left flex items-center justify-center sm:justify-start gap-3">
                             {isOptimizing ? (
-                                <span className="text-orange-400 flex items-center justify-center sm:justify-start gap-2">
-                                    <Loader className="w-4 h-4 animate-spin" />
-                                    {progress > 0 ? `Compressing: ${progress}%` : message}
-                                </span>
+                                <div className="flex items-center gap-3 text-cobalt font-medium animate-pulse">
+                                    <Loader className="w-5 h-5 animate-spin" />
+                                    <span>{progress > 0 ? `Processing: ${progress}%` : message}</span>
+                                </div>
                             ) : !loaded ? (
-                                <span className="text-zinc-500 flex items-center gap-2">
+                                <div className="flex items-center gap-2 text-slate-400">
                                     <Loader className="w-4 h-4 animate-spin" />
-                                    {message}
-                                </span>
+                                    <span>{message}</span>
+                                </div>
                             ) : (
-                                <span className="text-zinc-400">
-                                    Original: {(file.size / (1024 * 1024)).toFixed(1)} MB
-                                </span>
+                                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium">
+                                    <span className="bg-slate-100 dark:bg-white/10 px-2 py-1 rounded text-xs">ORIGINAL</span>
+                                    {(file.size / (1024 * 1024)).toFixed(1)} MB
+                                </div>
                             )}
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-3 w-full sm:w-auto">
                             <button
                                 onClick={onCancel}
                                 disabled={isOptimizing}
-                                className="px-4 py-2 text-sm text-zinc-400 hover:text-white disabled:opacity-50"
+                                className="flex-1 sm:flex-none px-6 py-3 rounded-xl text-sm font-bold text-slate-500 hover:text-charcoal dark:text-slate-400 dark:hover:text-white border border-transparent hover:bg-slate-100 dark:hover:bg-white/5 transition-all disabled:opacity-50"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={processVideo}
                                 disabled={!loaded || isOptimizing}
-                                className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                className="flex-1 sm:flex-none px-8 py-3 bg-cobalt text-white text-sm font-bold rounded-xl hover:bg-[#ff851b] shadow-lg shadow-cobalt/20 hover:shadow-cobalt/40 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                             >
                                 {isOptimizing ? 'Processing...' : 'Trim & Save'}
                                 {!isOptimizing && <Check className="w-4 h-4" />}
