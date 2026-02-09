@@ -61,7 +61,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
             setMessage('');
         } catch (error) {
             console.error(error);
-            setMessage('Failed to load video engine. Please try again or use Chrome/Edge.');
+            setMessage(`Failed to load video engine: ${(error as Error).message}`);
         }
     };
 
