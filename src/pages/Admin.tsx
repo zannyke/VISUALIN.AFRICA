@@ -216,16 +216,24 @@ const Admin = () => {
                 if (!initRes.ok) throw new Error('Failed to get upload URL');
                 const { uploadUrl, publicUrl } = await initRes.json();
 
-                // 2. Upload File to R2
-                const uploadRes = await fetch(uploadUrl, {
-                    method: 'PUT',
-                    body: previewFile,
-                    headers: {
-                        'Content-Type': previewFile.type
-                    }
+                // 2. Upload File to R2 with Progress
+                await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('PUT', uploadUrl);
+                    xhr.upload.onprogress = (event) => {
+                        if (event.lengthComputable) {
+                            const percent = Math.round((event.loaded / event.total) * 100);
+                            setUploadProgress(percent);
+                        }
+                    };
+                    xhr.onload = () => {
+                        if (xhr.status === 200) resolve(true);
+                        else reject(new Error('Upload failed'));
+                    };
+                    xhr.onerror = () => reject(new Error('Network error during upload'));
+                    xhr.setRequestHeader('Content-Type', previewFile.type);
+                    xhr.send(previewFile);
                 });
-
-                if (!uploadRes.ok) throw new Error('Failed to upload file to storage');
 
                 newUrl = publicUrl;
                 setUploadProgress(100);
