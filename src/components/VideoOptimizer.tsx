@@ -85,23 +85,34 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
             await ffmpeg.writeFile(inputName, await fetchFile(file));
 
             // Build FFmpeg Command
-            // -ss: start time
-            // -to: end time
-            // -crf: Constant Rate Factor (0-51, lower is better quality, higher is smaller size)
-            // 23 is default, 28 covers "medium", 32 is "high compression"
-            let crf = '23'; // Low compression (high quality)
-            if (compressionLevel === 'medium') crf = '28';
-            if (compressionLevel === 'high') crf = '32';
+            let args: string[] = [];
 
-            const args = [
-                '-i', inputName,
-                '-ss', startTime.toString(),
-                '-to', endTime.toString(),
-                '-vcodec', 'libx264',
-                '-crf', crf,
-                '-preset', 'fast', // faster encoding
-                outputName
-            ];
+            if (compressionLevel === 'low') {
+                // EXTREMELY FAST: "Stream Copy"
+                // No re-encoding. Just cuts the file at the keyframes nearest the start/end.
+                // Quality is 100% original.
+                args = [
+                    '-i', inputName,
+                    '-ss', startTime.toString(),
+                    '-to', endTime.toString(),
+                    '-c', 'copy', // The magic flag for speed
+                    outputName
+                ];
+            } else {
+                // SLOWER: Re-encoding for size reduction
+                let crf = '28'; // Medium
+                if (compressionLevel === 'high') crf = '32'; // High
+
+                args = [
+                    '-i', inputName,
+                    '-ss', startTime.toString(),
+                    '-to', endTime.toString(),
+                    '-vcodec', 'libx264',
+                    '-crf', crf,
+                    '-preset', 'ultrafast', // prioritizing speed over max compression
+                    outputName
+                ];
+            }
 
             await ffmpeg.exec(args);
 
