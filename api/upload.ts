@@ -17,21 +17,15 @@ const R2 = new S3Client({
 });
 
 export default async function handler(request: any, response: any) {
-    // Debugging R2 Uploads - Force Redeploy 2026-02-09
-    console.log('--- UPLOAD HANDLER START ---');
-    console.log('Method:', request.method);
-    console.log('Headers:', JSON.stringify(request.headers));
-
     if (request.method !== 'POST') {
         return response.status(405).json({ error: 'Method not allowed' });
     }
 
     let body = request.body;
 
-    // Safely parse body if it comes as a string
+    // Safely parse body if it comes as a string (handling edge cases)
     try {
         if (typeof body === 'string') {
-            console.log('Parsing string body...');
             body = JSON.parse(body);
         }
     } catch (e) {
@@ -40,6 +34,11 @@ export default async function handler(request: any, response: any) {
     }
 
     const { filename, contentType: rawContentType, auth } = body || {};
+
+    // Check Auth
+    if (!process.env.ADMIN_PASSWORD || auth !== process.env.ADMIN_PASSWORD) {
+        return response.status(401).json({ error: 'Unauthorized' });
+    }
 
     // Fallback for missing content type (often happens with HEIC or specific video formats)
     let contentType = rawContentType;
@@ -58,24 +57,9 @@ export default async function handler(request: any, response: any) {
             'webm': 'video/webm'
         };
         contentType = mimeMap[ext] || 'application/octet-stream';
-        console.log('Inferred Content-Type:', contentType, 'from extension:', ext);
-    }
-
-    console.log('Upload Request Body Parsed:', {
-        filename,
-        contentType,
-        authPresent: !!auth, // don't log the password
-        bodyType: typeof request.body
-    });
-
-    // Check Auth
-    if (!process.env.ADMIN_PASSWORD || auth !== process.env.ADMIN_PASSWORD) {
-        console.error('Auth Check Failed.');
-        return response.status(401).json({ error: 'Unauthorized' });
     }
 
     if (!filename || !contentType) {
-        console.error('Validation failed: Missing filename or contentType');
         return response.status(400).json({ error: 'Missing filename or contentType' });
     }
 
