@@ -22,7 +22,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
     const [duration, setDuration] = useState(0);
     const [startTime, setStartTime] = useState(0);
     const [endTime, setEndTime] = useState(0);
-    const [compressionLevel, setCompressionLevel] = useState<'low' | 'medium' | 'high'>('medium');
+    const [compressionLevel, setCompressionLevel] = useState<'low' | 'medium' | 'high'>('low');
 
     // Preview
     const [isPlaying, setIsPlaying] = useState(false);
@@ -268,9 +268,9 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                             </div>
                         </div>
 
-                        {/* Compression Level */}
+                        {/* Export Quality */}
                         <div className="space-y-2">
-                            <label className="text-sm text-zinc-400">Compression Level</label>
+                            <label className="text-sm text-zinc-400">Export Quality</label>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 {(['low', 'medium', 'high'] as const).map((level) => (
                                     <button
@@ -281,13 +281,16 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                             : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
                                             }`}
                                     >
-                                        {level.charAt(0).toUpperCase() + level.slice(1)}
+                                        {level === 'low' ? 'Original Quality' : level === 'medium' ? 'Balanced' : 'Max Compression'}
                                         <span className="block text-xs opacity-70">
-                                            {level === 'low' ? 'Best Quality' : level === 'medium' ? 'Balanced' : 'Smallest File'}
+                                            {level === 'low' ? 'Larger File' : level === 'medium' ? 'Standard' : 'Smallest File'}
                                         </span>
                                     </button>
                                 ))}
                             </div>
+                            <p className="text-xs text-zinc-500 mt-1">
+                                Trimming the video will naturally reduce file size by discarding unused parts.
+                            </p>
                         </div>
                     </div>
 
@@ -324,7 +327,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
                                 disabled={!loaded || isOptimizing}
                                 className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                             >
-                                {isOptimizing ? 'Processing...' : 'Optimize & Use'}
+                                {isOptimizing ? 'Processing...' : 'Trim & Save'}
                                 {!isOptimizing && <Check className="w-4 h-4" />}
                             </button>
                         </div>
