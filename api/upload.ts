@@ -75,7 +75,6 @@ export default async function handler(request: any, response: any) {
         const uploadUrl = await getSignedUrl(R2, command, { expiresIn: 3600 });
         const publicUrl = `${process.env.R2_PUBLIC_DOMAIN}/${uniqueFilename}`;
 
-        console.log('Generated Upload URL successfully');
         return response.status(200).json({ uploadUrl, publicUrl });
     } catch (error) {
         console.error('R2 URL Generation Error:', error);
