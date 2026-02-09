@@ -39,7 +39,27 @@ export default async function handler(request: any, response: any) {
         return response.status(400).json({ error: 'Invalid JSON body' });
     }
 
-    const { filename, contentType, auth } = body || {};
+    const { filename, contentType: rawContentType, auth } = body || {};
+
+    // Fallback for missing content type (often happens with HEIC or specific video formats)
+    let contentType = rawContentType;
+    if (!contentType && filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        const mimeMap: { [key: string]: string } = {
+            'heic': 'image/heic',
+            'heif': 'image/heif',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'png': 'image/png',
+            'gif': 'image/gif',
+            'webp': 'image/webp',
+            'mp4': 'video/mp4',
+            'mov': 'video/quicktime',
+            'webm': 'video/webm'
+        };
+        contentType = mimeMap[ext] || 'application/octet-stream';
+        console.log('Inferred Content-Type:', contentType, 'from extension:', ext);
+    }
 
     console.log('Upload Request Body Parsed:', {
         filename,
