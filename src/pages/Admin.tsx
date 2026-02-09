@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, LogOut, Loader, Lock, Mail, Calendar, User, Image as ImageIcon, Upload, Eye, EyeOff, X, Pencil, CheckCircle } from 'lucide-react';
 import content from '../constants/content.json';
+import VideoOptimizer from '../components/VideoOptimizer';
 
 
 interface Message {
@@ -52,6 +53,8 @@ const Admin = () => {
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [showOptimizer, setShowOptimizer] = useState(false);
+    const [fileToOptimize, setFileToOptimize] = useState<File | null>(null);
 
     // Upload & Preview States
     const [previewFile, setPreviewFile] = useState<File | null>(null);
@@ -141,13 +144,34 @@ const Admin = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
+        if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            setPreviewFile(file);
-            setPreviewUrl(URL.createObjectURL(file));
+
+            // Check if video to trigger optimization
+            if (file.type.startsWith('video/')) {
+                setFileToOptimize(file);
+                setShowOptimizer(true);
+            } else {
+                setPreviewFile(file);
+                const url = URL.createObjectURL(file);
+                setPreviewUrl(url);
+            }
+
             if (!editingItem) {
                 setUploadForm({ ...uploadForm, title: file.name.split('.')[0] });
             }
+        }
+    };
+
+    const handleOptimizedFile = (optimizedFile: File) => {
+        setPreviewFile(optimizedFile);
+        const url = URL.createObjectURL(optimizedFile);
+        setPreviewUrl(url);
+        setShowOptimizer(false);
+        setFileToOptimize(null);
+
+        if (!editingItem) {
+            setUploadForm({ ...uploadForm, title: optimizedFile.name.split('.')[0].replace('optimized-', '') });
         }
     };
 
@@ -578,6 +602,22 @@ const Admin = () => {
                         )}
                     </>
                 )}
+
+                {/* Video Optimizer Modal */}
+                <AnimatePresence>
+                    {showOptimizer && fileToOptimize && (
+                        <VideoOptimizer
+                            file={fileToOptimize}
+                            onOptimize={handleOptimizedFile}
+                            onCancel={() => {
+                                setShowOptimizer(false);
+                                setFileToOptimize(null);
+                                // Optional: Set raw file if cancelled?
+                                // Let's simplify and just cancel optimization
+                            }}
+                        />
+                    )}
+                </AnimatePresence>
 
                 {/* MODAL & NOTIFICATION PORTALS */}
                 <AnimatePresence>
