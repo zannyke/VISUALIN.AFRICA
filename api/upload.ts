@@ -7,6 +7,9 @@ export const config = {
     },
 };
 
+// Vercel R2 Update Trigger - 2026-02-09
+
+
 const R2 = new S3Client({
     region: 'auto',
     endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
