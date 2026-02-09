@@ -41,5 +41,6 @@ export const images = {
         "/art/ART_0602.jpg",
         "/art/ART_0621_1.jpg",
         "/art/ART_0621.jpg"
-    ]
+    ],
+    about: "/art/artdennoh.png"
 };
