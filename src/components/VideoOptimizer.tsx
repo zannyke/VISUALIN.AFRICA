@@ -45,7 +45,7 @@ export default function VideoOptimizer({ file, onOptimize, onCancel }: VideoOpti
         const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
         const ffmpeg = ffmpegRef.current;
 
-        ffmpeg.on('log', ({ message }: { message: string }) => {
+        ffmpeg.on('log', () => {
             // console.log(message);
         });
 
