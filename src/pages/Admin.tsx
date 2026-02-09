@@ -236,6 +236,7 @@ const Admin = () => {
                 });
 
                 newUrl = publicUrl;
+                console.log('UPLOAD SUCCESS: Public URL is:', newUrl); // DEBUG LOG
                 setUploadProgress(100);
             }
 
