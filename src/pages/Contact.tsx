@@ -104,6 +104,7 @@ const ContactForm = () => {
             email: (form.elements.namedItem('email') as HTMLInputElement).value,
             subject: (form.elements.namedItem('subject') as HTMLInputElement).value,
             message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+            honey: (form.elements.namedItem('honey') as HTMLInputElement)?.value || '',
         };
 
         try {
@@ -130,6 +131,12 @@ const ContactForm = () => {
     return (
         <>
             <form className="space-y-6" onSubmit={handleSubmit}>
+                {/* Honeypot Field - Hidden from users */}
+                <div className="opacity-0 absolute -z-10 select-none pointer-events-none h-0 w-0 overflow-hidden">
+                    <label htmlFor="honey">Website</label>
+                    <input type="text" id="honey" name="honey" tabIndex={-1} autoComplete="off" />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label htmlFor="name" className="text-sm font-medium text-charcoal dark:text-white">Name</label>

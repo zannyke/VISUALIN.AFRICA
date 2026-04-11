@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 
-import { Play, X } from 'lucide-react';
+import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
 
 // Helper component for auto-playing videos on scroll
@@ -53,6 +53,14 @@ const Gallery = () => {
 
     const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
     const [dbItems, setDbItems] = useState<GalleryItem[]>([]);
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    const scrollCarousel = (direction: 'left' | 'right') => {
+        if (carouselRef.current) {
+            const scrollAmount = window.innerWidth > 768 ? window.innerWidth * 0.45 : window.innerWidth * 0.85;
+            carouselRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+        }
+    };
 
     // Helper to check if source is a video file
     const isVideoFile = (src: string) => /\.(mp4|mov|webm|ogg|quicktime)$/i.test(src);
@@ -121,8 +129,11 @@ const Gallery = () => {
             </div>
 
             {/* Carousel Section */}
-            <div className="mb-32 relative pl-6 md:pl-0">
-                <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-10 scrollbar-hide px-6 md:px-12">
+            <div className="mb-20 md:mb-32 relative">
+                <div 
+                    ref={carouselRef}
+                    className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-6 scrollbar-hide px-6 md:px-12"
+                >
                     {featuredItems.map((item, index) => (
                         <motion.div
                             key={index}
@@ -167,6 +178,24 @@ const Gallery = () => {
                             </div>
                         </motion.div>
                     ))}
+                </div>
+
+                {/* Navigation Arrows */}
+                <div className="flex justify-center gap-6 mt-4 md:mt-8 px-6 md:px-12 w-full">
+                    <button 
+                        onClick={() => scrollCarousel('left')}
+                        className="p-4 rounded-full bg-gray-200 dark:bg-white/10 text-slate-800 dark:text-white hover:bg-cobalt hover:text-white dark:hover:bg-cobalt transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
+                        aria-label="Scroll left"
+                    >
+                        <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+                    </button>
+                    <button 
+                        onClick={() => scrollCarousel('right')}
+                        className="p-4 rounded-full bg-gray-200 dark:bg-white/10 text-slate-800 dark:text-white hover:bg-cobalt hover:text-white dark:hover:bg-cobalt transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
+                        aria-label="Scroll right"
+                    >
+                        <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
                 </div>
             </div>
 

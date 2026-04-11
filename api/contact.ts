@@ -9,11 +9,34 @@ export default async function handler(request: any, response: any) {
     }
 
     try {
-        const { name, email, subject, message } = request.body;
+        let body = request.body;
+        // Safely parse body if it comes as a string
+        if (typeof body === 'string') {
+            try {
+                body = JSON.parse(body);
+            } catch (e) {
+                return response.status(400).json({ error: 'Invalid JSON body' });
+            }
+        }
+
+        const { name, email, subject, message, honey } = body;
         console.log('Received data:', { name, email, subject });
+
+        // Spam Protection (Honeypot)
+        if (honey) {
+            console.warn('Bot detected via honeypot:', { name, email, ip: request.headers['x-forwarded-for'] });
+            // Return success to fool the bot, but do nothing
+            return response.status(200).json({ success: true, message: 'Message received' });
+        }
 
         if (!name || !email || !message) {
             return response.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // Basic Email Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return response.status(400).json({ error: 'Invalid email address' });
         }
 
         // 1. Save to Vercel Postgres Database
