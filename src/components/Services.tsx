@@ -1,17 +1,17 @@
 
 import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Camera, Video, Sparkles, Tv, Plane, ArrowRight } from 'lucide-react';
+import { Camera, Film, Megaphone, Radio, Aperture, Briefcase, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import content from '../constants/content.json';
 
 const iconMap: Record<string, any> = {
     "Wedding Coverage": Camera,
-    "Fashion Photography & Reels": Sparkles,
-    "Promotional Videos": Video,
-    "Livestreaming": Tv,
-    "Documentary & Drone Coverage": Plane,
-    "Corporate Event Highlights": Video
+    "Fashion Photography & Reels": Film,
+    "Promotional Videos": Megaphone,
+    "Livestreaming": Radio,
+    "Documentary & Drone Coverage": Aperture,
+    "Corporate Event Highlights": Briefcase
 };
 
 const videoMap: Record<string, string> = {
@@ -22,7 +22,7 @@ const videoMap: Record<string, string> = {
 
 const services = content.services.map((service, index) => ({
     id: index + 1,
-    icon: iconMap[service.title] || Video,
+    icon: iconMap[service.title] || Film,
     title: service.title,
     desc: service.description,
     features: service.features,
@@ -108,13 +108,13 @@ const Services = () => {
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
                             onClick={() => handleCardClick(service.title)}
-                            className={`relative overflow-hidden h-full backdrop-blur-3xl bg-slate-100/90 dark:bg-white/5 border border-white/40 dark:border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-[#F57703] dark:hover:bg-[#F57703] transition-all duration-700 ease-out shadow-xl hover:shadow-2xl hover:shadow-[#F57703]/30 group ring-1 ring-white/20 hover:ring-white/50`}
+                            className="relative overflow-hidden h-full backdrop-blur-md bg-white/70 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 p-8 rounded-3xl cursor-pointer hover:border-[#F57703]/50 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-slate-200/30 dark:hover:shadow-none group"
                         >
-                            {/* Cinematic Background Gradient - Visible on Hover for uniform grading */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                            {/* Cinematic Background Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
                             {service.videoSrc && (
-                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-2xl overflow-hidden">
+                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-3xl overflow-hidden">
                                     <video
                                         src={service.videoSrc}
                                         className="w-full h-full object-cover transform scale-110 group-hover:scale-100 transition-transform duration-[2s]"
@@ -128,16 +128,16 @@ const Services = () => {
                                             e.currentTarget.currentTime = 0;
                                         }}
                                     />
-                                    <div className="absolute inset-0 bg-[#F57703]/90 group-hover:bg-[#F57703]/60 transition-colors duration-700" />
+                                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/25 transition-colors duration-700" />
                                 </div>
                             )}
 
                             <div className="relative z-10 flex flex-col h-full justify-between">
                                 <div>
-                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/20 text-[#F57703] group-hover:bg-white group-hover:text-[#F57703] group-hover:border-white transition-all duration-300 shadow-sm backdrop-blur-md">
+                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-slate-100 dark:bg-white/10 border border-slate-200/40 dark:border-white/10 text-[#F57703] group-hover:bg-[#F57703] group-hover:text-white group-hover:border-[#F57703] transition-all duration-300 shadow-sm backdrop-blur-md">
                                         <service.icon size={28} strokeWidth={1.5} />
                                     </div>
-                                    <h3 className="text-3xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
+                                    <h3 className="text-2xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
                                     <p className="text-slate-600 dark:text-slate-400 group-hover:text-white/90 transition-colors leading-relaxed text-base mb-4">
                                         {service.desc}
                                     </p>

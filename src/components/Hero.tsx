@@ -39,14 +39,14 @@ const Hero = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-platinum dark:bg-obsidian">
+        <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-platinum dark:bg-obsidian">
 
             {/* Cinematic Video Background - Edge to Edge */}
             <motion.div
                 style={{ scale }}
                 className="absolute inset-0 z-0 select-none pointer-events-none"
             >
-                <div className="absolute inset-0 bg-white/50 dark:bg-black/70 z-10 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-transparent dark:bg-black/60 z-10 transition-colors duration-500" />
                 <video
                     ref={videoRef}
                     autoPlay
@@ -84,7 +84,7 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight text-charcoal dark:text-white mb-6 leading-[0.9] drop-shadow-md mix-blend-overlay dark:mix-blend-normal"
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight text-black dark:text-white mb-6 leading-[0.9] drop-shadow-lg"
                         style={{ textShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
                     >
                         VISUALINK AFRICA

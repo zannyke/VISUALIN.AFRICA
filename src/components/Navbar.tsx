@@ -45,17 +45,17 @@ const Navbar = () => {
     return (
         <motion.nav
             variants={{
-                visible: { y: 0 },
-                hidden: { y: "-100%" },
+                visible: { y: 0, opacity: 1 },
+                hidden: { y: -100, opacity: 0 },
             }}
             animate={hidden && !isOpen ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${scrolled
-                ? 'py-3 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl shadow-md'
-                : 'py-4 bg-transparent'
+            className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 transition-all duration-300 py-2.5 px-6 rounded-full border shadow-xl ${scrolled
+                ? 'bg-white/80 dark:bg-obsidian/85 border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-slate-200/40 dark:shadow-none'
+                : 'bg-white/40 dark:bg-obsidian/45 border-white/20 dark:border-white/5 backdrop-blur-md'
                 }`}
         >
-            <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+            <div className="flex items-center justify-between w-full">
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
@@ -90,13 +90,7 @@ const Navbar = () => {
                                         />
                                     )}
 
-                                    <motion.div
-                                        animate={isActive ? { scale: 1.1, rotate: [0, -10, 10, 0] } : { scale: 1, rotate: 0 }}
-                                        transition={{ duration: 0.4 }}
-                                    >
-                                        <link.icon size={16} strokeWidth={isActive ? 2.5 : 2} />
-                                    </motion.div>
-                                    <span>{link.name}</span>
+                                    <span className="relative py-1 font-semibold tracking-wide uppercase text-[11px]">{link.name}</span>
                                 </Link>
                             );
                         })}
@@ -184,7 +178,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, height: '100vh' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="fixed inset-0 top-[72px] z-40 bg-white/95 dark:bg-obsidian/95 backdrop-blur-2xl md:hidden overflow-y-auto"
+                        className="fixed inset-x-4 top-[84px] rounded-3xl border border-slate-200/60 dark:border-white/10 overflow-hidden shadow-2xl z-40 bg-white/95 dark:bg-obsidian/95 backdrop-blur-2xl md:hidden overflow-y-auto max-h-[75vh]"
                     >
                         <div className="p-6 flex flex-col gap-4 pt-8">
                             {links.map((link, i) => (

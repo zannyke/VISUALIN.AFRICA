@@ -51,6 +51,65 @@ const Gallery = () => {
         | { type: 'video', id?: string | number, src: string, title?: string, category?: string, orientation?: 'portrait' | 'landscape' }
         | { type: 'slideshow', id?: string | number, images: string[], title: string, category: string, orientation: 'portrait' | 'landscape' };
 
+    const defaultGalleryItems: GalleryItem[] = [
+        {
+            type: 'video',
+            id: 101,
+            src: "/videos/wedding-reception.mp4",
+            title: "Wedding Reception Highlights",
+            category: "Wedding Coverage",
+            orientation: "landscape"
+        },
+        {
+            type: 'video',
+            id: 102,
+            src: "/videos/fashion-reels.mp4",
+            title: "Vibrant Fashion Campaign",
+            category: "Fashion Photography & Reels",
+            orientation: "landscape"
+        },
+        {
+            type: 'video',
+            id: 103,
+            src: "/videos/makutano.mp4",
+            title: "Makutano Promo Film",
+            category: "Promotional Videos",
+            orientation: "landscape"
+        },
+        {
+            type: 'image',
+            id: 104,
+            src: "/art/ART_0416.jpg",
+            title: "Studio Fine Art Portrait",
+            category: "Fashion Photography & Reels",
+            orientation: "landscape"
+        },
+        {
+            type: 'image',
+            id: 105,
+            src: "/art/ART_0602.jpg",
+            title: "Chiaroscuro Lighting Session",
+            category: "Fashion Photography & Reels",
+            orientation: "landscape"
+        },
+        {
+            type: 'image',
+            id: 106,
+            src: "/art/ART_0621.jpg",
+            title: "Outdoor Creative Shoot",
+            category: "Fashion Photography & Reels",
+            orientation: "landscape"
+        },
+        {
+            type: 'image',
+            id: 107,
+            src: "/art/ART_0621_1.jpg",
+            title: "Creative Portrait Session",
+            category: "Fashion Photography & Reels",
+            orientation: "landscape"
+        }
+    ];
+
     const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
     const [dbItems, setDbItems] = useState<GalleryItem[]>([]);
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -69,9 +128,10 @@ const Gallery = () => {
         const fetchGalleryItems = async () => {
             try {
                 const response = await fetch('/api/gallery');
-                if (response.ok) {
+                const contentType = response.headers.get('content-type');
+                if (response.ok && contentType && contentType.includes('application/json')) {
                     const data = await response.json();
-                    if (data.items) {
+                    if (data.items && data.items.length > 0) {
                         const formattedItems: GalleryItem[] = data.items
                             .sort((a: any, b: any) => b.id - a.id) // Recent first
                             .map((item: any) => {
@@ -86,11 +146,14 @@ const Gallery = () => {
                                 };
                             });
                         setDbItems(formattedItems);
+                        return;
                     }
                 }
             } catch (error) {
                 console.error("Failed to fetch gallery items", error);
             }
+            // Fallback to local default items if DB is empty or connection fails
+            setDbItems(defaultGalleryItems);
         };
 
         fetchGalleryItems();

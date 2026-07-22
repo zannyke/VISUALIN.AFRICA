@@ -10,7 +10,8 @@ const ServicesPage = () => {
         const fetchVideos = async () => {
             try {
                 const res = await fetch('/api/gallery');
-                if (res.ok) {
+                const contentType = res.headers.get('content-type');
+                if (res.ok && contentType && contentType.includes('application/json')) {
                     const data = await res.json();
                     if (data.items) {
                         // Sort by ID descending (Newest first) so the latest video is always the featured one
