@@ -50,12 +50,12 @@ const Navbar = () => {
             }}
             animate={hidden && !isOpen ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 transition-all duration-300 py-2.5 px-6 rounded-full border shadow-xl ${scrolled
-                ? 'bg-white/80 dark:bg-obsidian/85 border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-slate-200/40 dark:shadow-none'
-                : 'bg-white/40 dark:bg-obsidian/45 border-white/20 dark:border-white/5 backdrop-blur-md'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+                ? 'py-4 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl shadow-md border-b border-slate-200/50 dark:border-white/5'
+                : 'py-6 bg-transparent border-b border-white/5'
                 }`}
         >
-            <div className="flex items-center justify-between w-full">
+            <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
 
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-1 group">
@@ -67,8 +67,8 @@ const Navbar = () => {
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-6">
-                    <nav className="flex items-center p-1 rounded-full bg-slate-100/50 dark:bg-white/5 border border-white/20 backdrop-blur-sm">
+                <div className="hidden md:flex items-center gap-8">
+                    <nav className="flex items-center gap-8">
                         {links.map((link) => {
                             const isActive = location.pathname === link.href;
 
@@ -76,21 +76,12 @@ const Navbar = () => {
                                 <Link
                                     key={link.name}
                                     to={link.href}
-                                    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center gap-2 z-10 ${isActive
-                                        ? 'text-charcoal dark:text-white'
-                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                                    className={`relative py-1 font-semibold tracking-widest uppercase text-xs transition-colors duration-200 ${isActive
+                                        ? 'text-cobalt dark:text-white border-b-2 border-cobalt'
+                                        : 'text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-white'
                                         }`}
                                 >
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="activePill"
-                                            className="absolute inset-0 bg-white dark:bg-white/10 rounded-full shadow-sm"
-                                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                            style={{ zIndex: -1 }}
-                                        />
-                                    )}
-
-                                    <span className="relative py-1 font-semibold tracking-wide uppercase text-[11px]">{link.name}</span>
+                                    {link.name}
                                 </Link>
                             );
                         })}
@@ -115,7 +106,7 @@ const Navbar = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-5 py-2.5 text-sm font-semibold bg-cobalt text-white rounded-full flex items-center gap-2 shadow-lg shadow-cobalt/20 hover:shadow-xl transition-all"
+                                className="px-5 py-2.5 text-xs font-bold tracking-widest uppercase bg-cobalt text-white rounded-full flex items-center gap-2 shadow-lg shadow-cobalt/20 hover:shadow-xl transition-all"
                             >
                                 <span>Start Project</span>
                                 <motion.div
@@ -178,7 +169,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, height: '100vh' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="fixed inset-x-4 top-[84px] rounded-3xl border border-slate-200/60 dark:border-white/10 overflow-hidden shadow-2xl z-40 bg-white/95 dark:bg-obsidian/95 backdrop-blur-2xl md:hidden overflow-y-auto max-h-[75vh]"
+                        className="fixed inset-0 top-[72px] z-40 bg-white/98 dark:bg-obsidian/98 backdrop-blur-2xl md:hidden overflow-y-auto"
                     >
                         <div className="p-6 flex flex-col gap-4 pt-8">
                             {links.map((link, i) => (
