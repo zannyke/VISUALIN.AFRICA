@@ -17,8 +17,8 @@
   /* Light mode text */
   --color-accent-slate: #207955;
   --color-deep-blue: #201293;
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Crimson Text", serif;
+  --font-sans: "Raleway", sans-serif;
   /* Fluid Typography & Spacing */
   --text-fluid-h1: clamp(2.5rem, 5vw + 1rem, 5rem);
   --text-fluid-h2: clamp(2rem, 4vw + 1rem, 3.5rem);
@@ -41,7 +41,7 @@
 
   body {
     @apply bg-transparent text-charcoal;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Raleway', sans-serif;
     overflow-x: hidden;
     font-size: var(--text-fluid-body);
     line-height: 1.6;
@@ -58,8 +58,8 @@
   h4,
   h5,
   h6 {
-    font-family: 'Playfair Display', serif;
-    @apply text-charcoal font-bold leading-tight;
+    font-family: 'Crimson Text', serif;
+    @apply text-charcoal font-semibold leading-tight;
     margin-bottom: 0.5em;
   }
 
