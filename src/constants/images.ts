@@ -34,7 +34,7 @@ export const images = {
         "/videos/behind-the-scenes.mp4"
     ],
     garden: [
-        "/videos/sensory-garden.mov"
+        "/videos/sensory-garden.mp4"
     ],
     art: [
         "/art/ART_0416.jpg",

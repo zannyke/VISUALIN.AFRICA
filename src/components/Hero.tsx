@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
-const heroVideos = [
+const defaultHeroVideos = [
     "/videos/working.mp4",
     "/videos/wedding-reception.mp4",
     "/videos/makutano.mp4",
@@ -15,6 +15,35 @@ const Hero = () => {
     const containerRef = useRef(null);
     const { scrollY } = useScroll();
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const [videosList, setVideosList] = useState<string[]>(defaultHeroVideos);
+
+    // Fetch dynamic videos uploaded via Admin panel / Cloudflare R2 storage
+    useEffect(() => {
+        const fetchDynamicVideos = async () => {
+            try {
+                const res = await fetch('/api/gallery');
+                const contentType = res.headers.get('content-type');
+                if (res.ok && contentType && contentType.includes('application/json')) {
+                    const data = await res.json();
+                    if (data.items && data.items.length > 0) {
+                        const dynamicUrls = data.items
+                            .sort((a: any, b: any) => b.id - a.id)
+                            .map((item: any) => item.url)
+                            .filter((url: string) => /\.(mp4|mov|webm)$/i.test(url));
+                        
+                        if (dynamicUrls.length > 0) {
+                            // Merge dynamic uploaded videos with default fallbacks
+                            const combined = Array.from(new Set([...dynamicUrls, ...defaultHeroVideos]));
+                            setVideosList(combined);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch dynamic hero videos:", err);
+            }
+        };
+        fetchDynamicVideos();
+    }, []);
 
     // Parallax & Fade Effects
     const y = useTransform(scrollY, [0, 1000], [0, 400]);
@@ -30,7 +59,7 @@ const Hero = () => {
             videoRef.current.load();
             videoRef.current.play().catch(e => console.log("Auto-play blocked or interrupted:", e));
         }
-    }, [currentVideoIndex]);
+    }, [currentVideoIndex, videosList]);
 
     return (
         <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
@@ -47,8 +76,8 @@ const Hero = () => {
                     muted
                     playsInline
                     preload="auto"
-                    src={heroVideos[currentVideoIndex]}
-                    onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length)}
+                    src={videosList[currentVideoIndex]}
+                    onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videosList.length)}
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20" />
