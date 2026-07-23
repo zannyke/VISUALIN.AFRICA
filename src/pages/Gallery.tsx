@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
-
-import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, X, ChevronLeft, ChevronRight, Filter, Film, Image as ImageIcon } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
 
 // Helper component for auto-playing videos on scroll
@@ -15,27 +14,25 @@ const VideoThumbnail = ({ src }: { src: string }) => {
                 if (!video) return;
 
                 if (entry.isIntersecting) {
-                    // "play slow ly" - Cinematic slow motion
-                    video.playbackRate = 0.7;
+                    video.playbackRate = 0.75;
                     video.play().catch(() => { });
                 } else {
                     video.pause();
                 }
             },
-            { threshold: 0.3 } // Start playing when 30% visible
+            { threshold: 0.3 }
         );
 
         if (videoRef.current) observer.observe(videoRef.current);
-
         return () => observer.disconnect();
     }, []);
 
     return (
-        <div className="w-full h-full relative bg-gray-900">
+        <div className="w-full h-full relative bg-black overflow-hidden">
             <video
                 ref={videoRef}
                 src={src}
-                className="w-full h-full object-cover opacity-90"
+                className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
                 muted
                 loop
                 playsInline
@@ -77,8 +74,32 @@ const Gallery = () => {
             orientation: "landscape"
         },
         {
-            type: 'image',
+            type: 'video',
             id: 104,
+            src: "/videos/working.mp4",
+            title: "Behind The Scenes Creative Workflow",
+            category: "Behind The Scenes",
+            orientation: "landscape"
+        },
+        {
+            type: 'video',
+            id: 105,
+            src: "/videos/dr-godfrey-maggie-2.mp4",
+            title: "Dr. Godfrey & Maggie Wedding Docu",
+            category: "Wedding Coverage",
+            orientation: "landscape"
+        },
+        {
+            type: 'video',
+            id: 106,
+            src: "/videos/kcb-lawyers.mp4",
+            title: "KCB Corporate Documentary",
+            category: "Promotional Videos",
+            orientation: "landscape"
+        },
+        {
+            type: 'image',
+            id: 107,
             src: "/art/ART_0416.jpg",
             title: "Studio Fine Art Portrait",
             category: "Fashion Photography & Reels",
@@ -86,7 +107,7 @@ const Gallery = () => {
         },
         {
             type: 'image',
-            id: 105,
+            id: 108,
             src: "/art/ART_0602.jpg",
             title: "Chiaroscuro Lighting Session",
             category: "Fashion Photography & Reels",
@@ -94,7 +115,7 @@ const Gallery = () => {
         },
         {
             type: 'image',
-            id: 106,
+            id: 109,
             src: "/art/ART_0621.jpg",
             title: "Outdoor Creative Shoot",
             category: "Fashion Photography & Reels",
@@ -102,7 +123,7 @@ const Gallery = () => {
         },
         {
             type: 'image',
-            id: 107,
+            id: 110,
             src: "/art/ART_0621_1.jpg",
             title: "Creative Portrait Session",
             category: "Fashion Photography & Reels",
@@ -110,6 +131,16 @@ const Gallery = () => {
         }
     ];
 
+    const categories = [
+        "All Projects",
+        "Wedding Coverage",
+        "Fashion Photography & Reels",
+        "Promotional Videos",
+        "Behind The Scenes",
+        "Live Streaming"
+    ];
+
+    const [selectedCategory, setSelectedCategory] = useState("All Projects");
     const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
     const [dbItems, setDbItems] = useState<GalleryItem[]>([]);
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -121,7 +152,6 @@ const Gallery = () => {
         }
     };
 
-    // Helper to check if source is a video file
     const isVideoFile = (src: string) => /\.(mp4|mov|webm|ogg|quicktime)$/i.test(src);
 
     useEffect(() => {
@@ -133,157 +163,189 @@ const Gallery = () => {
                     const data = await response.json();
                     if (data.items && data.items.length > 0) {
                         const formattedItems: GalleryItem[] = data.items
-                            .sort((a: any, b: any) => b.id - a.id) // Recent first
+                            .sort((a: any, b: any) => b.id - a.id)
                             .map((item: any) => {
                                 const isVideo = isVideoFile(item.url) || item.url.includes('youtube') || item.url.includes('vimeo');
                                 return {
                                     type: isVideo ? 'video' : 'image',
                                     id: item.id,
                                     src: item.url,
-                                    title: item.title,
-                                    category: item.category,
+                                    title: item.title || "Visualink Portfolio Piece",
+                                    category: item.category || "General",
                                     orientation: 'landscape'
                                 };
                             });
-                        setDbItems(formattedItems);
+
+                        const combined = [
+                            ...formattedItems,
+                            ...defaultGalleryItems.filter(def => 
+                                def.type !== 'slideshow' && !formattedItems.some(f => f.type !== 'slideshow' && f.src === def.src)
+                            )
+                        ];
+                        setDbItems(combined);
                         return;
                     }
                 }
             } catch (error) {
                 console.error("Failed to fetch gallery items", error);
             }
-            // Fallback to local default items if DB is empty or connection fails
             setDbItems(defaultGalleryItems);
         };
 
         fetchGalleryItems();
     }, []);
 
-    // Mixed Gallery Items
-    const allItems = dbItems;
+    const allItems = dbItems.length > 0 ? dbItems : defaultGalleryItems;
 
-    const featuredItems = allItems.filter(x => x.type === 'video').slice(0, 5) as Extract<GalleryItem, { type: 'video' }>[];
+    // Filter items based on active tab
+    const filteredItems = selectedCategory === "All Projects"
+        ? allItems
+        : allItems.filter(item => item.category?.toLowerCase() === selectedCategory.toLowerCase());
+
+    const featuredVideos = allItems.filter(x => x.type === 'video').slice(0, 6) as Extract<GalleryItem, { type: 'video' }>[];
 
     return (
-        <section className="pt-28 md:pt-32 pb-24 min-h-screen bg-white overflow-hidden">
+        <section className="pt-28 md:pt-36 pb-24 min-h-screen bg-white text-charcoal">
 
             {/* Header */}
-            <div className="container mx-auto px-6 mb-20">
+            <div className="container mx-auto px-6 mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
                     className="max-w-4xl"
                 >
-                    <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Portfolio</span>
-                    <h2
-                        className="font-serif font-bold text-charcoal mb-8"
+                    <span className="text-cobalt font-semibold tracking-[0.25em] uppercase text-xs mb-4 block">Portfolio & Archive</span>
+                    <h1
+                        className="font-serif font-normal text-charcoal mb-6 leading-tight"
                         style={{ fontSize: "var(--text-fluid-h2)" }}
                     >
                         Our Work.
-                    </h2>
-                    <p className="text-slate-600 max-w-2xl text-lg leading-relaxed font-medium">
-                        Explore our creative portfolio of premium cinematic films, brand stories, and editorial photography captured across East Africa.
+                    </h1>
+                    <p className="text-slate-600 max-w-2xl text-base sm:text-lg leading-relaxed">
+                        Explore our creative portfolio of premium cinematic films, wedding documentaries, brand campaigns, and visual storytelling captured across Africa.
                     </p>
                 </motion.div>
             </div>
 
-            {/* Featured Films Horizontal Carousel */}
-            <div className="relative mb-28">
+            {/* Featured Landscape Films Carousel */}
+            <div className="relative mb-24">
                 <div className="container mx-auto px-6 mb-8 flex justify-between items-end">
                     <div>
-                        <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-2 block font-sans">Featured</span>
-                        <h3 className="text-3xl font-serif font-normal text-charcoal">Cinematic Stories</h3>
+                        <span className="text-cobalt font-bold tracking-[0.2em] uppercase text-[11px] mb-2 block">Featured Reel</span>
+                        <h2 className="text-2xl sm:text-3xl font-serif font-normal text-charcoal">Cinematic Stories</h2>
+                    </div>
+                    
+                    {/* Carousel Nav Buttons */}
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => scrollCarousel('left')}
+                            className="p-3 rounded-full bg-slate-100 text-charcoal hover:bg-cobalt hover:text-white transition-all duration-300 shadow-sm"
+                            aria-label="Scroll left"
+                        >
+                            <ChevronLeft size={20} />
+                        </button>
+                        <button
+                            onClick={() => scrollCarousel('right')}
+                            className="p-3 rounded-full bg-slate-100 text-charcoal hover:bg-cobalt hover:text-white transition-all duration-300 shadow-sm"
+                            aria-label="Scroll right"
+                        >
+                            <ChevronRight size={20} />
+                        </button>
                     </div>
                 </div>
 
-                <div 
+                <div
                     ref={carouselRef}
-                    className="flex gap-8 overflow-x-auto px-6 md:px-12 scrollbar-none scroll-smooth snap-x snap-mandatory"
+                    className="flex gap-6 overflow-x-auto px-6 md:px-12 scrollbar-none scroll-smooth snap-x snap-mandatory"
                     style={{ scrollbarWidth: 'none' }}
                 >
-                    {featuredItems.map((item, index) => (
+                    {featuredVideos.map((item, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.96 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
+                            transition={{ duration: 0.5 }}
                             onClick={() => setSelectedItem(item)}
-                            className="flex-shrink-0 w-[85vw] md:w-[60vw] aspect-video rounded-3xl overflow-hidden shadow-2xl relative cursor-pointer group snap-start bg-black"
+                            className="flex-shrink-0 w-[85vw] md:w-[55vw] lg:w-[45vw] aspect-video rounded-2xl overflow-hidden shadow-xl relative cursor-pointer group snap-start bg-black"
                         >
                             {isVideoFile(item.src) ? (
                                 <video
-                                    key={item.src}
                                     src={item.src}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-[1.5s] opacity-90"
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-90"
                                     autoPlay
                                     muted
                                     loop
                                     playsInline
                                     preload="auto"
-                                    onError={(e) => console.error("Gallery featured video error:", item.src, e)}
                                 />
                             ) : (
                                 <iframe
                                     src={`${item.src}?autoplay=0&controls=0&showinfo=0&rel=0`}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-[1.5s]"
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
                                     title={item.title}
                                     loading="lazy"
                                 />
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity" />
-                            <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                <span className="text-white/60 font-medium uppercase tracking-[0.2em] text-[10px] mb-2 block">{item.category}</span>
-                                <h3
-                                    className="font-serif text-white font-normal mb-3 leading-tight"
-                                    style={{ fontSize: "var(--text-fluid-h3)" }}
-                                >
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                            <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full">
+                                <span className="text-white/70 font-medium uppercase tracking-[0.2em] text-[10px] mb-2 block">{item.category}</span>
+                                <h3 className="font-serif text-white text-xl sm:text-2xl font-normal mb-3 leading-snug">
                                     {item.title}
                                 </h3>
-                                <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-                                    <Play size={14} fill="currentColor" />
-                                    <span className="font-medium text-xs tracking-[0.1em] uppercase">Watch Film</span>
+                                <div className="flex items-center gap-2 text-white/90 group-hover:text-cobalt transition-colors">
+                                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                                        <Play size={14} fill="currentColor" className="ml-0.5" />
+                                    </div>
+                                    <span className="font-medium text-xs tracking-[0.15em] uppercase">Watch Film</span>
                                 </div>
                             </div>
                         </motion.div>
                     ))}
                 </div>
+            </div>
 
-                {/* Navigation Arrows */}
-                <div className="flex justify-center gap-6 mt-4 md:mt-8 px-6 md:px-12 w-full">
-                    <button 
-                        onClick={() => scrollCarousel('left')}
-                        className="p-4 rounded-full bg-gray-100 text-slate-800 hover:bg-cobalt hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
-                        aria-label="Scroll left"
-                    >
-                        <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
-                    </button>
-                    <button 
-                        onClick={() => scrollCarousel('right')}
-                        className="p-4 rounded-full bg-gray-100 text-slate-800 hover:bg-cobalt hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
-                        aria-label="Scroll right"
-                    >
-                        <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
+            {/* Filter Category Pills */}
+            <div className="container mx-auto px-6 mb-12">
+                <div className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-none border-b border-slate-100">
+                    <div className="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-widest mr-2 shrink-0">
+                        <Filter size={14} />
+                        <span>Filter:</span>
+                    </div>
+                    {categories.map((category) => {
+                        const isActive = selectedCategory === category;
+                        return (
+                            <button
+                                key={category}
+                                onClick={() => setSelectedCategory(category)}
+                                className={`px-5 py-2.5 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-300 shrink-0 ${
+                                    isActive
+                                        ? 'bg-charcoal text-white shadow-md'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                }`}
+                            >
+                                {category}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 
-            {/* Masonry Grid */}
+            {/* Main Portfolio Grid */}
             <div className="container mx-auto px-6">
-                <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                    {allItems.map((item, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {filteredItems.map((item, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "50px" }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                            className="group relative cursor-pointer break-inside-avoid"
+                            transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
+                            className="group relative cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 bg-slate-50 border border-slate-100 flex flex-col"
                             onClick={() => item.type !== 'slideshow' && setSelectedItem(item)}
                         >
-                            <div className={`relative rounded-sm overflow-hidden bg-gray-100 ${item.type === 'video' ? 'aspect-video' : ''}`}>
-
+                            <div className="aspect-video relative overflow-hidden bg-black">
                                 {item.type === 'slideshow' ? (
                                     <FineArtSlideshow
                                         images={item.images}
@@ -295,100 +357,100 @@ const Gallery = () => {
                                     <img
                                         src={item.src}
                                         alt={item.title}
-                                        className="w-full h-auto block transform group-hover:scale-105 transition-transform duration-[1.5s]"
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                                         loading="lazy"
                                     />
                                 ) : item.type === 'video' ? (
                                     isVideoFile(item.src) ? (
                                         <VideoThumbnail src={item.src} />
                                     ) : (
-                                        <div className="aspect-video bg-black relative">
+                                        <div className="w-full h-full bg-black relative">
                                             <img
                                                 src={`https://img.youtube.com/vi/${item.src.split('/').pop()}/maxresdefault.jpg`}
                                                 className="w-full h-full object-cover opacity-80"
                                                 alt={item.title}
                                                 loading="lazy"
-                                                onError={(e) => {
-                                                    e.currentTarget.style.display = 'none';
-                                                }}
+                                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
                                             />
-                                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                <Play className="text-white opacity-50" size={48} />
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <Play className="text-white opacity-70 group-hover:scale-110 transition-transform" size={40} />
                                             </div>
                                         </div>
                                     )
                                 ) : null}
 
-                                {item.type !== 'slideshow' && (
-                                    <div className="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
-                                        <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                                            <span className="text-white/60 text-[10px] font-medium uppercase tracking-[0.2em] mb-1 block">{item.category}</span>
-                                            <h4
-                                                className="text-white font-serif font-normal"
-                                                style={{ fontSize: "var(--text-fluid-h4)" }}
-                                            >
-                                                {item.title}
-                                            </h4>
-                                        </div>
-                                    </div>
-                                )}
+                                <div className="absolute top-4 right-4 z-20">
+                                    <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[10px] text-white font-medium uppercase tracking-wider flex items-center gap-1.5 border border-white/10">
+                                        {item.type === 'video' ? <Film size={12} /> : <ImageIcon size={12} />}
+                                        {item.type}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="p-6 bg-white flex-1 flex flex-col justify-between border-t border-slate-100">
+                                <div>
+                                    <span className="text-cobalt font-semibold tracking-[0.2em] uppercase text-[10px] mb-2 block">
+                                        {item.category}
+                                    </span>
+                                    <h3 className="font-serif text-lg text-charcoal font-normal group-hover:text-cobalt transition-colors">
+                                        {item.title}
+                                    </h3>
+                                </div>
                             </div>
                         </motion.div>
                     ))}
                 </div>
             </div>
 
-            {/* Immersive Lightbox */}
+            {/* Immersive Lightbox Modal */}
             <AnimatePresence>
                 {selectedItem && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/98 backdrop-blur-xl"
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-10"
                         onClick={() => setSelectedItem(null)}
                     >
                         <button
-                            className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 z-50"
+                            className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-3 z-50 rounded-full bg-white/10"
                             onClick={() => setSelectedItem(null)}
                         >
-                            <X size={40} strokeWidth={1} />
+                            <X size={28} />
                         </button>
 
-                        <div className="w-full h-full p-4 md:p-12 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                        <div className="w-full max-w-5xl aspect-video relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10" onClick={(e) => e.stopPropagation()}>
                             {selectedItem.type === 'image' ? (
                                 <img
                                     src={selectedItem.src}
-                                    alt="Full View"
-                                    className="max-w-full max-h-full object-contain shadow-2xl rounded-sm"
+                                    alt={selectedItem.title}
+                                    className="w-full h-full object-contain"
                                 />
                             ) : selectedItem.type === 'video' ? (
-                                <div className="w-full max-w-6xl aspect-video relative bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
-                                    {isVideoFile(selectedItem.src) ? (
-                                        <video
-                                            src={selectedItem.src}
-                                            className="w-full h-full"
-                                            controls
-                                            autoPlay
-                                            playsInline
-                                        />
-                                    ) : (
-                                        <iframe
-                                            src={`${selectedItem.src}${selectedItem.src.includes('?') ? '&' : '?'}autoplay=1&modestbranding=1&rel=0&showinfo=0`}
-                                            className="w-full h-full"
-                                            allow="autoplay; encrypted-media; fullscreen"
-                                            allowFullScreen
-                                            title={selectedItem.title}
-                                        />
-                                    )}
-                                </div>
+                                isVideoFile(selectedItem.src) ? (
+                                    <video
+                                        src={selectedItem.src}
+                                        className="w-full h-full"
+                                        controls
+                                        autoPlay
+                                        playsInline
+                                    />
+                                ) : (
+                                    <iframe
+                                        src={`${selectedItem.src}${selectedItem.src.includes('?') ? '&' : '?'}autoplay=1&modestbranding=1&rel=0&showinfo=0`}
+                                        className="w-full h-full"
+                                        allow="autoplay; encrypted-media; fullscreen"
+                                        allowFullScreen
+                                        title={selectedItem.title}
+                                    />
+                                )
                             ) : null}
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-        </section >
+        </section>
     );
 };
 
