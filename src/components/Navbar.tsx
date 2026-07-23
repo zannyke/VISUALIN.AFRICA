@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Info, Briefcase, Image, Sun, Moon, ArrowRight } from 'lucide-react';
+import { Menu, X, Home, Info, Briefcase, Image, ArrowRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [isDark, setIsDark] = useState(false);
     const [hidden, setHidden] = useState(false);
     const { scrollY } = useScroll();
     const location = useLocation();
@@ -26,15 +25,6 @@ const Navbar = () => {
         }
     });
 
-    // Handle Theme Toggle
-    useEffect(() => {
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }, [isDark]);
-
     const links = [
         { name: 'Home', href: '/', icon: Home },
         { name: 'About', href: '/about', icon: Info },
@@ -51,7 +41,7 @@ const Navbar = () => {
             animate={hidden && !isOpen ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? 'py-4 bg-white dark:bg-obsidian backdrop-blur-xl shadow-sm border-b border-slate-200/50 dark:border-white/5'
+                ? 'py-4 bg-white backdrop-blur-xl shadow-sm border-b border-slate-200/50'
                 : 'py-6 bg-transparent border-b border-white/10'
                 }`}
         >
@@ -78,7 +68,7 @@ const Navbar = () => {
                                     to={link.href}
                                     className={`relative py-1 font-medium tracking-[0.2em] uppercase text-[11px] transition-colors duration-200 ${isActive
                                         ? scrolled ? 'text-cobalt border-b border-cobalt' : 'text-white border-b border-white'
-                                        : scrolled ? 'text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-white' : 'text-white/80 hover:text-white'
+                                        : scrolled ? 'text-slate-800 hover:text-cobalt' : 'text-white/80 hover:text-white'
                                         }`}
                                 >
                                     {link.name}
@@ -87,28 +77,16 @@ const Navbar = () => {
                         })}
                     </nav>
 
-                    <div className={`w-[1px] h-6 ${scrolled ? 'bg-slate-200 dark:bg-white/10' : 'bg-white/20'}`} />
+                    <div className={`w-[1px] h-6 ${scrolled ? 'bg-slate-200' : 'bg-white/20'}`} />
 
                     <div className="flex items-center gap-3">
-                        {/* Theme Toggle */}
-                        <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            whileHover={{ rotate: 180 }}
-                            transition={{ duration: 0.3 }}
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-2.5 rounded-full transition-colors ${scrolled ? 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10' : 'text-white/80 hover:bg-white/10'}`}
-                            aria-label="Toggle Theme"
-                        >
-                            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-                        </motion.button>
-
                         <Link to="/contact">
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 className={`px-5 py-2 text-[10px] font-medium tracking-[0.18em] uppercase rounded-full border transition-all duration-300 ${scrolled
                                     ? 'border-cobalt text-cobalt hover:bg-cobalt hover:text-white'
-                                    : 'border-white text-white hover:bg-white hover:text-obsidian'
+                                    : 'border-white text-white hover:bg-white hover:text-black'
                                     }`}
                             >
                                 Start Project
@@ -119,16 +97,8 @@ const Navbar = () => {
 
                 {/* Mobile Toggle */}
                 <div className="flex md:hidden items-center gap-4">
-                    <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        whileHover={{ rotate: 90 }}
-                        onClick={() => setIsDark(!isDark)}
-                        className="p-2 rounded-full text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-                    >
-                        {isDark ? <Sun size={20} /> : <Moon size={20} />}
-                    </motion.button>
                     <button
-                        className="text-slate-800 dark:text-white p-1"
+                        className={`${scrolled ? 'text-slate-800' : 'text-white'} p-1`}
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <AnimatePresence mode="wait">

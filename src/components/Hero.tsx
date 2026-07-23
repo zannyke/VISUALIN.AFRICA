@@ -1,24 +1,8 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
-const Typewriter = ({ text, delay = 50 }: { text: string, delay?: number }) => {
-    const [currentText, setCurrentText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setCurrentText(prev => prev + text[currentIndex]);
-                setCurrentIndex(prev => prev + 1);
-            }, delay);
-            return () => clearTimeout(timeout);
-        }
-    }, [currentIndex, delay, text]);
-
-    return <span>{currentText}<span className="animate-pulse">|</span></span>;
-};
 
 const Hero = () => {
     const containerRef = useRef(null);
@@ -67,51 +51,28 @@ const Hero = () => {
             >
                 <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
 
-                    {/* Minimalist Narrative Label */}
-                    <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5"
-                    >
-                        <span className="flex h-2 w-2 rounded-full bg-white"></span>
-                        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white">
-                            Elevate Your Narrative
-                        </span>
-                    </motion.div>
-
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-white mb-6 leading-[1.0]"
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-white mb-4 leading-[1.0]"
                     >
                         VISUALINK AFRICA
                     </motion.h1>
 
-                    <motion.div
+                    <motion.h2
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="h-10 md:h-12 text-lg md:text-2xl font-serif font-medium text-white/95 italic mb-10 tracking-wide"
+                        transition={{ delay: 0.4, duration: 0.8 }}
+                        className="text-lg md:text-2xl font-serif font-normal italic text-white/90 mb-12 tracking-wide"
                     >
-                        <Typewriter text="Visuals That Connect." delay={80} />
-                    </motion.div>
-
-                    <motion.p
-                        initial={{ y: 30, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="max-w-2xl text-lg md:text-xl text-white/80 mb-12 leading-relaxed font-medium"
-                    >
-                        Connecting people through powerful storytelling. <br className="hidden md:block" />
-                        We craft cinematic films and bold imagery that inspire emotion.
-                    </motion.p>
+                        Visuals That Connect.
+                    </motion.h2>
 
                     <motion.div
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="flex flex-col sm:flex-row items-center gap-6"
                     >
                         <Link to="/contact" className="px-8 py-3.5 bg-white text-black hover:bg-transparent hover:text-white border-2 border-white rounded-full font-medium tracking-[0.18em] uppercase text-xs transition-all duration-300 ease-out transform active:scale-95 shadow-none focus:outline-none flex items-center gap-2">
