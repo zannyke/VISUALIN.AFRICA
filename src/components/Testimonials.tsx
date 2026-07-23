@@ -1,75 +1,68 @@
 
 import { motion } from 'framer-motion';
-import { Quote, Star } from 'lucide-react';
 
 const testimonials = [
     {
         id: 1,
         name: "James & Faith",
         role: "Wedding Couple",
-        content: "Visualink Africa didn't just document our story they told it with heart. Every shot captured the emotion of the day perfectly.",
-        rating: 5
+        content: "Visualink Africa didn't just document our story—they told it with heart. Every shot captured the emotion of the day perfectly."
     },
     {
         id: 2,
         name: "Terry",
         role: "CEO, Yardie Eatery",
-        content: "From food photography to promo videos, everything looked cinematic and authentic. The content boosted our social media engagement and brought real customers through the door.",
-        rating: 5
+        content: "From food photography to promo videos, everything looked cinematic and authentic. The content boosted our engagement and brought real customers through the door."
     },
     {
         id: 3,
         name: "Sarah M.",
         role: "Creative Director",
-        content: "The level of professionalism and creativity is unmatched. They turned our vague ideas into a stunning visual reality.",
-        rating: 5
+        content: "The level of professionalism and creativity is unmatched. They turned our vague ideas into a stunning visual reality."
     }
 ];
 
 const Testimonials = () => {
     return (
-        <section className="py-24 bg-white dark:bg-obsidian overflow-hidden">
-            <div className="container mx-auto px-6">
+        <section className="py-32 bg-white dark:bg-obsidian transition-colors duration-300">
+            <div className="container mx-auto px-6 max-w-4xl">
 
-                <div className="mb-16 text-center max-w-3xl mx-auto">
-                    <motion.div
+                <div className="mb-24 text-center">
+                    <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-cobalt dark:text-white/60 font-medium tracking-[0.2em] uppercase text-[10px] mb-3 block"
+                    >
+                        Kind Words
+                    </motion.span>
+                    <motion.h2 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        className="text-4xl md:text-5xl font-serif font-normal text-charcoal dark:text-white"
                     >
-                        <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Client Stories</span>
-                        <h2 className="text-4xl md:text-6xl font-serif font-bold text-charcoal dark:text-white mb-6">
-                            Trusted by Clients.
-                        </h2>
-                    </motion.div>
+                        Client Stories
+                    </motion.h2>
                 </div>
 
-                <div className="flex flex-wrap md:flex-nowrap gap-8 justify-center">
+                <div className="space-y-24">
                     {testimonials.map((item, index) => (
                         <motion.div
                             key={item.id}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            whileHover={{ y: -10 }}
-                            className="bg-platinum dark:bg-white/5 p-8 rounded-3xl relative w-full md:w-1/3 flex flex-col shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-white/10"
+                            transition={{ delay: index * 0.1, duration: 0.6 }}
+                            className="text-center flex flex-col items-center max-w-2xl mx-auto"
                         >
-                            <Quote className="text-cobalt/20 mb-6" size={48} />
-
-                            <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 italic leading-relaxed flex-grow">
+                            <p className="text-xl md:text-2xl font-serif font-normal italic text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
                                 "{item.content}"
                             </p>
 
-                            <div className="flex items-center gap-1 mb-4">
-                                {[...Array(item.rating)].map((_, i) => (
-                                    <Star key={i} size={16} className="fill-cobalt text-cobalt" />
-                                ))}
-                            </div>
-
-                            <div>
-                                <h4 className="font-bold text-charcoal dark:text-white text-xl">{item.name}</h4>
-                                <span className="text-sm text-cobalt font-medium uppercase tracking-wide">{item.role}</span>
+                            <div className="flex flex-col items-center">
+                                <span className="font-sans font-medium tracking-[0.2em] uppercase text-xs text-charcoal dark:text-white">{item.name}</span>
+                                <span className="text-[10px] text-cobalt dark:text-white/40 tracking-[0.15em] uppercase mt-1">{item.role}</span>
                             </div>
                         </motion.div>
                     ))}

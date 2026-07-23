@@ -21,37 +21,42 @@ const steps = [
 
 const Process = () => {
     return (
-        <section id="process" className="py-24 bg-platinum dark:bg-gradient-to-b dark:from-obsidian dark:to-[#0f1218] transition-colors duration-300">
-            <div className="container mx-auto px-6">
-                <div className="mb-16">
+        <section id="process" className="py-28 bg-platinum dark:bg-obsidian transition-colors duration-300">
+            <div className="container mx-auto px-6 max-w-6xl">
+                <div className="mb-20 text-center">
+                    <motion.span 
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-cobalt dark:text-white/60 font-medium tracking-[0.2em] uppercase text-[10px] mb-3 block"
+                    >
+                        Our Process
+                    </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-serif font-bold mb-4 text-charcoal dark:text-white"
+                        className="text-4xl md:text-5xl font-serif font-normal text-charcoal dark:text-white"
                     >
                         How We Work
                     </motion.h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                    {/* Connecting Line (Desktop) */}
-                    <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-cobalt/0 via-cobalt/50 to-cobalt/0" />
-
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
                     {steps.map((step, index) => (
                         <motion.div
                             key={step.num}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.2 }}
-                            className="relative z-10"
+                            transition={{ delay: index * 0.15 }}
+                            className="flex flex-col items-center text-center group"
                         >
-                            <div className="text-7xl font-serif font-bold text-slate-200 dark:text-white/5 mb-4 select-none">
+                            <div className="text-6xl font-serif font-normal text-slate-300 dark:text-white/10 mb-6 select-none transition-transform group-hover:scale-105 duration-500">
                                 {step.num}
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 text-cobalt">{step.title}</h3>
-                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            <h3 className="text-xl font-serif font-normal italic text-charcoal dark:text-white mb-4">{step.title}</h3>
+                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm max-w-sm">
                                 {step.desc}
                             </p>
                         </motion.div>
