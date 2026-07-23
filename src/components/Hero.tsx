@@ -1,26 +1,36 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
+const heroVideos = [
+    "/videos/working.mp4",
+    "/videos/wedding-reception.mp4",
+    "/videos/makutano.mp4",
+    "/videos/behind-the-scenes.mp4",
+    "/videos/dr-godfrey-maggie-2.mp4"
+];
 
 const Hero = () => {
     const containerRef = useRef(null);
     const { scrollY } = useScroll();
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
     // Parallax & Fade Effects
     const y = useTransform(scrollY, [0, 1000], [0, 400]);
     const opacity = useTransform(scrollY, [0, 600], [1, 0]);
     const scale = useTransform(scrollY, [0, 1000], [1, 1.1]);
 
-    // Video ref for speed control
+    // Video ref for speed control and source switching
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         if (videoRef.current) {
-            videoRef.current.playbackRate = 0.6; // Slow down video
+            videoRef.current.playbackRate = 0.65; // Slow down video
+            videoRef.current.load();
+            videoRef.current.play().catch(e => console.log("Auto-play blocked or interrupted:", e));
         }
-    }, []);
+    }, [currentVideoIndex]);
 
     return (
         <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
@@ -34,14 +44,13 @@ const Hero = () => {
                 <video
                     ref={videoRef}
                     autoPlay
-                    loop
                     muted
                     playsInline
                     preload="auto"
+                    src={heroVideos[currentVideoIndex]}
+                    onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length)}
                     className="w-full h-full object-cover"
-                >
-                    <source src="/videos/working.mp4" type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20" />
             </motion.div>
 
@@ -55,19 +64,19 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-white mb-4 leading-[1.0]"
+                        className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal tracking-[0.02em] text-white mb-6 leading-[1.1]"
                     >
                         VISUALINK AFRICA
                     </motion.h1>
 
-                    <motion.h2
+                    <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.8 }}
-                        className="text-lg md:text-2xl font-serif font-normal italic text-white/90 mb-12 tracking-wide"
+                        className="font-sans font-medium uppercase tracking-[0.25em] text-xs sm:text-sm text-white/80 mb-12 block"
                     >
-                        Visuals That Connect.
-                    </motion.h2>
+                        Visuals That Connect
+                    </motion.span>
 
                     <motion.div
                         initial={{ y: 30, opacity: 0 }}

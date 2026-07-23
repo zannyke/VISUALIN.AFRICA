@@ -44,17 +44,17 @@ const Services = () => {
     };
 
     return (
-        <section id="services" className="py-28 relative min-h-screen bg-black transition-colors duration-300">
+        <section id="services" className="py-28 relative min-h-screen bg-white transition-colors duration-300">
 
             <div className="container mx-auto px-6 relative z-30">
                 <div className="mb-20 text-center">
-                    <span className="text-white/60 font-medium tracking-[0.2em] uppercase text-[10px] mb-3 block">
+                    <span className="text-cobalt font-medium tracking-[0.2em] uppercase text-[10px] mb-3 block">
                         Our Services
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-serif font-normal text-white mb-6">
+                    <h2 className="text-4xl md:text-5xl font-serif font-normal text-charcoal mb-6">
                         What We Do
                     </h2>
-                    <p className="text-white/80 text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+                    <p className="text-slate-600 text-lg max-w-2xl mx-auto font-medium leading-relaxed">
                         We offer a comprehensive suite of visual solutions designed to elevate your brand and capture your most important moments.
                     </p>
                 </div>
