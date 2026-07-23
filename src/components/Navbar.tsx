@@ -51,8 +51,8 @@ const Navbar = () => {
             animate={hidden && !isOpen ? "hidden" : "visible"}
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? 'py-4 bg-white/95 dark:bg-obsidian/95 backdrop-blur-xl shadow-md border-b border-slate-200/50 dark:border-white/5'
-                : 'py-6 bg-transparent border-b border-white/5'
+                ? 'py-4 bg-white dark:bg-obsidian backdrop-blur-xl shadow-sm border-b border-slate-200/50 dark:border-white/5'
+                : 'py-6 bg-transparent border-b border-white/10'
                 }`}
         >
             <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -77,8 +77,8 @@ const Navbar = () => {
                                     key={link.name}
                                     to={link.href}
                                     className={`relative py-1 font-medium tracking-[0.2em] uppercase text-[11px] transition-colors duration-200 ${isActive
-                                        ? 'text-cobalt dark:text-white border-b-2 border-cobalt'
-                                        : 'text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-white'
+                                        ? scrolled ? 'text-cobalt border-b border-cobalt' : 'text-white border-b border-white'
+                                        : scrolled ? 'text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-white' : 'text-white/80 hover:text-white'
                                         }`}
                                 >
                                     {link.name}
@@ -87,7 +87,7 @@ const Navbar = () => {
                         })}
                     </nav>
 
-                    <div className="w-[1px] h-6 bg-slate-200 dark:bg-white/10" />
+                    <div className={`w-[1px] h-6 ${scrolled ? 'bg-slate-200 dark:bg-white/10' : 'bg-white/20'}`} />
 
                     <div className="flex items-center gap-3">
                         {/* Theme Toggle */}
@@ -96,25 +96,22 @@ const Navbar = () => {
                             whileHover={{ rotate: 180 }}
                             transition={{ duration: 0.3 }}
                             onClick={() => setIsDark(!isDark)}
-                            className="p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                            className={`p-2.5 rounded-full transition-colors ${scrolled ? 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10' : 'text-white/80 hover:bg-white/10'}`}
                             aria-label="Toggle Theme"
                         >
-                            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+                            {isDark ? <Sun size={18} /> : <Moon size={18} />}
                         </motion.button>
 
                         <Link to="/contact">
                             <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="px-5 py-2.5 text-xs font-bold tracking-widest uppercase bg-cobalt text-white rounded-full flex items-center gap-2 shadow-lg shadow-cobalt/20 hover:shadow-xl transition-all"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className={`px-5 py-2 text-[10px] font-medium tracking-[0.18em] uppercase rounded-full border transition-all duration-300 ${scrolled
+                                    ? 'border-cobalt text-cobalt hover:bg-cobalt hover:text-white'
+                                    : 'border-white text-white hover:bg-white hover:text-obsidian'
+                                    }`}
                             >
-                                <span>Start Project</span>
-                                <motion.div
-                                    animate={{ x: [0, 4, 0] }}
-                                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                                >
-                                    <ArrowRight size={14} />
-                                </motion.div>
+                                Start Project
                             </motion.button>
                         </Link>
                     </div>

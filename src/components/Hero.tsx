@@ -39,14 +39,14 @@ const Hero = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-platinum dark:bg-obsidian">
+        <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
 
             {/* Cinematic Video Background - Edge to Edge */}
             <motion.div
                 style={{ scale }}
                 className="absolute inset-0 z-0 select-none pointer-events-none"
             >
-                <div className="absolute inset-0 bg-transparent dark:bg-black/60 z-10 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-black/40 z-10" />
                 <video
                     ref={videoRef}
                     autoPlay
@@ -54,11 +54,11 @@ const Hero = () => {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-full object-cover filter blur-[3px]"
+                    className="w-full h-full object-cover"
                 >
                     <source src="/videos/working.mp4" type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-platinum via-transparent to-transparent dark:from-obsidian dark:via-transparent dark:to-transparent z-20" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20" />
             </motion.div>
 
             <motion.div
@@ -67,15 +67,15 @@ const Hero = () => {
             >
                 <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
 
-                    {/* "New" Badge */}
+                    {/* Minimalist Narrative Label */}
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-1.5 shadow-xl"
+                        className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5"
                     >
-                        <span className="flex h-2 w-2 rounded-full bg-cobalt"></span>
-                        <span className="text-xs font-semibold uppercase tracking-widest text-charcoal dark:text-white">
+                        <span className="flex h-2 w-2 rounded-full bg-white"></span>
+                        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white">
                             Elevate Your Narrative
                         </span>
                     </motion.div>
@@ -84,7 +84,7 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-black dark:text-white mb-6 leading-[1.0]"
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-white mb-6 leading-[1.0]"
                     >
                         VISUALINK AFRICA
                     </motion.h1>
@@ -93,7 +93,7 @@ const Hero = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="h-10 md:h-12 text-lg md:text-2xl font-serif font-medium text-cobalt dark:text-white/90 italic mb-10 tracking-wide"
+                        className="h-10 md:h-12 text-lg md:text-2xl font-serif font-medium text-white/95 italic mb-10 tracking-wide"
                     >
                         <Typewriter text="Visuals That Connect." delay={80} />
                     </motion.div>
@@ -102,7 +102,7 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="max-w-2xl text-lg md:text-xl text-slate-700 dark:text-slate-300 mb-12 leading-relaxed font-medium"
+                        className="max-w-2xl text-lg md:text-xl text-white/80 mb-12 leading-relaxed font-medium"
                     >
                         Connecting people through powerful storytelling. <br className="hidden md:block" />
                         We craft cinematic films and bold imagery that inspire emotion.
@@ -114,16 +114,16 @@ const Hero = () => {
                         transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         className="flex flex-col sm:flex-row items-center gap-6"
                     >
-                        <Link to="/contact" className="btn-primary flex items-center gap-3 group">
+                        <Link to="/contact" className="px-8 py-3.5 bg-white text-black hover:bg-transparent hover:text-white border-2 border-white rounded-full font-medium tracking-[0.18em] uppercase text-xs transition-all duration-300 ease-out transform active:scale-95 shadow-none focus:outline-none flex items-center gap-2">
                             Start Your Project
-                            <i className="transform group-hover:translate-x-1 transition-transform">→</i>
+                            <i>→</i>
                         </Link>
 
                         <Link to="/gallery" className="flex items-center gap-4 cursor-pointer group">
-                            <div className="w-12 h-12 rounded-full bg-white/60 dark:bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/20">
-                                <Play size={20} className="ml-1 text-charcoal dark:text-white" fill="currentColor" />
+                            <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/25 group-hover:bg-white group-hover:text-black transition-all duration-300">
+                                <Play size={18} className="ml-1 text-white group-hover:text-black transition-colors" fill="currentColor" />
                             </div>
-                            <span className="font-medium tracking-[0.1em] text-xs uppercase text-charcoal dark:text-white">Watch Showreel</span>
+                            <span className="font-medium tracking-[0.15em] text-[11px] uppercase text-white">Watch Showreel</span>
                         </Link>
                     </motion.div>
 
@@ -135,9 +135,9 @@ const Hero = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 1 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30 opacity-50"
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30 opacity-40"
             >
-                <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-charcoal dark:via-slate-400 to-transparent" />
+                <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white to-transparent" />
             </motion.div>
 
         </section>

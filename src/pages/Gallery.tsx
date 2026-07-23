@@ -200,8 +200,8 @@ const Gallery = () => {
                     {featuredItems.map((item, index) => (
                         <motion.div
                             key={index}
-                            className="min-w-[85vw] md:min-w-[60vw] lg:min-w-[45vw] aspect-video snap-center relative rounded-3xl overflow-hidden cursor-pointer group shadow-2xl bg-black"
-                            whileHover={{ scale: 1.02 }}
+                            className="min-w-[85vw] md:min-w-[60vw] lg:min-w-[45vw] aspect-video snap-center relative rounded-sm overflow-hidden cursor-pointer group bg-black"
+                            whileHover={{ scale: 1.01 }}
                             transition={{ duration: 0.4 }}
                             onClick={() => setSelectedItem(item)}
                         >
@@ -209,7 +209,7 @@ const Gallery = () => {
                                 <video
                                     key={item.src}
                                     src={item.src}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-90"
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-[1.5s] opacity-90"
                                     autoPlay
                                     muted
                                     loop
@@ -220,23 +220,23 @@ const Gallery = () => {
                             ) : (
                                 <iframe
                                     src={`${item.src}?autoplay=0&controls=0&showinfo=0&rel=0`}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
+                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-[1.5s]"
                                     title={item.title}
                                     loading="lazy"
                                 />
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
-                            <div className="absolute bottom-0 left-0 p-8 w-full">
-                                <span className="text-cobalt font-bold uppercase tracking-wider text-xs mb-2 block">{item.category}</span>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity" />
+                            <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                <span className="text-white/60 font-medium uppercase tracking-[0.2em] text-[10px] mb-2 block">{item.category}</span>
                                 <h3
-                                    className="font-serif text-white font-bold mb-2"
+                                    className="font-serif text-white font-normal mb-3 leading-tight"
                                     style={{ fontSize: "var(--text-fluid-h3)" }}
                                 >
                                     {item.title}
                                 </h3>
                                 <div className="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-                                    <Play size={16} fill="currentColor" />
-                                    <span className="font-medium text-sm">Watch Film</span>
+                                    <Play size={14} fill="currentColor" />
+                                    <span className="font-medium text-xs tracking-[0.1em] uppercase">Watch Film</span>
                                 </div>
                             </div>
                         </motion.div>
@@ -275,7 +275,7 @@ const Gallery = () => {
                             className="group relative cursor-pointer break-inside-avoid"
                             onClick={() => item.type !== 'slideshow' && setSelectedItem(item)}
                         >
-                            <div className={`relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 dark:shadow-none bg-gray-200 dark:bg-white/5 ${item.type === 'video' ? 'aspect-video' : ''}`}>
+                            <div className={`relative rounded-sm overflow-hidden bg-gray-200 dark:bg-white/5 ${item.type === 'video' ? 'aspect-video' : ''}`}>
 
                                 {item.type === 'slideshow' ? (
                                     <FineArtSlideshow
@@ -288,7 +288,7 @@ const Gallery = () => {
                                     <img
                                         src={item.src}
                                         alt={item.title}
-                                        className="w-full h-auto block transform group-hover:scale-105 transition-transform duration-700"
+                                        className="w-full h-auto block transform group-hover:scale-105 transition-transform duration-[1.5s]"
                                         loading="lazy"
                                     />
                                 ) : item.type === 'video' ? (
@@ -313,14 +313,16 @@ const Gallery = () => {
                                 ) : null}
 
                                 {item.type !== 'slideshow' && (
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                        <span className="text-cobalt text-xs font-bold uppercase tracking-wider">{item.category}</span>
-                                        <h4
-                                            className="text-white font-serif"
-                                            style={{ fontSize: "var(--text-fluid-h4)" }}
-                                        >
-                                            {item.title}
-                                        </h4>
+                                    <div className="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
+                                        <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+                                            <span className="text-white/60 text-[10px] font-medium uppercase tracking-[0.2em] mb-1 block">{item.category}</span>
+                                            <h4
+                                                className="text-white font-serif font-normal"
+                                                style={{ fontSize: "var(--text-fluid-h4)" }}
+                                            >
+                                                {item.title}
+                                            </h4>
+                                        </div>
                                     </div>
                                 )}
                             </div>

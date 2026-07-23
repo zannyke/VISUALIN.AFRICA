@@ -106,55 +106,63 @@ const Services = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            whileHover={{ y: -5 }}
                             onClick={() => handleCardClick(service.title)}
-                            className="relative overflow-hidden h-full backdrop-blur-md bg-white/70 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 p-8 rounded-3xl cursor-pointer hover:border-[#F57703]/50 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-slate-200/30 dark:hover:shadow-none group"
+                            className="relative overflow-hidden aspect-[4/3] w-full cursor-pointer group bg-obsidian rounded-sm"
                         >
-                            {/* Cinematic Background Gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
-                            {service.videoSrc && (
-                                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-3xl overflow-hidden">
+                            {/* Video / Media Layer */}
+                            <div className="absolute inset-0 z-0 w-full h-full overflow-hidden">
+                                {service.videoSrc ? (
                                     <video
                                         src={service.videoSrc}
-                                        className="w-full h-full object-cover transform scale-110 group-hover:scale-100 transition-transform duration-[2s]"
+                                        className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-[1.5s]"
                                         muted
                                         loop
                                         playsInline
-                                        preload="none"
-                                        onMouseEnter={(e) => e.currentTarget.play()}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.pause();
-                                            e.currentTarget.currentTime = 0;
-                                        }}
+                                        autoPlay
+                                        preload="auto"
                                     />
-                                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/25 transition-colors duration-700" />
-                                </div>
-                            )}
-
-                            <div className="relative z-10 flex flex-col h-full justify-between">
-                                <div>
-                                    <div className="mb-6 inline-flex p-4 rounded-2xl bg-slate-100 dark:bg-white/10 border border-slate-200/40 dark:border-white/10 text-[#F57703] group-hover:bg-[#F57703] group-hover:text-white group-hover:border-[#F57703] transition-all duration-300 shadow-sm backdrop-blur-md">
-                                        <service.icon size={28} strokeWidth={1.5} />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-charcoal to-obsidian flex items-center justify-center opacity-85 group-hover:scale-105 transition-transform duration-750">
+                                        <service.icon size={48} className="text-white/10" strokeWidth={1} />
                                     </div>
-                                    <h3 className="text-2xl font-serif font-bold mb-3 text-charcoal dark:text-white group-hover:text-white transition-colors tracking-tight">{service.title}</h3>
-                                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-white/90 transition-colors leading-relaxed text-base mb-4">
-                                        {service.desc}
-                                    </p>
+                                )}
+                            </div>
 
-                                    <ul className="space-y-1 mb-2">
-                                        {service.features.map((feature, i) => (
-                                            <li key={i} className="text-sm text-slate-500 dark:text-slate-400 group-hover:text-white/80 flex items-center gap-2">
-                                                <span className="w-1 h-1 bg-cobalt group-hover:bg-white rounded-full" />
-                                                {feature}
-                                            </li>
-                                        ))}
-                                    </ul>
+                            {/* Hover Overlay Layer */}
+                            <div className="absolute inset-0 z-10 bg-black/45 group-hover:bg-black/80 transition-all duration-500 flex flex-col justify-between p-8">
+                                {/* Top Label / Icon */}
+                                <div className="flex justify-between items-start opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-white/60">
+                                        0{service.id}
+                                    </span>
+                                    <service.icon size={18} className="text-white" strokeWidth={1.5} />
                                 </div>
 
-                                <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 group-hover:border-white/30 transition-colors flex items-center gap-2 text-cobalt group-hover:text-white font-medium opacity-60 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                                    <span className="text-sm uppercase tracking-widest">Explore Service</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                {/* Text Details */}
+                                <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                                    <h3 className="text-2xl font-serif font-normal text-white mb-2 leading-tight">
+                                        {service.title}
+                                    </h3>
+
+                                    {/* Fades in on hover */}
+                                    <div className="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                                        <p className="text-white/80 text-xs font-medium leading-relaxed mb-4">
+                                            {service.desc}
+                                        </p>
+                                        <ul className="space-y-1 mb-2">
+                                            {service.features.map((feature, i) => (
+                                                <li key={i} className="text-[11px] text-white/70 flex items-center gap-2">
+                                                    <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
+                                                    {feature}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <div className="mt-4 flex items-center gap-2 text-white font-medium">
+                                        <span className="text-[10px] uppercase tracking-[0.18em]">Explore Service</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
