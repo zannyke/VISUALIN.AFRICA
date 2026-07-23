@@ -59,7 +59,8 @@
   h5,
   h6 {
     font-family: 'Crimson Text', serif;
-    @apply text-charcoal font-semibold leading-tight;
+    font-weight: 400 !important;
+    @apply text-charcoal leading-snug;
     margin-bottom: 0.5em;
   }
 
@@ -94,30 +95,37 @@
     @apply bg-white/70 dark:bg-obsidian/60 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-3xl transition-all duration-500 shadow-xl shadow-slate-200/50 dark:shadow-none;
   }
 
-  /* Premium Vimeo-style button */
+  /* Premium button styling to match Enzi Weddings */
   .btn-primary {
-    @apply relative overflow-hidden px-8 py-4 bg-cobalt text-white rounded-full font-bold tracking-wide transition-all duration-500 ease-out transform hover:scale-105 active:scale-95 shadow-xl shadow-cobalt/25 hover:shadow-cobalt/40 hover:bg-[#ff851b] focus:outline-none focus:ring-2 focus:ring-cobalt/50 focus:ring-offset-2 dark:focus:ring-offset-obsidian;
+    @apply relative overflow-hidden px-8 py-3.5 bg-transparent border-2 border-cobalt text-cobalt rounded-full font-medium tracking-[0.18em] uppercase text-xs transition-all duration-300 ease-out transform active:scale-95 shadow-none focus:outline-none focus:ring-2 focus:ring-cobalt/50;
   }
 
-  .btn-primary::after {
-    content: '';
-    @apply absolute inset-0 bg-white/25 opacity-0 transition-opacity duration-300;
+  .btn-primary:hover {
+    @apply bg-cobalt text-white shadow-none;
   }
 
-  .btn-primary:hover::after {
-    @apply opacity-100;
+  .dark .btn-primary {
+    @apply border-white text-white;
+  }
+
+  .dark .btn-primary:hover {
+    @apply bg-white text-obsidian;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 text-cobalt border border-cobalt/25 rounded-full font-semibold transition-all duration-300 hover:bg-cobalt/10 active:scale-95 focus:outline-none focus:ring-2 focus:ring-cobalt/50;
+    @apply relative overflow-hidden px-8 py-3.5 bg-transparent border border-cobalt/40 text-cobalt rounded-full font-medium tracking-[0.18em] uppercase text-xs transition-all duration-300 ease-out transform active:scale-95 shadow-none focus:outline-none;
+  }
+
+  .btn-secondary:hover {
+    @apply border-cobalt bg-cobalt/5 text-cobalt;
   }
 
   .dark .btn-secondary {
-    @apply text-white border-white/15 hover:bg-white/10;
+    @apply border-white/20 text-white/80;
   }
 
   .dark .btn-secondary:hover {
-    border-color: rgba(255, 255, 255, 0.3);
+    @apply border-white text-white bg-white/5;
   }
 }
 

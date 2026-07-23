@@ -84,8 +84,7 @@ const Hero = () => {
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight text-black dark:text-white mb-6 leading-[0.9] drop-shadow-lg"
-                        style={{ textShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-serif font-normal tracking-[0.02em] text-black dark:text-white mb-6 leading-[1.0]"
                     >
                         VISUALINK AFRICA
                     </motion.h1>
@@ -124,7 +123,7 @@ const Hero = () => {
                             <div className="w-12 h-12 rounded-full bg-white/60 dark:bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 border border-white/20">
                                 <Play size={20} className="ml-1 text-charcoal dark:text-white" fill="currentColor" />
                             </div>
-                            <span className="font-semibold text-charcoal dark:text-white">Watch Showreel</span>
+                            <span className="font-medium tracking-[0.1em] text-xs uppercase text-charcoal dark:text-white">Watch Showreel</span>
                         </Link>
                     </motion.div>
 

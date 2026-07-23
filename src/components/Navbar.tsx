@@ -76,7 +76,7 @@ const Navbar = () => {
                                 <Link
                                     key={link.name}
                                     to={link.href}
-                                    className={`relative py-1 font-semibold tracking-widest uppercase text-xs transition-colors duration-200 ${isActive
+                                    className={`relative py-1 font-medium tracking-[0.2em] uppercase text-[11px] transition-colors duration-200 ${isActive
                                         ? 'text-cobalt dark:text-white border-b-2 border-cobalt'
                                         : 'text-slate-600 dark:text-slate-300 hover:text-cobalt dark:hover:text-white'
                                         }`}
