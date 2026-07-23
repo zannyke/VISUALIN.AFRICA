@@ -58,7 +58,7 @@ const ServicesPage = () => {
     };
 
     return (
-        <section className="pt-32 md:pt-40 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500">
+        <section className="pt-32 md:pt-40 pb-24 min-h-screen bg-white">
             <div className="container mx-auto px-6">
 
                 <motion.div
@@ -69,13 +69,13 @@ const ServicesPage = () => {
                 >
                     <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Expertise</span>
                     <h2
-                        className="font-serif font-bold text-charcoal dark:text-white mb-6"
+                        className="font-serif font-bold text-charcoal mb-6"
                         style={{ fontSize: "var(--text-fluid-h2)" }}
                     >
                         Our Services.
                     </h2>
                     <p
-                        className="text-slate-600 dark:text-slate-300 leading-relaxed"
+                        className="text-slate-600 leading-relaxed"
                         style={{ fontSize: "var(--text-fluid-body)" }}
                     >
                         Comprehensive visual solutions tailored for impact.
@@ -110,7 +110,7 @@ const ServicesPage = () => {
                             >
                                 {/* Cinematic Visual Side */}
                                 <div className="w-full md:w-3/5">
-                                    <div className={`relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group ${hasVideo ? 'bg-black' : 'bg-slate-200 dark:bg-white/5'} flex items-center justify-center`}>
+                                    <div className={`relative aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl group ${hasVideo ? 'bg-black' : 'bg-slate-100'} flex items-center justify-center`}>
 
                                         {hasVideo ? (
                                             <>
@@ -128,7 +128,7 @@ const ServicesPage = () => {
                                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
                                             </>
                                         ) : (
-                                            <p className="text-slate-400 dark:text-slate-600 font-medium">Video Coming Soon</p>
+                                            <p className="text-slate-400 font-medium">Video Coming Soon</p>
                                         )}
 
                                         {/* Floating Badge */}
@@ -142,13 +142,13 @@ const ServicesPage = () => {
                                 <div className="w-full md:w-2/5 p-4">
                                     <div className="mb-4 w-12 h-1 bg-cobalt rounded-full" />
                                     <h3
-                                        className="font-serif font-bold text-charcoal dark:text-white mb-6"
+                                        className="font-serif font-bold text-charcoal mb-6"
                                         style={{ fontSize: "var(--text-fluid-h3)" }}
                                     >
                                         {service.title}
                                     </h3>
                                     <p
-                                        className="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed"
+                                        className="text-slate-600 mb-8 leading-relaxed"
                                         style={{ fontSize: "var(--text-fluid-body)" }}
                                     >
                                         {service.description}
@@ -157,7 +157,7 @@ const ServicesPage = () => {
                                     <ul className="mb-8 space-y-3">
                                         {/* Dynamic feature list from content.json */}
                                         {service.features && service.features.map((feat: string, i: number) => (
-                                            <li key={i} className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                                            <li key={i} className="flex items-center gap-3 text-slate-500">
                                                 <div className="p-1 rounded-full bg-cobalt/10 text-cobalt">
                                                     <Check size={12} strokeWidth={3} />
                                                 </div>

@@ -4,9 +4,9 @@ import content from '../constants/content.json';
 
 const About = () => {
     return (
-        <section className="pt-32 pb-24 min-h-screen relative overflow-hidden bg-platinum dark:bg-obsidian transition-colors duration-300">
+        <section className="pt-32 pb-24 min-h-screen relative overflow-hidden bg-white">
             {/* Decorative background element */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b from-purple-900/10 to-transparent rounded-full blur-[100px] -z-10" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b from-purple-900/5 to-transparent rounded-full blur-[100px] -z-10" />
 
             <div className="container mx-auto px-6">
                 <motion.div
@@ -17,14 +17,14 @@ const About = () => {
                 >
                     {/* Image Side */}
                     <div className="lg:w-1/2 relative">
-                        <div className="absolute inset-0 bg-cobalt/20 blur-2xl rounded-full transform scale-90 -z-10" />
-                        <div className="glass-card p-2 rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                        <div className="absolute inset-0 bg-cobalt/10 blur-2xl rounded-full transform scale-90 -z-10" />
+                        <div className="p-2 rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 bg-white border border-slate-200">
                             <img src={images.about} alt="About Us visual" className="w-full h-auto object-cover rounded-xl" loading="lazy" />
                         </div>
                         {/* Floating Element */}
-                        <div className="absolute -bottom-6 -right-6 glass-card p-6 rounded-xl hidden md:block animate-float bg-white/80 dark:bg-obsidian/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-xl">
+                        <div className="absolute -bottom-6 -right-6 p-6 rounded-xl hidden md:block animate-float bg-white/80 backdrop-blur-xl border border-slate-200 shadow-xl">
                             <span className="text-4xl font-serif font-bold text-cobalt">5+</span>
-                            <p className="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide">Years Exp.</p>
+                            <p className="text-xs text-slate-600 uppercase tracking-wide">Years Exp.</p>
                         </div>
                     </div>
 
@@ -32,13 +32,13 @@ const About = () => {
                     <div className="lg:w-1/2">
                         <span className="text-cobalt font-semibold tracking-wider uppercase text-sm mb-2 block">Who We Are</span>
                         <h1
-                            className="font-serif font-bold mb-8 leading-tight text-charcoal dark:text-white transition-colors"
+                            className="font-serif font-bold mb-8 leading-tight text-charcoal"
                             style={{ fontSize: "var(--text-fluid-h2)" }}
                         >
                             {content.about.title}
                         </h1>
                         <p
-                            className="text-slate-600 dark:text-slate-400 leading-relaxed mb-8 transition-colors"
+                            className="text-slate-600 leading-relaxed mb-8"
                             style={{ fontSize: "var(--text-fluid-body)" }}
                         >
                             {content.about.content}
@@ -47,9 +47,9 @@ const About = () => {
                         {/* Core Values Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                             {content.process.map((step, idx) => (
-                                <div key={idx} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-4 rounded-xl hover:shadow-lg dark:hover:bg-white/10 transition-all duration-300">
-                                    <h3 className="text-charcoal dark:text-white font-serif text-lg mb-2">{step.step}</h3>
-                                    <p className="text-sm text-slate-600 dark:text-slate-400">{step.details}</p>
+                                <div key={idx} className="bg-white border border-slate-200 p-4 rounded-xl hover:shadow-lg transition-all duration-300">
+                                    <h3 className="text-charcoal font-serif text-lg mb-2">{step.step}</h3>
+                                    <p className="text-sm text-slate-600">{step.details}</p>
                                 </div>
                             ))}
                         </div>

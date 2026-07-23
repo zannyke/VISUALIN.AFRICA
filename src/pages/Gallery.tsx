@@ -165,7 +165,7 @@ const Gallery = () => {
     const featuredItems = allItems.filter(x => x.type === 'video').slice(0, 5) as Extract<GalleryItem, { type: 'video' }>[];
 
     return (
-        <section className="pt-28 md:pt-32 pb-24 min-h-screen bg-platinum dark:bg-obsidian transition-colors duration-500 overflow-hidden">
+        <section className="pt-28 md:pt-32 pb-24 min-h-screen bg-white overflow-hidden">
 
             {/* Header */}
             <div className="container mx-auto px-6 mb-20">
@@ -177,33 +177,40 @@ const Gallery = () => {
                 >
                     <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-4 block">Portfolio</span>
                     <h2
-                        className="font-serif font-bold text-charcoal dark:text-white mb-8"
+                        className="font-serif font-bold text-charcoal mb-8"
                         style={{ fontSize: "var(--text-fluid-h2)" }}
                     >
-                        Selected Works.
+                        Our Work.
                     </h2>
-                    <p
-                        className="text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed"
-                        style={{ fontSize: "var(--text-fluid-body)" }}
-                    >
-                        A curation of our finest moments. From intimate weddings to high-energy commercial productions.
+                    <p className="text-slate-600 max-w-2xl text-lg leading-relaxed font-medium">
+                        Explore our creative portfolio of premium cinematic films, brand stories, and editorial photography captured across East Africa.
                     </p>
                 </motion.div>
             </div>
 
-            {/* Carousel Section */}
-            <div className="mb-20 md:mb-32 relative">
+            {/* Featured Films Horizontal Carousel */}
+            <div className="relative mb-28">
+                <div className="container mx-auto px-6 mb-8 flex justify-between items-end">
+                    <div>
+                        <span className="text-cobalt font-bold tracking-widest uppercase text-xs mb-2 block font-sans">Featured</span>
+                        <h3 className="text-3xl font-serif font-normal text-charcoal">Cinematic Stories</h3>
+                    </div>
+                </div>
+
                 <div 
                     ref={carouselRef}
-                    className="flex overflow-x-auto snap-x snap-mandatory gap-6 md:gap-10 pb-6 scrollbar-hide px-6 md:px-12"
+                    className="flex gap-8 overflow-x-auto px-6 md:px-12 scrollbar-none scroll-smooth snap-x snap-mandatory"
+                    style={{ scrollbarWidth: 'none' }}
                 >
                     {featuredItems.map((item, index) => (
                         <motion.div
                             key={index}
-                            className="min-w-[85vw] md:min-w-[60vw] lg:min-w-[45vw] aspect-video snap-center relative rounded-sm overflow-hidden cursor-pointer group bg-black"
-                            whileHover={{ scale: 1.01 }}
-                            transition={{ duration: 0.4 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
                             onClick={() => setSelectedItem(item)}
+                            className="flex-shrink-0 w-[85vw] md:w-[60vw] aspect-video rounded-3xl overflow-hidden shadow-2xl relative cursor-pointer group snap-start bg-black"
                         >
                             {isVideoFile(item.src) ? (
                                 <video
@@ -247,14 +254,14 @@ const Gallery = () => {
                 <div className="flex justify-center gap-6 mt-4 md:mt-8 px-6 md:px-12 w-full">
                     <button 
                         onClick={() => scrollCarousel('left')}
-                        className="p-4 rounded-full bg-gray-200 dark:bg-white/10 text-slate-800 dark:text-white hover:bg-cobalt hover:text-white dark:hover:bg-cobalt transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
+                        className="p-4 rounded-full bg-gray-100 text-slate-800 hover:bg-cobalt hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
                         aria-label="Scroll left"
                     >
                         <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
                     </button>
                     <button 
                         onClick={() => scrollCarousel('right')}
-                        className="p-4 rounded-full bg-gray-200 dark:bg-white/10 text-slate-800 dark:text-white hover:bg-cobalt hover:text-white dark:hover:bg-cobalt transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
+                        className="p-4 rounded-full bg-gray-100 text-slate-800 hover:bg-cobalt hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none flex items-center justify-center group"
                         aria-label="Scroll right"
                     >
                         <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
@@ -275,7 +282,7 @@ const Gallery = () => {
                             className="group relative cursor-pointer break-inside-avoid"
                             onClick={() => item.type !== 'slideshow' && setSelectedItem(item)}
                         >
-                            <div className={`relative rounded-sm overflow-hidden bg-gray-200 dark:bg-white/5 ${item.type === 'video' ? 'aspect-video' : ''}`}>
+                            <div className={`relative rounded-sm overflow-hidden bg-gray-100 ${item.type === 'video' ? 'aspect-video' : ''}`}>
 
                                 {item.type === 'slideshow' ? (
                                     <FineArtSlideshow
