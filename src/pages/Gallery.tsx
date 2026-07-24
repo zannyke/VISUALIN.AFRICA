@@ -3,41 +3,62 @@ import { useState, useEffect, useRef } from 'react';
 import { Play, X, ChevronLeft, ChevronRight, Filter, Film, Image as ImageIcon } from 'lucide-react';
 import FineArtSlideshow from '../components/FineArtSlideshow';
 
-// Helper component for auto-playing videos on scroll
-const VideoThumbnail = ({ src }: { src: string }) => {
+// High-performance, hover-only video card to eliminate scroll lag
+const VideoCard = ({ src, title, category, onClick }: { src: string; title?: string; category?: string; onClick: () => void }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                const video = videoRef.current;
-                if (!video) return;
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        const video = videoRef.current;
+        if (video) {
+            video.playbackRate = 0.85;
+            video.play().catch(() => {});
+        }
+    };
 
-                if (entry.isIntersecting) {
-                    video.playbackRate = 0.75;
-                    video.play().catch(() => { });
-                } else {
-                    video.pause();
-                }
-            },
-            { threshold: 0.3 }
-        );
-
-        if (videoRef.current) observer.observe(videoRef.current);
-        return () => observer.disconnect();
-    }, []);
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        const video = videoRef.current;
+        if (video) {
+            video.pause();
+        }
+    };
 
     return (
-        <div className="w-full h-full relative bg-black overflow-hidden">
+        <div 
+            className="w-full h-full relative bg-slate-900 overflow-hidden cursor-pointer group rounded-xl"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={onClick}
+        >
             <video
                 ref={videoRef}
-                src={src}
-                className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
+                src={`${src}#t=0.5`}
+                className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
                 muted
                 loop
                 playsInline
                 preload="metadata"
             />
+            
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300" />
+
+            {/* Play Button Icon Overlay */}
+            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-80'}`}>
+                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white group-hover:scale-110 group-hover:bg-cobalt transition-all duration-300 shadow-xl">
+                    <Play size={20} fill="currentColor" className="ml-0.5" />
+                </div>
+            </div>
+
+            {/* Title & Category Badge */}
+            {(title || category) && (
+                <div className="absolute bottom-0 left-0 p-4 w-full text-white pointer-events-none">
+                    {category && <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cobalt block mb-1">{category}</span>}
+                    {title && <h4 className="font-serif text-sm font-normal text-white truncate">{title}</h4>}
+                </div>
+            )}
         </div>
     );
 };
@@ -261,47 +282,17 @@ const Gallery = () => {
                     style={{ scrollbarWidth: 'none' }}
                 >
                     {featuredVideos.map((item, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, scale: 0.96 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
-                            onClick={() => setSelectedItem(item)}
-                            className="flex-shrink-0 w-[85vw] md:w-[55vw] lg:w-[45vw] aspect-video rounded-2xl overflow-hidden shadow-xl relative cursor-pointer group snap-start bg-black"
+                            className="flex-shrink-0 w-[85vw] md:w-[55vw] lg:w-[45vw] aspect-video rounded-2xl overflow-hidden shadow-xl relative cursor-pointer snap-start bg-slate-900"
                         >
-                            {isVideoFile(item.src) ? (
-                                <video
-                                    src={item.src}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700 opacity-90"
-                                    autoPlay
-                                    muted
-                                    loop
-                                    playsInline
-                                    preload="auto"
-                                />
-                            ) : (
-                                <iframe
-                                    src={`${item.src}?autoplay=0&controls=0&showinfo=0&rel=0`}
-                                    className="w-full h-full object-cover pointer-events-none group-hover:scale-105 transition-transform duration-700"
-                                    title={item.title}
-                                    loading="lazy"
-                                />
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                            <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full">
-                                <span className="text-white/70 font-medium uppercase tracking-[0.2em] text-[10px] mb-2 block">{item.category}</span>
-                                <h3 className="font-serif text-white text-xl sm:text-2xl font-normal mb-3 leading-snug">
-                                    {item.title}
-                                </h3>
-                                <div className="flex items-center gap-2 text-white/90 group-hover:text-cobalt transition-colors">
-                                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                                        <Play size={14} fill="currentColor" className="ml-0.5" />
-                                    </div>
-                                    <span className="font-medium text-xs tracking-[0.15em] uppercase">Watch Film</span>
-                                </div>
-                            </div>
-                        </motion.div>
+                            <VideoCard
+                                src={item.src}
+                                title={item.title}
+                                category={item.category}
+                                onClick={() => setSelectedItem(item)}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
@@ -336,13 +327,9 @@ const Gallery = () => {
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredItems.map((item, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "50px" }}
-                            transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
-                            className="group relative cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 bg-slate-50 border border-slate-100 flex flex-col"
+                            className="group relative cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 bg-slate-50 border border-slate-100 flex flex-col"
                             onClick={() => item.type !== 'slideshow' && setSelectedItem(item)}
                         >
                             <div className="aspect-video relative overflow-hidden bg-black">
@@ -357,12 +344,15 @@ const Gallery = () => {
                                     <img
                                         src={item.src}
                                         alt={item.title}
-                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                                         loading="lazy"
                                     />
                                 ) : item.type === 'video' ? (
                                     isVideoFile(item.src) ? (
-                                        <VideoThumbnail src={item.src} />
+                                        <VideoCard
+                                            src={item.src}
+                                            onClick={() => setSelectedItem(item)}
+                                        />
                                     ) : (
                                         <div className="w-full h-full bg-black relative">
                                             <img
@@ -379,7 +369,7 @@ const Gallery = () => {
                                     )
                                 ) : null}
 
-                                <div className="absolute top-4 right-4 z-20">
+                                <div className="absolute top-4 right-4 z-20 pointer-events-none">
                                     <span className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[10px] text-white font-medium uppercase tracking-wider flex items-center gap-1.5 border border-white/10">
                                         {item.type === 'video' ? <Film size={12} /> : <ImageIcon size={12} />}
                                         {item.type}
@@ -387,17 +377,17 @@ const Gallery = () => {
                                 </div>
                             </div>
 
-                            <div className="p-6 bg-white flex-1 flex flex-col justify-between border-t border-slate-100">
+                            <div className="p-5 bg-white flex-1 flex flex-col justify-between border-t border-slate-100">
                                 <div>
-                                    <span className="text-cobalt font-semibold tracking-[0.2em] uppercase text-[10px] mb-2 block">
+                                    <span className="text-cobalt font-semibold tracking-[0.2em] uppercase text-[10px] mb-1 block">
                                         {item.category}
                                     </span>
-                                    <h3 className="font-serif text-lg text-charcoal font-normal group-hover:text-cobalt transition-colors">
+                                    <h3 className="font-serif text-base text-charcoal font-normal group-hover:text-cobalt transition-colors">
                                         {item.title}
                                     </h3>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>
