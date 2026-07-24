@@ -4,11 +4,11 @@ import content from '../constants/content.json';
 import { Award, Camera, Video, Compass, Users, Sparkles } from 'lucide-react';
 
 const About = () => {
-    const stats = [
-        { label: "Years of Excellence", value: "5+", icon: Award },
-        { label: "Projects Completed", value: "250+", icon: Camera },
-        { label: "High-Res Films", value: "100+", icon: Video },
-        { label: "East Africa Reach", value: "100%", icon: Compass },
+    const brandPillars = [
+        { label: "Pure Visual Quality", value: "Cinematic 4K", icon: Video, desc: "Anamorphic lenses & professional color grading" },
+        { label: "Authentic Storytelling", value: "Unscripted Emotion", icon: Camera, desc: "Capturing genuine moments that resonate" },
+        { label: "Tailored Production", value: "Bespoke Packages", icon: Award, desc: "Customized for weddings, brands & fashion" },
+        { label: "East Africa Coverage", value: "Regional Reach", icon: Compass, desc: "Based in Nairobi, producing across Africa" },
     ];
 
     return (
@@ -110,12 +110,12 @@ const About = () => {
                 </div>
             </div>
 
-            {/* Stat Counters Banner */}
+            {/* Authentic Brand Pillars Banner */}
             <div className="bg-slate-50 py-16 border-y border-slate-100">
                 <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        {stats.map((stat, idx) => {
-                            const IconComponent = stat.icon;
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {brandPillars.map((pillar, idx) => {
+                            const IconComponent = pillar.icon;
                             return (
                                 <motion.div
                                     key={idx}
@@ -123,17 +123,20 @@ const About = () => {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="flex flex-col items-center"
+                                    className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex flex-col items-start"
                                 >
                                     <div className="w-12 h-12 rounded-full bg-cobalt/10 text-cobalt flex items-center justify-center mb-4">
                                         <IconComponent size={22} />
                                     </div>
-                                    <span className="text-3xl sm:text-4xl font-serif font-bold text-charcoal mb-1">
-                                        {stat.value}
+                                    <span className="text-xs font-semibold uppercase tracking-wider text-cobalt mb-1">
+                                        {pillar.label}
                                     </span>
-                                    <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                                        {stat.label}
-                                    </span>
+                                    <h3 className="text-xl font-serif font-semibold text-charcoal mb-2">
+                                        {pillar.value}
+                                    </h3>
+                                    <p className="text-xs text-slate-500 leading-relaxed">
+                                        {pillar.desc}
+                                    </p>
                                 </motion.div>
                             );
                         })}

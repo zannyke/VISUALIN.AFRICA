@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Mail, Phone, MapPin, CheckCircle, Send, Clock } from 'lucide-react';
 
 const Contact = () => {
+    const location = useLocation();
     const projectTypes = [
         "Wedding Coverage",
         "Fashion Photography & Reels",
@@ -13,6 +15,19 @@ const Contact = () => {
     ];
 
     const [selectedType, setSelectedType] = useState("Wedding Coverage");
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const serviceParam = params.get('service');
+        if (serviceParam) {
+            const match = projectTypes.find(p => p.toLowerCase().includes(serviceParam.toLowerCase()) || serviceParam.toLowerCase().includes(p.toLowerCase()));
+            if (match) {
+                setSelectedType(match);
+            } else {
+                setSelectedType(serviceParam);
+            }
+        }
+    }, [location.search]);
 
     return (
         <section className="pt-28 md:pt-36 pb-24 min-h-screen bg-white text-charcoal relative overflow-hidden">
