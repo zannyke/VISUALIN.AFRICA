@@ -8,6 +8,9 @@ const VideoCard = ({ src, title, category, onClick }: { src: string; title?: str
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isHovered, setIsHovered] = useState(false);
 
+    const videoFilename = src.split('/').pop()?.replace(/\.(mp4|mov|webm)$/i, '');
+    const posterUrl = videoFilename ? `/posters/${videoFilename}.jpg` : undefined;
+
     const handleMouseEnter = () => {
         setIsHovered(true);
         const video = videoRef.current;
@@ -34,12 +37,13 @@ const VideoCard = ({ src, title, category, onClick }: { src: string; title?: str
         >
             <video
                 ref={videoRef}
-                src={`${src}#t=0.5`}
+                src={isHovered ? src : undefined}
+                poster={posterUrl}
                 className="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
             />
             
             {/* Dark gradient overlay */}
@@ -184,8 +188,8 @@ const Gallery = () => {
                     const data = await response.json();
                     if (data.items && data.items.length > 0) {
                         const formattedItems: GalleryItem[] = data.items
-                            .sort((a: any, b: any) => b.id - a.id)
-                            .map((item: any) => {
+                            .sort((a: { id: number }, b: { id: number }) => b.id - a.id)
+                            .map((item: { id?: string | number; url: string; title?: string; category?: string }) => {
                                 const isVideo = isVideoFile(item.url) || item.url.includes('youtube') || item.url.includes('vimeo');
                                 return {
                                     type: isVideo ? 'video' : 'image',
@@ -214,6 +218,7 @@ const Gallery = () => {
         };
 
         fetchGalleryItems();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const allItems = dbItems.length > 0 ? dbItems : defaultGalleryItems;

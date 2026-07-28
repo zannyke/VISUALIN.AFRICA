@@ -1,8 +1,8 @@
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Camera, Film, Megaphone, Radio, Aperture, Briefcase, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import content from '../constants/content.json';
-
 
 const iconMap: Record<string, any> = {
     "Wedding Coverage": Camera,
@@ -20,6 +20,56 @@ const videoMap: Record<string, string> = {
     "Livestreaming": "/videos/behind-the-scenes.mp4",
     "Documentary & Drone Coverage": "/drone-shots-portrait.mp4",
     "Corporate Event Highlights": "/videos/kcb-lawyers.mp4"
+};
+
+const LazyServiceVideo = ({ src }: { src: string }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isInView, setIsInView] = useState(false);
+
+    const videoFilename = src.split('/').pop()?.replace(/\.(mp4|mov|webm)$/i, '');
+    const posterUrl = videoFilename ? `/posters/${videoFilename}.jpg` : undefined;
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (isInView) {
+            video.play().catch(() => {});
+        } else {
+            video.pause();
+        }
+    }, [isInView]);
+
+    return (
+        <div ref={containerRef} className="w-full h-full relative bg-slate-900">
+            <video
+                ref={videoRef}
+                src={isInView ? src : undefined}
+                poster={posterUrl}
+                className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-[1.5s]"
+                muted
+                loop
+                playsInline
+                preload="none"
+            />
+        </div>
+    );
 };
 
 const services = content.services.map((service, index) => ({
@@ -73,15 +123,7 @@ const Services = () => {
                             {/* Video / Media Layer */}
                             <div className="absolute inset-0 z-0 w-full h-full overflow-hidden">
                                 {service.videoSrc ? (
-                                    <video
-                                        src={service.videoSrc}
-                                        className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition-transform duration-[1.5s]"
-                                        muted
-                                        loop
-                                        playsInline
-                                        autoPlay
-                                        preload="auto"
-                                    />
+                                    <LazyServiceVideo src={service.videoSrc} />
                                 ) : (
                                     <div className="w-full h-full bg-gradient-to-br from-charcoal to-obsidian flex items-center justify-center opacity-85 group-hover:scale-105 transition-transform duration-750">
                                         <service.icon size={48} className="text-white/10" strokeWidth={1} />

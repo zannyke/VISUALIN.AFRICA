@@ -53,7 +53,10 @@ const Hero = () => {
     // Video ref for speed control and source switching
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    const [isVideoReady, setIsVideoReady] = useState(false);
+
     useEffect(() => {
+        setIsVideoReady(false);
         if (videoRef.current) {
             videoRef.current.playbackRate = 0.65; // Slow down video
             videoRef.current.load();
@@ -61,24 +64,44 @@ const Hero = () => {
         }
     }, [currentVideoIndex, videosList]);
 
+    const activeVideo = videosList[currentVideoIndex];
+    const videoFilename = activeVideo?.split('/').pop()?.replace(/\.(mp4|mov|webm)$/i, '');
+    const posterUrl = videoFilename ? `/posters/${videoFilename}.jpg` : undefined;
+
     return (
         <section ref={containerRef} className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-black">
 
-            {/* Cinematic Video Background - Edge to Edge */}
+            {/* Cinematic Background Layer - Edge to Edge */}
             <motion.div
                 style={{ scale }}
                 className="absolute inset-0 z-0 select-none pointer-events-none"
             >
                 <div className="absolute inset-0 bg-black/40 z-10" />
+
+                {/* Instant Poster Image Background - Eliminates black loading screen */}
+                {posterUrl && (
+                    <div
+                        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${
+                            isVideoReady ? 'opacity-0' : 'opacity-100'
+                        }`}
+                        style={{ backgroundImage: `url(${posterUrl})` }}
+                    />
+                )}
+
                 <video
                     ref={videoRef}
                     autoPlay
                     muted
                     playsInline
-                    preload="auto"
-                    src={videosList[currentVideoIndex]}
+                    preload="metadata"
+                    poster={posterUrl}
+                    src={activeVideo}
+                    onPlaying={() => setIsVideoReady(true)}
+                    onLoadedData={() => setIsVideoReady(true)}
                     onEnded={() => setCurrentVideoIndex((prev) => (prev + 1) % videosList.length)}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full object-cover transition-opacity duration-700 ${
+                        isVideoReady ? 'opacity-100' : 'opacity-0'
+                    }`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-20" />
             </motion.div>
