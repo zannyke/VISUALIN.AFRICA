@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
 const defaultHeroVideos = [
-    "/videos/working.mp4",
     "/videos/wedding-reception.mp4",
+    "/videos/fashion-reels.mp4",
     "/videos/makutano.mp4",
     "/videos/behind-the-scenes.mp4",
-    "/videos/dr-godfrey-maggie-2.mp4"
+    "/videos/dr-godfrey-maggie-2.mp4",
+    "/videos/kcb-lawyers.mp4",
+    "/videos/working.mp4"
 ];
 
 const Hero = () => {
@@ -27,13 +29,13 @@ const Hero = () => {
                     const data = await res.json();
                     if (data.items && data.items.length > 0) {
                         const dynamicUrls = data.items
-                            .sort((a: any, b: any) => b.id - a.id)
-                            .map((item: any) => item.url)
+                            .sort((a: { id: number }, b: { id: number }) => b.id - a.id)
+                            .map((item: { url: string }) => item.url)
                             .filter((url: string) => /\.(mp4|mov|webm)$/i.test(url));
                         
                         if (dynamicUrls.length > 0) {
-                            // Merge dynamic uploaded videos with default fallbacks
-                            const combined = Array.from(new Set([...dynamicUrls, ...defaultHeroVideos]));
+                            // Prioritize local codebase videos for crisp full quality, then append dynamic ones
+                            const combined = Array.from(new Set([...defaultHeroVideos, ...dynamicUrls]));
                             setVideosList(combined);
                         }
                     }
